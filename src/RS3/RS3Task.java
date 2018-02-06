@@ -8,12 +8,20 @@ import java.util.List;
 
 public abstract class RS3Task extends ClientAccessor {
 
-    boolean finished = false;
+    public List<RS3Task> tasks = new ArrayList<RS3Task>();
 
     public RS3Task(ClientContext ctx) {
         super(ctx);
     }
 
     public abstract boolean activate();
-    public abstract void execute();
+
+    public void execute(){
+        for (RS3Task task : tasks) {
+            if (task.activate()) {
+                task.execute();
+                break;
+            }
+        }
+    }
 }

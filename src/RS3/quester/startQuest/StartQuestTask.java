@@ -8,7 +8,7 @@ import org.powerbot.script.rt6.Component;
 public abstract class StartQuestTask extends RS3Task {
     final int xenia = 9633;
     final Tile xeniaLoc = new Tile(3244, 3199, 0);
-    final Component acceptButton = ctx.widgets.component(1500, 395);
+    final int acceptButton[] = {1500, 395};
 
     public StartQuestTask(ClientContext ctx) {
         super(ctx);

@@ -1,12 +1,15 @@
-package RS3.quester.startQuest;
+package RS3.quester.WalkToXenia;
 
+import RS3.RS3Task;
+import RS3.quester.startQuest.StartQuestTask;
 import org.powerbot.script.Condition;
+import org.powerbot.script.Tile;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.Component;
 
 import java.util.concurrent.Callable;
 
-public class LumbridgeTeleport extends StartQuestTask {
+public class LumbridgeTeleport extends WalkToXeniaTask {
 
     Component teleportH = ctx.widgets.component(1465, 18);
     Component lumbridge = ctx.widgets.component(1092, 17);
@@ -18,8 +21,7 @@ public class LumbridgeTeleport extends StartQuestTask {
     @Override
     public boolean activate() {
         return ctx.players.local().tile().distanceTo(xeniaLoc) > 50 &&
-                ctx.players.local().animation() == -1 &&
-                !acceptButton.visible();
+                ctx.players.local().animation() == -1;
     }
 
     @Override

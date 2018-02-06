@@ -9,25 +9,25 @@ import org.powerbot.script.rt6.Interactive;
 import java.util.Locale;
 import java.util.concurrent.Callable;
 
-@Script.Manifest(name="Tutorial", description="Runs through tutorial island", properties = "author=Marcel; topic=999; client=6;")
-public class Tutorial extends PollingScript<ClientContext>{
+@Script.Manifest(name = "Tutorial", description = "Runs through tutorial island", properties = "author=Marcel; topic=999; client=6;")
+public class Tutorial extends PollingScript<ClientContext> {
 
-    final static String INTERACTIONS[] = {"Talk to", "Follow", "Attack", "Lure", "Use", "Inspect", "Take", "Mine"};
+    final static String INTERACTIONS[] = {"Talk to", "Follow", "KillRanger", "Lure", "Use", "Inspect", "Take", "Mine"};
 
-    final static int NPCS[] = {18594, 18595, 18596, 18589, 18590 };
-    final static int ENEMIES[] = {18594, 18595, 18597 };
-    final static int SPOTS[] = {19297, 88876 };
-    final static int BACKPACK_ITEMS[] = {30076 };
-    final static int OBJECTS[] = {88246 };
+    final static int NPCS[] = {18594, 18595, 18596, 18589, 18590};
+    final static int ENEMIES[] = {18594, 18595, 18597};
+    final static int SPOTS[] = {19297, 88876};
+    final static int BACKPACK_ITEMS[] = {30076};
+    final static int OBJECTS[] = {88246};
     final static int GROUND_ITEMS[] = {30069};
 
     @Override
-    public void start(){
+    public void start() {
         System.out.println("Started");
     }
 
     @Override
-    public void stop(){
+    public void stop() {
         System.out.println("Stopped");
     }
 
@@ -39,19 +39,19 @@ public class Tutorial extends PollingScript<ClientContext>{
         final GroundItem coins = ctx.groundItems.select().id(GROUND_ITEMS).nearest().poll();
 
         Component component = ctx.widgets.component(669, 18);
-        if(component.visible())
+        if (component.visible())
 
 
-        if(coins.valid())
-            PickUp(coins);
-        else if(fire.valid() && ctx.backpack.select().id(BACKPACK_ITEMS).count() > 0)
-            Cook(fire);
-        else if(spot.valid() && ctx.backpack.select().id(BACKPACK_ITEMS).count() < 3)
-            Fishing(spot);
-        else if(enemy.valid())
-            FightEnemy(enemy);
-        else
-            Interact();
+            if (coins.valid())
+                PickUp(coins);
+            else if (fire.valid() && ctx.backpack.select().id(BACKPACK_ITEMS).count() > 0)
+                Cook(fire);
+            else if (spot.valid() && ctx.backpack.select().id(BACKPACK_ITEMS).count() < 3)
+                Fishing(spot);
+            else if (enemy.valid())
+                FightEnemy(enemy);
+            else
+                Interact();
 //        else if(!ctx.chat.chatting())
 //            WalkToGudrik();
 //        else if(ctx.chat.chatting()){
@@ -59,7 +59,7 @@ public class Tutorial extends PollingScript<ClientContext>{
 //        }
     }
 
-    public void Mine(GameObject rock){
+    public void Mine(GameObject rock) {
         BringToViewport(rock);
 
         rock.interact(INTERACTIONS[7]);
@@ -72,7 +72,7 @@ public class Tutorial extends PollingScript<ClientContext>{
         }, 150, 20);
     }
 
-    public void PickUp(GroundItem item){
+    public void PickUp(GroundItem item) {
         BringToViewport(item);
 
         item.interact(INTERACTIONS[6]);
@@ -88,10 +88,10 @@ public class Tutorial extends PollingScript<ClientContext>{
     public void Cook(GameObject fire) {
 
         Component component = ctx.widgets.component(1370, 38);
-        if(component.visible()){
+        if (component.visible()) {
             component.click();
             Sleep();
-        }else {
+        } else {
             BringToViewport(fire);
 
             Item fish = ctx.backpack.select().id(BACKPACK_ITEMS).poll();
@@ -107,7 +107,7 @@ public class Tutorial extends PollingScript<ClientContext>{
         }
     }
 
-    public void Fishing(Npc spot){
+    public void Fishing(Npc spot) {
         BringToViewport(spot);
 
         spot.interact(INTERACTIONS[3]);
@@ -120,8 +120,8 @@ public class Tutorial extends PollingScript<ClientContext>{
         }, 150, 20);
     }
 
-    public void FightEnemy(final Npc enemy){
-        if(enemy.inCombat())
+    public void FightEnemy(final Npc enemy) {
+        if (enemy.inCombat())
             return;
 
         BringToViewport(enemy);
@@ -136,8 +136,8 @@ public class Tutorial extends PollingScript<ClientContext>{
         }, 150, 20);
     }
 
-    public void Interact(){
-        if(ctx.chat.chatting()){
+    public void Interact() {
+        if (ctx.chat.chatting()) {
             if (ctx.chat.canContinue()) {
                 ctx.chat.clickContinue(true);
             } else {
@@ -146,11 +146,11 @@ public class Tutorial extends PollingScript<ClientContext>{
             }
             Sleep();
 
-        }else{
+        } else {
             Npc npc = new Npc(ctx, null);
             for (int i : NPCS) {
                 npc = ctx.npcs.select().id(i).nearest().poll();
-                if(npc.valid())
+                if (npc.valid())
                     break;
             }
 
@@ -200,26 +200,26 @@ public class Tutorial extends PollingScript<ClientContext>{
 //        }, 150, 20);
 //    }
 
-    public <T> void BringToViewport(T view){
+    public <T> void BringToViewport(T view) {
 
         final Interactive v;
 
-        if(view instanceof GameObject)
+        if (view instanceof GameObject)
             v = (GameObject) view;
-        else if(view instanceof Npc)
+        else if (view instanceof Npc)
             v = (Npc) view;
-        else if(view instanceof GroundItem)
+        else if (view instanceof GroundItem)
             v = (GroundItem) view;
         else
             return;
 
-        if(!v.inViewport()) {
-            if(view instanceof GameObject)
-                ctx.camera.turnTo((GameObject)v);
-            else if(view instanceof Npc)
-                ctx.camera.turnTo((Npc)v);
-            else if(view instanceof GroundItem)
-                ctx.camera.turnTo((GroundItem)v);
+        if (!v.inViewport()) {
+            if (view instanceof GameObject)
+                ctx.camera.turnTo((GameObject) v);
+            else if (view instanceof Npc)
+                ctx.camera.turnTo((Npc) v);
+            else if (view instanceof GroundItem)
+                ctx.camera.turnTo((GroundItem) v);
             else
                 return;
 
@@ -232,7 +232,7 @@ public class Tutorial extends PollingScript<ClientContext>{
         }
     }
 
-    public void Sleep(){
+    public void Sleep() {
         Condition.sleep(Random.nextInt(350, 500));
     }
 }
