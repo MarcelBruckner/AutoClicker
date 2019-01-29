@@ -1,101 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/src/RS3/aiokiller/WalkToChickens.java" line="29" />
-    <bookmark url="file://$PROJECT_DIR$/src/RS3/aiokiller/WalkToChickens.java" line="36" />
-  </component>
   <component name="ChangeListManager">
-    <list default="true" id="9f9be98b-72b7-47da-a35d-de54492b5df5" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/RS3/AIOKiller.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/RS3/Smither.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/RS3/XPCounter.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/RS3/aiokiller/Bank.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/RS3/aiokiller/CountBackpack.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/RS3/aiokiller/Killer.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/RS3/aiokiller/Loot.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/RS3/aiokiller/LootAll.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/RS3/aiokiller/OpenGate.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/RS3/aiokiller/WalkToBank.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/RS3/aiokiller/WalkToChickens.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/RS3/quester/CheckProgress.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/RS3/quester/EnterFirst/EnterFirst.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/RS3/quester/KillRanger/KillRanger.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/RS3/quester/WalkToXenia/GoToXenia.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/RS3/quester/WalkToXenia/WalkToXeniaTask.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/RS3/quester/enterCatacombs/EnterCatacombs.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/RS3/smither/Bank_Smither.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/RS3/smither/Smelt.java" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/RSBot_7054.xml" afterPath="$PROJECT_DIR$/.idea/libraries/RSBot_7056.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/RS-Bots.iml" afterPath="$PROJECT_DIR$/RS-Bots.iml" />
-      <change beforePath="$PROJECT_DIR$/src/RS3/Quester.java" afterPath="$PROJECT_DIR$/src/RS3/Quester.java" />
-      <change beforePath="$PROJECT_DIR$/src/RS3/RS3Task.java" afterPath="$PROJECT_DIR$/src/RS3/RS3Task.java" />
-      <change beforePath="$PROJECT_DIR$/src/RS3/Tutorial.java" afterPath="$PROJECT_DIR$/src/RS3/Tutorial.java" />
-      <change beforePath="$PROJECT_DIR$/src/RS3/quester/startQuest/AcceptQuest.java" afterPath="$PROJECT_DIR$/src/RS3/quester/startQuest/AcceptQuest.java" />
-      <change beforePath="$PROJECT_DIR$/src/RS3/quester/startQuest/LumbridgeTeleport.java" afterPath="$PROJECT_DIR$/src/RS3/quester/WalkToXenia/LumbridgeTeleport.java" />
-      <change beforePath="$PROJECT_DIR$/src/RS3/quester/startQuest/StartQuest.java" afterPath="$PROJECT_DIR$/src/RS3/quester/startQuest/StartQuest.java" />
-      <change beforePath="$PROJECT_DIR$/src/RS3/quester/startQuest/StartQuestTask.java" afterPath="$PROJECT_DIR$/src/RS3/quester/startQuest/StartQuestTask.java" />
-      <change beforePath="$PROJECT_DIR$/src/RS3/quester/startQuest/TalkToXenia.java" afterPath="$PROJECT_DIR$/src/RS3/quester/startQuest/TalkToXenia.java" />
-      <change beforePath="$PROJECT_DIR$/src/RS3/quester/startQuest/WalkToXenia.java" afterPath="$PROJECT_DIR$/src/RS3/quester/WalkToXenia/WalkToXenia.java" />
-    </list>
+    <list default="true" id="6d55e772-f53f-4cf0-81ab-8f7dc234c08b" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
-    <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/RS_Bots$RS3.coverage" NAME="RS3 Coverage Results" MODIFIED="1517578809620" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
-  </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="Smither.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/RS3/Smither.java">
+    <leaf>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/autoClicker/MainFrame.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="241">
-              <caret line="27" column="32" lean-forward="false" selection-start-line="27" selection-start-column="32" selection-end-line="27" selection-end-column="32" />
+            <state relative-caret-position="359">
+              <caret line="44" column="15" selection-start-line="44" selection-start-column="15" selection-end-line="44" selection-end-column="15" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#1217#1218#0" expanded="true" />
+                <element signature="e#1244#1245#0" expanded="true" />
+                <element signature="method#createMenuBar#0;class#MainFrame#0" />
+                <element signature="method#addFileMenu#0;class#MainFrame#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Bank_Smither.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/RS3/smither/Bank_Smither.java">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/autoClicker/QuitButton.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="388">
-              <caret line="61" column="27" lean-forward="false" selection-start-line="61" selection-start-column="27" selection-end-line="61" selection-end-column="27" />
+            <state relative-caret-position="444">
+              <caret line="44" column="10" lean-forward="true" selection-start-line="44" selection-start-column="10" selection-end-line="44" selection-end-column="10" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#511#512#0" expanded="true" />
-                <element signature="e#603#604#0" expanded="true" />
-                <element signature="e#994#1285#0" expanded="true" />
-                <element signature="e#1284#1285#0" expanded="true" />
-                <element signature="e#1363#1604#0" expanded="true" />
-                <element signature="e#1603#1604#0" expanded="true" />
-                <element signature="e#2050#2237#0" expanded="true" />
-                <element signature="e#2236#2237#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Smelt.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/RS3/smither/Smelt.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1071">
-              <caret line="64" column="88" lean-forward="true" selection-start-line="64" selection-start-column="88" selection-end-line="64" selection-end-column="88" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#1271#1618#0" expanded="true" />
-                <element signature="e#1617#1618#0" expanded="true" />
-                <element signature="e#1758#2014#0" expanded="true" />
-                <element signature="e#2013#2014#0" expanded="true" />
-                <element signature="e#2388#2657#0" expanded="true" />
-                <element signature="e#2656#2657#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -110,134 +48,57 @@
       </list>
     </option>
   </component>
-  <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="GradleLocalSettings">
-    <option name="externalProjectsViewState">
-      <projects_view />
-    </option>
-  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/RS3/test.java" />
-        <option value="$PROJECT_DIR$/src/RS3/Tutorial.java" />
-        <option value="$PROJECT_DIR$/src/RS3/quester/WalkToXenia.java" />
-        <option value="$PROJECT_DIR$/src/RS3/quester/LumbridgeTeleport.java" />
-        <option value="$PROJECT_DIR$/src/RS3/quester/TalkToXenia.java" />
-        <option value="$PROJECT_DIR$/src/RS3/quester/AcceptQuest.java" />
-        <option value="$PROJECT_DIR$/src/RS3/quester/startQuest/CheckProgress.java" />
-        <option value="$PROJECT_DIR$/src/RS3/quester/startQuest/LumbridgeTeleport.java" />
-        <option value="$PROJECT_DIR$/src/RS3/quester/startQuest/WalkToXenia.java" />
-        <option value="$PROJECT_DIR$/src/RS3/aiokiller/GUI.java" />
-        <option value="$PROJECT_DIR$/src/RS3/GeItem.java" />
-        <option value="$PROJECT_DIR$/src/RS3/aiokiller/CountBackpack.java" />
-        <option value="$PROJECT_DIR$/src/RS3/aiokiller/Bank.java" />
-        <option value="$PROJECT_DIR$/src/RS3/aiokiller/OpenGate.java" />
-        <option value="$PROJECT_DIR$/src/RS3/quester/startQuest/TalkToXenia.java" />
-        <option value="$PROJECT_DIR$/src/RS3/quester/startQuest/AcceptQuest.java" />
-        <option value="$PROJECT_DIR$/src/RS3/RS3Task.java" />
-        <option value="$PROJECT_DIR$/src/RS3/quester/WalkToXenia/WalkToXeniaTask.java" />
-        <option value="$PROJECT_DIR$/src/RS3/quester/WalkToXenia/LumbridgeTeleport.java" />
-        <option value="$PROJECT_DIR$/src/RS3/quester/WalkToXenia/Walker.java" />
-        <option value="$PROJECT_DIR$/src/RS3/quester/startQuest/StartQuest.java" />
-        <option value="$PROJECT_DIR$/src/RS3/quester/startQuest/StartQuestTask.java" />
-        <option value="$PROJECT_DIR$/src/RS3/quester/enterCatacombs/EnterCatacombs.java" />
-        <option value="$PROJECT_DIR$/src/RS3/quester/WalkToXenia/WalkToXenia.java" />
-        <option value="$PROJECT_DIR$/src/RS3/quester/KillRanger/EnterFirst.java" />
-        <option value="$PROJECT_DIR$/src/RS3/quester/EnterFirst/EnterFirst.java" />
-        <option value="$PROJECT_DIR$/src/RS3/quester/CheckProgress.java" />
-        <option value="$PROJECT_DIR$/src/RS3/quester/KillRanger/Attack.java" />
-        <option value="$PROJECT_DIR$/src/RS3/Quester.java" />
-        <option value="$PROJECT_DIR$/src/RS3/aiokiller/LootAll.java" />
-        <option value="$PROJECT_DIR$/src/RS3/aiokiller/Loot.java" />
-        <option value="$PROJECT_DIR$/src/RS3/aiokiller/WalkToBank.java" />
-        <option value="$PROJECT_DIR$/src/RS3/aiokiller/WalkToChickens.java" />
-        <option value="$PROJECT_DIR$/src/RS3/aiokiller/Killer.java" />
-        <option value="$PROJECT_DIR$/src/RS3/Smither/Bank.java" />
-        <option value="$PROJECT_DIR$/src/RS3/Smither/Bank_Smither.java" />
-        <option value="$PROJECT_DIR$/src/RS3/AIOKiller.java" />
-        <option value="$PROJECT_DIR$/src/RS3/XPCounter.java" />
-        <option value="$PROJECT_DIR$/src/RS3/smither/Smelt.java" />
-        <option value="$PROJECT_DIR$/src/RS3/smither/Bank_Smither.java" />
-        <option value="$PROJECT_DIR$/src/RS3/Smither.java" />
+        <option value="$PROJECT_DIR$/src/MainFrame.java" />
+        <option value="$PROJECT_DIR$/src/autoClicker/QuitButton.java" />
+        <option value="$PROJECT_DIR$/src/autoClicker/MainFrame.java" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds">
     <option name="x" value="-9" />
-    <option name="y" value="-9" />
-    <option name="width" value="976" />
-    <option name="height" value="1038" />
-  </component>
-  <component name="ProjectLevelVcsManager">
-    <ConfirmationsSetting value="2" id="Add" />
+    <option name="width" value="1298" />
+    <option name="height" value="1399" />
   </component>
   <component name="ProjectView">
-    <navigator currentView="ProjectPane" proportions="" version="1">
-      <flattenPackages />
-      <showMembers />
-      <showModules />
-      <showLibraryContents />
-      <hideEmptyPackages />
-      <abbreviatePackageNames />
-      <autoscrollToSource />
-      <autoscrollFromSource />
-      <sortByType />
-      <manualOrder />
+    <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
-              <item name="RS-Bots" type="b2602c69:ProjectViewProjectNode" />
-              <item name="RS-Bots" type="462c0819:PsiDirectoryNode" />
+              <item name="AutoClicker" type="b2602c69:ProjectViewProjectNode" />
+              <item name="AutoClicker" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="RS-Bots" type="b2602c69:ProjectViewProjectNode" />
-              <item name="RS-Bots" type="462c0819:PsiDirectoryNode" />
+              <item name="AutoClicker" type="b2602c69:ProjectViewProjectNode" />
+              <item name="AutoClicker" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="RS-Bots" type="b2602c69:ProjectViewProjectNode" />
-              <item name="RS-Bots" type="462c0819:PsiDirectoryNode" />
+              <item name="AutoClicker" type="b2602c69:ProjectViewProjectNode" />
+              <item name="AutoClicker" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="RS3" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="RS-Bots" type="b2602c69:ProjectViewProjectNode" />
-              <item name="RS-Bots" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="RS3" type="462c0819:PsiDirectoryNode" />
-              <item name="aiokiller" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="RS-Bots" type="b2602c69:ProjectViewProjectNode" />
-              <item name="RS-Bots" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="RS3" type="462c0819:PsiDirectoryNode" />
-              <item name="smither" type="462c0819:PsiDirectoryNode" />
+              <item name="autoClicker" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scratches" />
-      <pane id="AndroidView" />
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/RSBot-7056.jar!/" />
-    <property name="project.structure.last.edited" value="Modules" />
-    <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1548720650892" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -251,693 +112,137 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JAR Application.RS3">
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <module />
+  <component name="RunManager" selected="Application.MainFrame">
+    <configuration name="MainFrame" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="autoClicker.MainFrame" />
+      <module name="AutoClicker" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="autoClicker.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="QuitButton" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="autoClicker.QuitButton" />
+      <module name="AutoClicker" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="autoClicker.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="" />
-      <envs />
+      <option name="MAIN_CLASS_NAME" value="autoClicker.MainFrame" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
-    <configuration default="true" type="JUnit" factoryName="JUnit">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <module name="" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="METHOD_NAME" />
-      <option name="TEST_OBJECT" value="class" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="singleModule" />
-      </option>
-      <envs />
-      <patterns />
-    </configuration>
-    <configuration name="OldSchool Runescape" type="JarApplication" factoryName="JAR Application" folderName="Runescape">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="JAR_PATH" value="$PROJECT_DIR$/jagexappletviewer.jar" />
-      <option name="VM_PARAMETERS" value="-Djava.search.path=out -Dsun.java2d.nodraw=true -Dcom.jagex.config=http://oldschool.runescape.com/l=en/jav_config.ws -Xmx512m -Xss2m -XX:CompileThreshold=1500 -Xincgc -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -javaagent:&quot;C:\Users\ga58lum\Documents\GitHub\RS-Bots\RSBot-7054.jar&quot;" />
-      <option name="PROGRAM_PARAMETERS" value="runescape" />
-      <option name="WORKING_DIRECTORY" value="C:\Users\ga58lum\Documents\GitHub\RS-Bots" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
-      <option name="ALTERNATIVE_JRE_PATH" value="C:/Program Files (x86)/Java/jre1.8.0_161" />
-      <envs />
-    </configuration>
-    <configuration name="RS3" type="JarApplication" factoryName="JAR Application" folderName="Runescape">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="JAR_PATH" value="$PROJECT_DIR$/jagexappletviewer.jar" />
-      <option name="VM_PARAMETERS" value="-Djava.search.path=out -Dsun.java2d.nodraw=true -Dcom.jagex.config=http://www.runescape.com/l=de/jav_config.ws -Xmx512m -Xss2m -XX:CompileThreshold=1500 -Xincgc -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -javaagent:&quot;C:\Users\ga58lum\Documents\GitHub\RS-Bots\RSBot-7056.jar&quot;" />
-      <option name="PROGRAM_PARAMETERS" value="runescape" />
-      <option name="WORKING_DIRECTORY" value="C:\Users\ga58lum\Documents\GitHub\RS-Bots" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
-      <option name="ALTERNATIVE_JRE_PATH" value="C:/Program Files (x86)/Java/jre1.8.0_161" />
-      <envs />
-    </configuration>
-    <configuration default="true" type="Remote" factoryName="Remote">
-      <option name="USE_SOCKET_TRANSPORT" value="true" />
-      <option name="SERVER_MODE" value="false" />
-      <option name="SHMEM_ADDRESS" value="javadebug" />
-      <option name="HOST" value="localhost" />
-      <option name="PORT" value="5005" />
-    </configuration>
-    <configuration default="true" type="TestNG" factoryName="TestNG">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <module name="" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="SUITE_NAME" />
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="METHOD_NAME" />
-      <option name="GROUP_NAME" />
-      <option name="TEST_OBJECT" value="CLASS" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
-      <option name="OUTPUT_DIRECTORY" />
-      <option name="ANNOTATION_TYPE" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="singleModule" />
-      </option>
-      <option name="USE_DEFAULT_REPORTERS" value="false" />
-      <option name="PROPERTIES_FILE" />
-      <envs />
-      <properties />
-      <listeners />
-    </configuration>
-    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
-      <module name="" />
-      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
-      <option name="PROGRAM_PARAMETERS" />
-      <predefined_log_file id="idea.log" enabled="true" />
-    </configuration>
-    <list size="2">
-      <item index="0" class="java.lang.String" itemvalue="JAR Application.OldSchool Runescape" />
-      <item index="1" class="java.lang.String" itemvalue="JAR Application.RS3" />
-    </list>
-  </component>
-  <component name="ShelveChangesManager" show_recycled="false">
-    <option name="remove_strategy" value="false" />
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.MainFrame" />
+        <item itemvalue="Application.QuitButton" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="9f9be98b-72b7-47da-a35d-de54492b5df5" name="Default" comment="" />
-      <created>1517167590702</created>
+      <changelist id="6d55e772-f53f-4cf0-81ab-8f7dc234c08b" name="Default Changelist" comment="" />
+      <created>1548714996533</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1517167590702</updated>
-      <workItem from="1517167595911" duration="11445000" />
-      <workItem from="1517213855030" duration="4847000" />
-      <workItem from="1517338577668" duration="566000" />
-      <workItem from="1517339207379" duration="17437000" />
-      <workItem from="1517390396273" duration="8243000" />
-      <workItem from="1517476005196" duration="54347000" />
-      <workItem from="1517769664558" duration="341000" />
-      <workItem from="1517770185410" duration="475000" />
-      <workItem from="1517775282915" duration="8069000" />
-      <workItem from="1517827442849" duration="3040000" />
-      <workItem from="1517832284703" duration="75000" />
-      <workItem from="1517837742416" duration="14536000" />
-      <workItem from="1517903016654" duration="6359000" />
+      <updated>1548714996533</updated>
+      <workItem from="1548714997894" duration="5671000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="129780000" />
+    <option name="totallyTimeSpent" value="5671000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
+    <frame x="-7" y="0" width="1038" height="1119" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32849163" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32960895" sideWeight="0.50417536" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22805017" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32960895" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32928178" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.095059074" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32985386" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32960895" sideWeight="0.49582464" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Image Layers" />
+      <window_info id="Designer" />
+      <window_info id="UI Designer" />
+      <window_info id="Capture Tool" />
+      <window_info id="Favorites" side_tool="true" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.24948876" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Messages" weight="0.32928064" />
+      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Database Changes" />
+      <window_info anchor="bottom" id="Version Control" />
+      <window_info anchor="bottom" id="Terminal" />
+      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32928064" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39918947" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="right" id="Palette" />
+      <window_info anchor="right" id="Theme Preview" />
+      <window_info anchor="right" id="Maven" />
+      <window_info anchor="right" id="Capture Analysis" />
+      <window_info anchor="right" id="Palette&#9;" />
+      <window_info anchor="right" id="Database" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
   </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State>
-              <option name="RECENTLY_FILTERED_USER_GROUPS">
-                <collection />
-              </option>
-              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
-                <collection />
-              </option>
-              <option name="COLUMN_ORDER">
-                <list>
-                  <option value="0" />
-                  <option value="1" />
-                  <option value="2" />
-                  <option value="3" />
-                </list>
-              </option>
-            </State>
-          </value>
-        </entry>
-      </map>
-    </option>
-  </component>
-  <component name="VcsContentAnnotationSettings">
-    <option name="myLimit" value="2678400000" />
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/RS3/Tutorial.java</url>
-          <line>162</line>
+          <url>file://$PROJECT_DIR$/src/autoClicker/MainFrame.java</url>
+          <line>38</line>
           <properties />
+          <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="2" />
     </breakpoint-manager>
-    <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/RS3/quester/startQuest/AcceptQuest.java">
+    <entry file="file://$PROJECT_DIR$/src/autoClicker/QuitButton.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="17" column="0" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/quester/startQuest/StartQuestTask.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="147">
-          <caret line="10" column="42" lean-forward="false" selection-start-line="10" selection-start-column="42" selection-end-line="10" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/quester/CheckProgress.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="672">
-          <caret line="44" column="53" lean-forward="false" selection-start-line="44" selection-start-column="53" selection-end-line="44" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/quester/WalkToXenia/LumbridgeTeleport.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="21" column="72" lean-forward="false" selection-start-line="21" selection-start-column="72" selection-end-line="21" selection-end-column="72" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/quester/startQuest/StartQuest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="15" column="10" lean-forward="false" selection-start-line="15" selection-start-column="10" selection-end-line="17" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/Tutorial.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1218">
-          <caret line="69" column="35" lean-forward="false" selection-start-line="69" selection-start-column="35" selection-end-line="69" selection-end-column="35" />
-          <folding>
-            <element signature="e#6648#6831#0" expanded="true" />
-            <element signature="e#6830#6831#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/Quester.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="630">
-          <caret line="30" column="13" lean-forward="true" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/RS3Task.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="10" column="29" lean-forward="false" selection-start-line="10" selection-start-column="29" selection-end-line="10" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/quester/startQuest/AcceptQuest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/quester/WalkToXenia/WalkToXenia.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="20" column="15" lean-forward="false" selection-start-line="20" selection-start-column="11" selection-end-line="20" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/quester/startQuest/TalkToXenia.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="29" column="15" lean-forward="false" selection-start-line="29" selection-start-column="11" selection-end-line="29" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/quester/startQuest/StartQuestTask.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/quester/WalkToXenia/LumbridgeTeleport.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="26" column="0" lean-forward="false" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/quester/startQuest/StartQuest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="609">
-          <caret line="34" column="23" lean-forward="false" selection-start-line="34" selection-start-column="23" selection-end-line="34" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/Tutorial.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#6648#6831#0" expanded="true" />
-            <element signature="e#6830#6831#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/Tutorial.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#6648#6831#0" expanded="true" />
-            <element signature="e#6830#6831#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/Tutorial.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#6648#6831#0" expanded="true" />
-            <element signature="e#6830#6831#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/aiokiller/GUI.java" />
-    <entry file="file://$PROJECT_DIR$/src/RS3/GeItem.java" />
-    <entry file="jar://$PROJECT_DIR$/RSBot-7054.jar!/org/powerbot/bot/ScriptController.class" />
-    <entry file="file://$USER_HOME$/Dropbox/KeepRunescapeScriptRunning.java" />
-    <entry file="file://$PROJECT_DIR$/src/RS3/aiokiller/CountBackpack.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1008">
-          <caret line="64" column="0" lean-forward="false" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/aiokiller/OpenGate.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1260">
-          <caret line="71" column="21" lean-forward="false" selection-start-line="71" selection-start-column="21" selection-end-line="71" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/quester/startQuest/TalkToXenia.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="609">
-          <caret line="41" column="66" lean-forward="false" selection-start-line="41" selection-start-column="66" selection-end-line="41" selection-end-column="66" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/quester/WalkToXenia/WalkToXeniaTask.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/quester/WalkToXenia/LumbridgeTeleport.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="147">
-          <caret line="14" column="58" lean-forward="false" selection-start-line="14" selection-start-column="58" selection-end-line="14" selection-end-column="58" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/quester/WalkToXenia/GoToXenia.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="399">
-          <caret line="19" column="91" lean-forward="false" selection-start-line="19" selection-start-column="91" selection-end-line="19" selection-end-column="91" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/quester/startQuest/StartQuest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="11" column="40" lean-forward="true" selection-start-line="11" selection-start-column="40" selection-end-line="11" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/quester/startQuest/AcceptQuest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="18" column="15" lean-forward="false" selection-start-line="18" selection-start-column="15" selection-end-line="18" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/quester/startQuest/StartQuestTask.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/quester/enterCatacombs/EnterCatacombs.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="672">
-          <caret line="43" column="30" lean-forward="false" selection-start-line="43" selection-start-column="30" selection-end-line="43" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/quester/WalkToXenia/WalkToXenia.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="23" column="24" lean-forward="false" selection-start-line="23" selection-start-column="24" selection-end-line="24" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/quester/EnterFirst/EnterFirst.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="483">
-          <caret line="38" column="30" lean-forward="false" selection-start-line="38" selection-start-column="30" selection-end-line="38" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/quester/CheckProgress.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="17" column="87" lean-forward="false" selection-start-line="17" selection-start-column="87" selection-end-line="17" selection-end-column="87" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/quester/KillRanger/KillRanger.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="34" column="9" lean-forward="false" selection-start-line="34" selection-start-column="9" selection-end-line="34" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/aiokiller/LootAll.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="20" column="49" lean-forward="false" selection-start-line="20" selection-start-column="18" selection-end-line="20" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/aiokiller/Loot.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="276">
-          <caret line="29" column="42" lean-forward="true" selection-start-line="29" selection-start-column="42" selection-end-line="29" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/aiokiller/Killer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="777">
-          <caret line="51" column="13" lean-forward="false" selection-start-line="51" selection-start-column="13" selection-end-line="51" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/Tutorial.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="546">
-          <caret line="225" column="0" lean-forward="false" selection-start-line="225" selection-start-column="0" selection-end-line="231" selection-end-column="0" />
-          <folding>
-            <element signature="e#6648#6831#0" expanded="true" />
-            <element signature="e#6830#6831#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/Quester.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="36" column="8" lean-forward="false" selection-start-line="36" selection-start-column="8" selection-end-line="42" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/RS3Task.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="18" column="16" lean-forward="false" selection-start-line="18" selection-start-column="16" selection-end-line="18" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/aiokiller/WalkToChickens.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="714">
-          <caret line="44" column="23" lean-forward="false" selection-start-line="37" selection-start-column="62" selection-end-line="44" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/aiokiller/Bank.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1134">
-          <caret line="62" column="21" lean-forward="false" selection-start-line="62" selection-start-column="21" selection-end-line="62" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/RSBot-7056.jar!/org/powerbot/script/PaintEvent.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-          <folding>
-            <marker date="1517770290084" expanded="false" signature="0:104" ph="/.../" />
-            <marker date="1517770290084" expanded="true" signature="143:472" ph="..." />
-            <marker date="1517770290084" expanded="true" signature="682:741" ph="{...}" />
-            <marker date="1517770290084" expanded="true" signature="784:2229" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/RSBot-7056.jar!/org/powerbot/script/rt6/Constants.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3591">
-          <caret line="9" column="19" lean-forward="false" selection-start-line="9" selection-start-column="19" selection-end-line="9" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/AIOKiller.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1218">
-          <caret line="73" column="4" lean-forward="false" selection-start-line="73" selection-start-column="4" selection-end-line="94" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/XPCounter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="504">
-          <caret line="42" column="5" lean-forward="false" selection-start-line="42" selection-start-column="5" selection-end-line="42" selection-end-column="5" />
-          <folding>
-            <element signature="e#999#1000#0" expanded="true" />
-            <element signature="e#1043#1044#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/aiokiller/WalkToBank.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="50" column="23" lean-forward="false" selection-start-line="50" selection-start-column="23" selection-end-line="50" selection-end-column="23" />
-          <folding>
-            <element signature="e#1521#1787#0" expanded="true" />
-            <element signature="e#1786#1787#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/smither/Smelt.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1071">
-          <caret line="64" column="88" lean-forward="true" selection-start-line="64" selection-start-column="88" selection-end-line="64" selection-end-column="88" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1271#1618#0" expanded="true" />
-            <element signature="e#1617#1618#0" expanded="true" />
-            <element signature="e#1758#2014#0" expanded="true" />
-            <element signature="e#2013#2014#0" expanded="true" />
-            <element signature="e#2388#2657#0" expanded="true" />
-            <element signature="e#2656#2657#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/smither/Bank_Smither.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="388">
-          <caret line="61" column="27" lean-forward="false" selection-start-line="61" selection-start-column="27" selection-end-line="61" selection-end-column="27" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#511#512#0" expanded="true" />
-            <element signature="e#603#604#0" expanded="true" />
-            <element signature="e#994#1285#0" expanded="true" />
-            <element signature="e#1284#1285#0" expanded="true" />
-            <element signature="e#1363#1604#0" expanded="true" />
-            <element signature="e#1603#1604#0" expanded="true" />
-            <element signature="e#2050#2237#0" expanded="true" />
-            <element signature="e#2236#2237#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RS3/Smither.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="241">
-          <caret line="27" column="32" lean-forward="false" selection-start-line="27" selection-start-column="32" selection-end-line="27" selection-end-column="32" />
+        <state relative-caret-position="444">
+          <caret line="44" column="10" lean-forward="true" selection-start-line="44" selection-start-column="10" selection-end-line="44" selection-end-column="10" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-  </component>
-  <component name="masterDetails">
-    <states>
-      <state key="ArtifactsStructureConfigurable.UI">
-        <settings>
-          <artifact-editor />
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="FacetStructureConfigurable.UI">
-        <settings>
-          <last-edited>No facets are configured</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="GlobalLibrariesConfigurable.UI">
-        <settings>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="JdkListConfigurable.UI">
-        <settings>
-          <last-edited>1.8</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ModuleStructureConfigurable.UI">
-        <settings>
-          <last-edited>RS-Bots</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ProjectLibrariesConfigurable.UI">
-        <settings>
-          <last-edited>RSBot-7056</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-    </states>
+    <entry file="file://$PROJECT_DIR$/src/autoClicker/MainFrame.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="359">
+          <caret line="44" column="15" selection-start-line="44" selection-start-column="15" selection-end-line="44" selection-end-column="15" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1217#1218#0" expanded="true" />
+            <element signature="e#1244#1245#0" expanded="true" />
+            <element signature="method#createMenuBar#0;class#MainFrame#0" />
+            <element signature="method#addFileMenu#0;class#MainFrame#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
   </component>
 </project>
