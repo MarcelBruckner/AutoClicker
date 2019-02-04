@@ -1,0 +1,95 @@
+﻿<Window x:Class="AutoClicker.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AutoClicker"
+        mc:Ignorable="d"
+        Title="Auto Clicker" Height="500" Width="700">
+    <Border Padding="5 0 5 0">
+        <DockPanel LastChildFill="True">
+
+            <Menu DockPanel.Dock="Top" Margin="0 2 0 0" >
+                <MenuItem Header="_File">
+                    <MenuItem Header="_Open" Click="Open_Click"/>
+                    <MenuItem Header="_Save" Click="Save_Click"/>
+                    <Separator/>
+                    <MenuItem Header="_Close" Click="Close_Click"/>
+                </MenuItem>
+                <MenuItem Header="_Add">
+                    <MenuItem Header="_Click">
+                        <MenuItem Header="_Normal" Click="AddClick_Click"/>
+                        <MenuItem Header="_Drag" Click="AddDrag_Click"/>
+                    </MenuItem>
+                    <MenuItem Header="_Keyboard Input">
+                        <MenuItem Header="_Normal" Click="AddNormalKeyboard_Click"/>
+                        <MenuItem Header="Special" Click="AddSpecialKeyboard_Click"/>
+                    </MenuItem>
+                    <MenuItem Header="_Delay" Click="AddDelay_Click"/>
+                    <MenuItem Header="_Loop" Click="AddLoop_Click"/>
+                </MenuItem>
+            </Menu>
+
+            <!--Top Buttons Grid--> 
+            <Grid DockPanel.Dock="Top" Margin="0 10 0 10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="4*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="1.5*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <ToggleButton x:Name="RecordButton" Checked="RecordButton_Checked" Unchecked="RecordButton_Unchecked" Padding="0 2" Margin="5 0" Grid.Column="0" Content="Record"/>
+                <ToggleButton x:Name="PlayButton" Checked="PlayButton_Checked" Unchecked="PlayButton_Unchecked" Padding="0 2" Margin="5 0" Grid.Column="1" Content="Play"/>
+                <!--<Button x:Name="ClearButton" Click="ClearButton_Click" Margin="5 0" Grid.Column="2" Content="Clear"/>-->
+                <!--<Button x:Name="AddButton" Click="AddButton_Click" Margin="5 0" Grid.Column="3" Content="Add"/>-->
+                <Button x:Name="ClearButton" Click="ClearButton_Click" Padding="0 2" Margin="5 0" Grid.Column="2" Content="Clear"/>
+
+                <TextBlock Text="Auto Clicker" DockPanel.Dock="Top" FontWeight="Bold" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="3"/>
+
+                <TextBox x:Name="RepetitionsTextBox" TextChanged="RepetitionsTextBox_TextChanged" Grid.Column="4" Text="1" VerticalAlignment="Center"/>
+                <CheckBox x:Name="InfiniteCheckBox" Checked="InfiniteCheckBox_Checked" Unchecked="InfiniteCheckBox_Unchecked" VerticalAlignment="Center" Margin="5 0" Grid.Column="5" Content="Infinite"/>
+            </Grid>
+
+            
+            <!--Instructions Grid-->
+            <!--<DataGrid x:Name="InstructionsDataGrid" 
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="false"
+                      ItemsSource="{Binding Instructions}"
+                      KeyDown="InstructionsDataGrid_KeyDown"
+                      >
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Id" x:Name="IdColumn"  Binding="{Binding Id}"/>
+                    <DataGridTextColumn Header="Button" x:Name="ButtonColumn"  Binding="{Binding Button}"/>
+                    <DataGridTextColumn Header="#" x:Name="ClickCountColumn"  Binding="{Binding ClickCount}"/>
+                    <DataGridTextColumn Header="X" x:Name="XColumn"  Binding="{Binding X}"/>
+                    <DataGridTextColumn Header="Y" x:Name="YColumn"  Binding="{Binding Y}"/>
+                    <DataGridTextColumn Header="Drag X" x:Name="DragXColumn"  Binding="{Binding DragX}"/>
+                    <DataGridTextColumn Header="Drag Y" x:Name="DragYColumn"  Binding="{Binding DragY}"/>
+                    <DataGridTextColumn Header="Position Radius" x:Name="PositionRadiusColumn"  Binding="{Binding PositionRadius}"/>
+                    <DataGridTextColumn Header="Wheel" x:Name="WheelColumn"  Binding="{Binding WheelDirection}"/>
+                    <DataGridTextColumn Header="Amount" x:Name="WheelAmountColumn"  Binding="{Binding WheelAmount}"/>
+                    <DataGridTextColumn Header="Delay" x:Name="DelayColumn"  Binding="{Binding Delay}"/>
+                    <DataGridTextColumn Header="Delay Radius" x:Name="DelayRadiusColumn"  Binding="{Binding DelayRadius}"/>
+                    <DataGridCheckBoxColumn Header="Shift" x:Name="ShiftColumn"  Binding="{Binding Shift}"/>
+                    <DataGridCheckBoxColumn Header="Ctrl" x:Name="CtrlColumn"  Binding="{Binding Ctrl}"/>
+                    <DataGridCheckBoxColumn Header="Alt" x:Name="AltColumn"  Binding="{Binding Alt}"/>
+                    <DataGridTextColumn Header="Keyboard" x:Name="KeyboardColumn"  Binding="{Binding Keyboard}"/>
+                </DataGrid.Columns>
+            
+            </DataGrid>-->
+
+            <RichTextBox x:Name="InstructionsTextBox" Margin="5" Padding="2" VerticalScrollBarVisibility="Auto">
+                <RichTextBox.Resources>
+                    <Style TargetType="{x:Type Paragraph}">
+                        <Setter Property="Margin" Value="0"/>
+                    </Style>
+                </RichTextBox.Resources>
+            </RichTextBox>
+
+        </DockPanel>
+    </Border>
+</Window>
