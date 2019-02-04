@@ -110,12 +110,8 @@ namespace AutoClicker
                 }
                 catch (Exception e)
                 {
-                    if (e is ArgumentException || e is MissingPropertyException)
-                    {
                         Console.WriteLine("Error in line: " + i + " --- " + e.Message);
                         ErrorLines.Add(i);
-                    }
-                    throw;
                 }
             }
 

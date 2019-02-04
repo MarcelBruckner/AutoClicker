@@ -7,6 +7,7 @@ using System.ComponentModel;
 using Microsoft.Win32;
 using System.IO;
 using System.Windows.Documents;
+using System.Threading;
 
 namespace AutoClicker
 {
@@ -21,11 +22,12 @@ namespace AutoClicker
         private Recorder recorder;
         private KeyboardInterupt interupt;
         private const string FILE_FILTER = "AutoClicker Files (*.autocl)|*.autocl";
-
+        
         public MainWindow()
         {
             InitializeComponent();
             InstructionsTextBox.Document.Blocks.Clear();
+            Thread.Sleep(500);
         }
 
         #region Buttons
@@ -64,12 +66,14 @@ namespace AutoClicker
         {
             BackgroundWorker bw = new BackgroundWorker();
 
-            bw.DoWork += (sender, args) => {
-                mainLoop = InstructionsParser.Instance.Parse(StringManager.RichTextBoxToString(InstructionsTextBox), 0,0, Repetitions);
+            bw.DoWork += (sender, args) =>
+            {
+                mainLoop = InstructionsParser.Instance.Parse(StringManager.RichTextBoxToString(InstructionsTextBox), 0, 0, Repetitions);
                 mainLoop.Execute();
             };
 
-            bw.RunWorkerCompleted += (sender, args) => {
+            bw.RunWorkerCompleted += (sender, args) =>
+            {
                 if (args.Error != null)  // if an exception occurred during DoWork,
                 {
                     Console.WriteLine(args.Error.ToString());  // do your error handling here
@@ -103,7 +107,7 @@ namespace AutoClicker
         private void RepetitionsTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             TextBox box = (TextBox)sender;
-            
+
             RemoveNotNumberCharacters(box);
             if (string.IsNullOrWhiteSpace(box.Text))
             {
@@ -199,7 +203,7 @@ namespace AutoClicker
         {
             InstructionsTextBox.Document.Blocks.Add(new Paragraph(new Run(new MouseDrag().ToString())));
         }
-        
+
         #endregion
     }
 }

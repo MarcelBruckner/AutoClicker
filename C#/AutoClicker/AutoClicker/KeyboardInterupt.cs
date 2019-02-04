@@ -1,4 +1,5 @@
 ﻿using Gma.UserActivityMonitor;
+using System;
 using System.Windows.Controls.Primitives;
 using System.Windows.Forms;
 
@@ -26,14 +27,13 @@ namespace AutoClicker
         private void KeyBreak(object sender, KeyEventArgs e)
         {
             Keys key = e.KeyCode;
-
             if (key == Keys.F7)
             {
                 RecordButton.IsChecked = false;
                 PlayButton.IsChecked = false;
                 e.Handled = true;
+                RemoveAllHooks();
             }
-            RemoveAllHooks();
         }
     }
 }

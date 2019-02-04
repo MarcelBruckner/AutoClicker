@@ -40,8 +40,8 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                     <ColumnDefinition Width="1.5*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <ToggleButton x:Name="RecordButton" Checked="RecordButton_Checked" Unchecked="RecordButton_Unchecked" Padding="0 2" Margin="5 0" Grid.Column="0" Content="Record"/>
-                <ToggleButton x:Name="PlayButton" Checked="PlayButton_Checked" Unchecked="PlayButton_Unchecked" Padding="0 2" Margin="5 0" Grid.Column="1" Content="Play"/>
+                <ToggleButton x:Name="RecordButton" IsChecked="{Binding IsRecorded}" Checked="RecordButton_Checked" Unchecked="RecordButton_Unchecked" Padding="0 2" Margin="5 0" Grid.Column="0" Content="Record"/>
+                <ToggleButton x:Name="PlayButton" IsChecked="{Binding IsPlaying}" Checked="PlayButton_Checked" Unchecked="PlayButton_Unchecked" Padding="0 2" Margin="5 0" Grid.Column="1" Content="Play"/>
                 <!--<Button x:Name="ClearButton" Click="ClearButton_Click" Margin="5 0" Grid.Column="2" Content="Clear"/>-->
                 <!--<Button x:Name="AddButton" Click="AddButton_Click" Margin="5 0" Grid.Column="3" Content="Add"/>-->
                 <Button x:Name="ClearButton" Click="ClearButton_Click" Padding="0 2" Margin="5 0" Grid.Column="2" Content="Clear"/>

@@ -29,6 +29,7 @@ namespace AutoClicker
         public Recorder(System.Windows.Controls.RichTextBox target)
         {
             this.target = target;
+            Console.WriteLine("init");
 
             target.IsEnabled = false;
             HookManager.KeyDown += KeyDown;
@@ -41,6 +42,8 @@ namespace AutoClicker
 
         public void RemoveAllHooks()
         {
+            Console.WriteLine("remove all");
+
             HookManager.KeyDown -= KeyDown;
             HookManager.KeyUp -= KeyUp;
 
