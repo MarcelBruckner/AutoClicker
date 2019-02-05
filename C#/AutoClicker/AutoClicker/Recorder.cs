@@ -4,7 +4,6 @@ using System.Windows.Forms;
 using AutoClicker.Instructions;
 using System.Windows.Documents;
 using System.Drawing;
-using WindowsInput.Native;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Threading;

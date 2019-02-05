@@ -3,16 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WindowsInput;
-using WindowsInput.Native;
 
 namespace AutoClicker.Instructions
 {
     class Keyboard : Instruction
     {
         public string Text { get; set; }
-
-        private static readonly InputSimulator simulator = new InputSimulator();
 
         public Keyboard() : this("", 0, 1) { }
 
@@ -25,7 +21,8 @@ namespace AutoClicker.Instructions
         {
             foreach(char c in Text.ToUpper())
             {
-                simulator.Keyboard.KeyPress((VirtualKeyCode)c);
+                InputSimulator.KeyPress((VirtualKeyCode)c);
+                //simulator.Keyboard.KeyPress((VirtualKeyCode)c);
             }
         }
         

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using WindowsInput;
 
 namespace AutoClicker.Instructions
 {
@@ -26,7 +25,7 @@ namespace AutoClicker.Instructions
         {
             Console.WriteLine("Doing click");
 
-            MouseSimulator.MouseClick(Position, Button);
+            InputSimulator.MouseClick(Position, Button);
         }
         
         public override string ToString()

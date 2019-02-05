@@ -23,8 +23,8 @@ namespace AutoClicker.Instructions
         {
             Console.WriteLine("Doing drag");
 
-            MouseSimulator.MouseDown(Position, Button);
-            MouseSimulator.MouseUp(End, Button);
+            InputSimulator.MouseDown(Position, Button);
+            InputSimulator.MouseUp(End, Button);
         }
         
         public override bool Equals(object obj)

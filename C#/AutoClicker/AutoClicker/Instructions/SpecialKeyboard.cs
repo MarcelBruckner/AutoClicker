@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using WindowsInput;
-using WindowsInput.Native;
 
 namespace AutoClicker.Instructions
 {
@@ -9,7 +7,7 @@ namespace AutoClicker.Instructions
     {
         public VirtualKeyCode Key { get; private set; }
 
-        protected static readonly InputSimulator simulator = new InputSimulator();
+        //protected static readonly InputSimulator simulator = new InputSimulator();
 
         public bool Shift { get; set; }
         public bool Ctrl { get; set; }
@@ -28,7 +26,8 @@ namespace AutoClicker.Instructions
 
         protected override void SpecificExecute()
         {
-            simulator.Keyboard.ModifiedKeyStroke(GetHotkeys(), Key);
+            InputSimulator.KeyPress(Key, GetHotkeys());
+            //simulator.Keyboard.ModifiedKeyStroke(GetHotkeys(), Key);
         }
      
         protected List<VirtualKeyCode> GetHotkeys()
