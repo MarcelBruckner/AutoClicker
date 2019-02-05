@@ -34,13 +34,15 @@ namespace AutoClicker.Instructions
             KEY
         }
 
-        public Action Type { get; protected set; }
+        public Action Type { get; set; }
 
         public virtual bool IsRunning { get; set; }
-        public int Delay { get; protected set; }
+        public int Delay { get; set; }
         public int Repetitions { get; protected set; }
 
         #region Constructors
+        public Instruction() : this(Action.CLICK) { }
+
         public Instruction(Action type) : this(type, 1) { }
 
         public Instruction(Action type, int repetitions) : this(type, 0, repetitions) { }
@@ -48,11 +50,24 @@ namespace AutoClicker.Instructions
         public Instruction(Action type, int delay, int repetitions)
         {
             Type = type;
-            Delay = delay;
-            Repetitions = repetitions;
+            if (delay < 50)
+            {
+                Delay = 50;
+            }
+            else
+            {
+                Delay = delay;
+            }
+            if (repetitions < 1)
+            {
+                Repetitions = 1;
+            }
+            else { 
+                Repetitions = repetitions;
+            }
         }
         #endregion
-
+        
         public void Execute()
         {
             IsRunning = true;
@@ -74,9 +89,14 @@ namespace AutoClicker.Instructions
 
         public override string ToString()
         {
-            string s = Type + " " +
-                Property.AFTER + "=" + Delay + " " +
-                Property.REPETITIONS + "=" + Repetitions;
+            string s = Type + " ";
+
+            if (Delay > 50) {
+                s += Property.AFTER + "=" + Delay + " ";
+            }
+            if (Repetitions > 1) {
+                s += Property.REPETITIONS + "=" + Repetitions;
+            }
 
             return s;
         }

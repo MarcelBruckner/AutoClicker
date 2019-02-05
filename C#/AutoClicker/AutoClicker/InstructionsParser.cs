@@ -13,24 +13,12 @@ namespace AutoClicker
 {
     public class InstructionsParser
     {
-        #region Singleton
-        private static InstructionsParser _instance;
-
-        private InstructionsParser() { }
-
-        public static InstructionsParser Instance
+        private MainWindow window;
+        public InstructionsParser(MainWindow window)
         {
-            get
-            {
-                if(_instance == null)
-                {
-                    _instance = new InstructionsParser();
-                }
-                return _instance;
-            }
+            this.window = window;
         }
-        #endregion
-        
+
         public Instruction Parse(string instructions, int delay, int repetitions)
         {
             Loop mainLoop = new Loop(delay, repetitions);
@@ -46,55 +34,81 @@ namespace AutoClicker
                         continue;
                     }
 
-                    Dictionary<Instruction.Property, object> parsed = Parse(line);                    
+                    Dictionary<Instruction.Property, object> parsed = Parse(line);
 
-                    if (parsed[Instruction.Property.TYPE].Equals(Instruction.Action.CLICK))
+                    Instruction.Action type = (Instruction.Action) parsed[Instruction.Property.TYPE];
+                    int pDelay = 0;
+                    int pRepetitions = 1;
+
+                    if (parsed.ContainsKey(Instruction.Property.AFTER))
                     {
-                        mainLoop.Add(new MouseClick(
-                            (int)parsed[Instruction.Property.BUTTON], 
-                            (int)parsed[Instruction.Property.X], 
-                            (int)parsed[Instruction.Property.Y],
-                            (int)parsed[Instruction.Property.AFTER],
-                            (int)parsed[Instruction.Property.REPETITIONS]
-                            ));
+                        pDelay = (int)parsed[Instruction.Property.AFTER];
                     }
-                    else if (parsed[Instruction.Property.TYPE].Equals(Instruction.Action.SPECIAL_KEYBOARD))
+                    if (parsed.ContainsKey(Instruction.Property.REPETITIONS))
                     {
-                        mainLoop.Add(new SpecialKeyboard(
-                            (VirtualKeyCode)parsed[Instruction.Property.KEY], 
-                            (bool)parsed[Instruction.Property.SHIFT], 
-                            (bool)parsed[Instruction.Property.CONTROL], 
-                            (bool)parsed[Instruction.Property.ALT], 
-                            (int)parsed[Instruction.Property.AFTER], 
-                            (int)parsed[Instruction.Property.REPETITIONS]                            
-                            ));
+                        pRepetitions = (int)parsed[Instruction.Property.REPETITIONS];
                     }
-                    else if (parsed[Instruction.Property.TYPE].Equals(Instruction.Action.KEYBOARD))
+
+                    
+                    if (type.Equals(Instruction.Action.CLICK) || type.Equals(Instruction.Action.DRAG))
                     {
-                        mainLoop.Add(new Keyboard(
-                            (string)parsed[Instruction.Property.TEXT],
-                            (int)parsed[Instruction.Property.AFTER],
-                            (int)parsed[Instruction.Property.REPETITIONS]
-                            ));
-                    }
-                    else if (parsed[Instruction.Property.TYPE].Equals(Instruction.Action.DELAY))
-                    {
-                        mainLoop.Add(new Delay(
-                            (int)parsed[Instruction.Property.AFTER],
-                            (int)parsed[Instruction.Property.REPETITIONS]));
-                    }
-                    else if (parsed[Instruction.Property.TYPE].Equals(Instruction.Action.DRAG))
-                    {
-                        mainLoop.Add(new MouseDrag(
-                            (int)parsed[Instruction.Property.BUTTON],
+                        int button = 0;
+                        if (parsed.ContainsKey(Instruction.Property.BUTTON))
+                        {
+                            button = (int)parsed[Instruction.Property.BUTTON];
+                        }
+
+                        if (type.Equals(Instruction.Action.CLICK))
+                        {
+                            mainLoop.Add(new MouseClick(button,
+                                (int)parsed[Instruction.Property.X],
+                                (int)parsed[Instruction.Property.Y],
+                                pDelay, pRepetitions
+                                ));
+                        }
+                        else
+                        {
+                            mainLoop.Add(new MouseDrag(button,
                             (int)parsed[Instruction.Property.X],
                             (int)parsed[Instruction.Property.Y],
                             (int)parsed[Instruction.Property.END_X],
                             (int)parsed[Instruction.Property.END_Y],
-                            (int)parsed[Instruction.Property.AFTER],
-                            (int)parsed[Instruction.Property.REPETITIONS]));
+                            pDelay, pRepetitions));
+                        }
                     }
-                    else if (parsed[Instruction.Property.TYPE].Equals(Instruction.Action.LOOP))
+                    else if (type.Equals(Instruction.Action.SPECIAL_KEYBOARD))
+                    {
+                        bool hasShift = false;
+                        bool hasCtrl = false;
+                        bool hasAlt = false;
+                        if (parsed.ContainsKey(Instruction.Property.SHIFT))
+                        {
+                            hasShift = (bool)parsed[Instruction.Property.SHIFT];
+                        }
+                        if (parsed.ContainsKey(Instruction.Property.CONTROL))
+                        {
+                            hasCtrl = (bool)parsed[Instruction.Property.CONTROL];
+                        }
+                        if (parsed.ContainsKey(Instruction.Property.ALT))
+                        {
+                            hasAlt = (bool)parsed[Instruction.Property.ALT];
+                        }
+
+                        mainLoop.Add(new SpecialKeyboard(
+                            (VirtualKeyCode)parsed[Instruction.Property.KEY],
+                            hasShift, hasCtrl, hasAlt,
+                            pDelay, pRepetitions
+                            ));
+                    }
+                    else if (type.Equals(Instruction.Action.KEYBOARD))
+                    {
+                        mainLoop.Add(new Keyboard((string)parsed[Instruction.Property.TEXT], pDelay, pRepetitions));
+                    }
+                    else if (type.Equals(Instruction.Action.DELAY))
+                    {
+                        mainLoop.Add(new Delay(pDelay, pRepetitions));
+                    }
+                    else if (type.Equals(Instruction.Action.LOOP))
                     {
                         string loopText = "";
                         while (i++ < lines.Length - 1)
@@ -108,10 +122,9 @@ namespace AutoClicker
 
                             loopText += line + "\n";
                         }
-                        mainLoop.Add(Parse(loopText, 
-                            (int)parsed[Instruction.Property.AFTER],
-                            (int)parsed[Instruction.Property.REPETITIONS]));
+                        mainLoop.Add(Parse(loopText, pDelay, pRepetitions));
                     }
+                    //else if (parsed[Instruction.Property.TYPE].Equals(Instruction.Action.END_LOOP)) { }
                     else
                     {
                         throw new ArgumentException("Instruction not found in line: " + i);
@@ -119,7 +132,7 @@ namespace AutoClicker
                 }
                 catch (Exception e)
                 {
-                        Console.WriteLine("Error in line: " + i + " --- " + e.Message);
+                    Console.WriteLine("Error in line: " + i + " --- " + e.Message);
                 }
             }
 
@@ -127,30 +140,54 @@ namespace AutoClicker
             return mainLoop;
         }
 
-        public void SpellCheck(FlowDocument document)
+        public bool SpellCheck(FlowDocument document)
         {
-            try
+            bool isCorrect = true;
+            int i = 0;
+            foreach (Block block in document.Blocks)
             {
-                foreach (Block block in document.Blocks)
+                TextRange range = new TextRange(block.ContentStart, block.ContentEnd);
+                try
                 {
-                    TextRange range = new TextRange(block.ContentStart, block.ContentEnd);
-                    try
+                    string text = range.Text;
+                    if (string.IsNullOrWhiteSpace(text))
                     {
-                        string text = range.Text;
-                        Dictionary<Instruction.Property, object> rawInstructions = Parse(text);
-                        range.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Black);
+                        continue;
                     }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine("Error while parsing: " + e.Message);
-                        range.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Red);
-                    }
+                    Dictionary<Instruction.Property, object> rawInstructions = Parse(text);
+                    window.HighlightLine(i, Brushes.Black);
                 }
-            }catch(Exception e)
-            {
-                Console.WriteLine("Error in spellcheck: " + e.Message);
+                catch (Exception e)
+                {
+                    Console.WriteLine("Error while parsing: " + e.Message);
+                    window.HighlightLine(i, Brushes.Red);
+                    isCorrect = false;
+                }
+                i++;
             }
-            Console.WriteLine("Spell checked");
+
+            //foreach (Block block in document.Blocks)
+            //{
+            //    TextRange range = new TextRange(block.ContentStart, block.ContentEnd);
+            //    try
+            //    {
+            //        string text = range.Text;
+            //        if (string.IsNullOrWhiteSpace(text))
+            //        {
+            //            continue;
+            //        }
+            //        Dictionary<Instruction.Property, object> rawInstructions = Parse(text);
+            //        range.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Black);
+            //    }
+            //    catch (ArgumentException e)
+            //    {
+            //        Console.WriteLine("Error while parsing: " + e.Message);
+            //        range.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Red);
+            //        isCorrect = false;
+            //    }
+            //}
+
+            return isCorrect;
         }
 
         private List<string> GetKeyValuePairs(string raw)
@@ -162,7 +199,8 @@ namespace AutoClicker
             return unParsedKayValuePairs;
         }
 
-        private Dictionary<Instruction.Property, object> Parse(string line) {
+        private Dictionary<Instruction.Property, object> Parse(string line)
+        {
             List<string> unParsedKayValuePairs = GetKeyValuePairs(line);
 
             Dictionary<Instruction.Property, object> rawInstruction = new Dictionary<Instruction.Property, object>();
@@ -172,39 +210,59 @@ namespace AutoClicker
                 {
                     continue;
                 }
-                string[] split = keyValuePair.Trim().Split('=');
+                string[] split = keyValuePair.Trim().Split(new[] { '=' },2);
 
-                object value;
-                Instruction.Property property = (Instruction.Property)Enum.Parse(typeof(Instruction.Property), split[0]);
-                switch (property)
+                try
                 {
-                    case Instruction.Property.TYPE:
-                        value = (Instruction.Action)Enum.Parse(typeof(Instruction.Action), split[1]);
-                        break;
-                    case Instruction.Property.AFTER:
-                    case Instruction.Property.REPETITIONS:
-                    case Instruction.Property.X:
-                    case Instruction.Property.Y:
-                    case Instruction.Property.BUTTON:
-                    case Instruction.Property.END_X:
-                    case Instruction.Property.END_Y:
-                        value = int.Parse(split[1]);
-                        break;
-                    case Instruction.Property.CONTROL:
-                    case Instruction.Property.SHIFT:
-                    case Instruction.Property.ALT:
-                        value = bool.Parse(split[1]);
-                        break;
-                    case Instruction.Property.KEY:
-                        value = (VirtualKeyCode)Enum.Parse(typeof(VirtualKeyCode), split[1]);
-                        break;
-                    default:
-                        value = split[1];
-                        break;
+                    object value;
+                    Instruction.Property property = (Instruction.Property)Enum.Parse(typeof(Instruction.Property), split[0].ToUpper());
+                    switch (property)
+                    {
+                        case Instruction.Property.TYPE:
+                            value = (Instruction.Action)Enum.Parse(typeof(Instruction.Action), split[1]);
+                            break;
+                        case Instruction.Property.AFTER:
+                        case Instruction.Property.REPETITIONS:
+                        case Instruction.Property.X:
+                        case Instruction.Property.Y:
+                        case Instruction.Property.BUTTON:
+                        case Instruction.Property.END_X:
+                        case Instruction.Property.END_Y:
+                            value = int.Parse(split[1]);
+                            break;
+                        case Instruction.Property.CONTROL:
+                        case Instruction.Property.SHIFT:
+                        case Instruction.Property.ALT:
+                            value = bool.Parse(split[1]);
+                            break;
+                        case Instruction.Property.KEY:
+
+                            value = (VirtualKeyCode)Enum.Parse(typeof(VirtualKeyCode), split[1]);
+                            break;
+                        default:
+                            value = split[1];
+                            break;
+                    }
+                    rawInstruction.Add(property, value);
                 }
-                rawInstruction.Add(property, value);
+                catch (Exception)
+                {
+                    throw new ArgumentException("Cannot parse: " + keyValuePair);
+                }
             }
             return rawInstruction;
+        }
+
+        private int ParseInt(string raw)
+        {
+            foreach(char c in raw)
+            {
+                if (!char.IsNumber(c))
+                {
+                    throw new ArgumentException("Not a number: " + raw);
+                }
+            }
+            return int.Parse(raw);
         }
 
         //public VirtualKeyCode GetKeyCode(string raw)

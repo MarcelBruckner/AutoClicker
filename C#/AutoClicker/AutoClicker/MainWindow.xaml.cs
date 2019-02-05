@@ -9,6 +9,8 @@ using System.IO;
 using System.Windows.Documents;
 using System.Threading;
 using System.Collections.Generic;
+using System.Windows.Media;
+using System.Collections.ObjectModel;
 
 namespace AutoClicker
 {
@@ -19,47 +21,82 @@ namespace AutoClicker
     {
         public int Repetitions { get; set; }
 
-        private Instruction mainLoop = new Instruction(Instruction.Action.LOOP);
+        private ObservableCollection<Instruction> Instructions = new ObservableCollection<Instruction>();
         private Recorder recorder;
         private KeyboardInterupt interupt;
+        private InstructionsParser parser;
+
+        public bool IsRunning { get => _isRunning; set => _isRunning = value; }
+
+        private bool _withDelay;
+        private bool _isRunning;
+
+        public bool WithDelay
+        {
+            get => _withDelay;
+            set
+            {
+                _withDelay = value;
+                recorder.WithDelay = value;
+            }
+        }
+
         private const string FILE_FILTER = "AutoClicker Files (*.autocl)|*.autocl";
-        
+        private bool SpellCorrect { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
-            InstructionsTextBox.Document.Blocks.Clear();
+            parser = new InstructionsParser(this);
+            recorder = new Recorder(this);
+            interupt = new KeyboardInterupt(OnKeyboardInterupt);
+            InstructionsDataGrid.ItemsSource = Instructions;
+            Instructions.Add(new MouseClick());
+            Instructions.Add(new MouseDrag());
+            Instructions.Add(new Keyboard());
+            Instructions.Add(new Delay());
         }
 
         #region Buttons
+        public void OnKeyboardInterupt()
+        {
+            RecordButton.IsChecked = false;
+            PlayButton.IsChecked = false;
+            interupt.RemoveHooks();
+            recorder.RemoveHooks();
+        }
+
+
         private void RecordButton_Checked(object sender, RoutedEventArgs e)
         {
             PlayButton.IsEnabled = false;
-            mainLoop.IsRunning = false;
-            interupt = new KeyboardInterupt(RecordButton, PlayButton);
-            recorder = new Recorder(InstructionsTextBox);
+            IsRunning = false;
+            interupt.AddHooks();
+            recorder.AddHooks();
         }
 
         private void RecordButton_Unchecked(object sender, RoutedEventArgs e)
         {
-            PlayButton.IsEnabled = true;
-            mainLoop.IsRunning = false;
+            PlayButton.IsEnabled = SpellCorrect;
+            IsRunning = false;
             e.Handled = true;
-            interupt.RemoveAllHooks();
-            recorder.RemoveAllHooks();
+
+            interupt.RemoveHooks();
+            recorder.RemoveHooks();
         }
 
         private void PlayButton_Checked(object sender, RoutedEventArgs e)
         {
             RecordButton.IsEnabled = false;
-            interupt = new KeyboardInterupt(RecordButton, PlayButton);
+            interupt.AddHooks();
             OnPlay();
         }
 
         private void PlayButton_Unchecked(object sender, RoutedEventArgs e)
         {
             RecordButton.IsEnabled = true;
-            interupt.RemoveAllHooks();
-            mainLoop.IsRunning = false;
+            IsRunning = false;
+            interupt.RemoveHooks();
         }
 
         private void OnPlay()
@@ -68,8 +105,11 @@ namespace AutoClicker
 
             bw.DoWork += (sender, args) =>
             {
-                mainLoop = InstructionsParser.Instance.Parse(StringManager.RichTextBoxToString(InstructionsTextBox), 0, Repetitions);
-                    mainLoop.Execute();
+                //Instru = parser.Parse(StringManager.RichTextBoxToString(InstructionsTextBox), 0, Repetitions);
+                foreach (Instruction instruction in Instructions)
+                {
+                    instruction.Execute();
+                }
             };
 
             bw.RunWorkerCompleted += (sender, args) =>
@@ -86,7 +126,8 @@ namespace AutoClicker
 
         private void ClearButton_Click(object sender, RoutedEventArgs e)
         {
-            InstructionsTextBox.Document.Blocks.Clear();
+
+            //InstructionsTextBox.Document.Blocks.Clear();
         }
         #endregion
 
@@ -112,6 +153,7 @@ namespace AutoClicker
             if (string.IsNullOrWhiteSpace(box.Text))
             {
                 Repetitions = 0;
+                box.Text = 0 + "";
                 return;
             }
             Repetitions = int.Parse(box.Text);
@@ -153,9 +195,9 @@ namespace AutoClicker
             };
             if (dialog.ShowDialog() == true)
             {
-                InstructionsTextBox.Document.Blocks.Clear();
+                //InstructionsTextBox.Document.Blocks.Clear();
                 string script = File.ReadAllText(dialog.FileName);
-                InstructionsTextBox.Document.Blocks.Add(new Paragraph(new Run(script)));
+                //InstructionsTextBox.Document.Blocks.Add(new Paragraph(new Run(script)));
             }
         }
 
@@ -168,7 +210,7 @@ namespace AutoClicker
             };
             if (dialog.ShowDialog() == true)
             {
-                File.WriteAllLines(dialog.FileName, new[] { StringManager.RichTextBoxToString(InstructionsTextBox) });
+                //File.WriteAllLines(dialog.FileName, new[] { StringManager.RichTextBoxToString(InstructionsTextBox) });
             }
         }
 
@@ -181,38 +223,75 @@ namespace AutoClicker
         #region Add Menu
         private void AddClick_Click(object sender, RoutedEventArgs e)
         {
-            InstructionsTextBox.Document.Blocks.Add(new Paragraph(new Run(new MouseClick().ToString())));
+            Instructions.Add(new MouseClick());
         }
         private void AddNormalKeyboard_Click(object sender, RoutedEventArgs e)
         {
-            InstructionsTextBox.Document.Blocks.Add(new Paragraph(new Run(new Keyboard().ToString())));
+            AddInstruction(new Keyboard());
         }
         private void AddSpecialKeyboard_Click(object sender, RoutedEventArgs e)
         {
-            InstructionsTextBox.Document.Blocks.Add(new Paragraph(new Run(new SpecialKeyboard().ToString())));
+            AddInstruction(new SpecialKeyboard());
         }
         private void AddDelay_Click(object sender, RoutedEventArgs e)
         {
-            InstructionsTextBox.Document.Blocks.Add(new Paragraph(new Run(new Delay().ToString())));
+            AddInstruction(new Delay());
         }
         private void AddLoop_Click(object sender, RoutedEventArgs e)
         {
-            InstructionsTextBox.Document.Blocks.Add(new Paragraph(new Run(new Loop().ToString())));
+            AddInstruction(new Loop());
         }
         private void AddEndLoop_Click(object sender, RoutedEventArgs e)
         {
-            InstructionsTextBox.Document.Blocks.Add(new Paragraph(new Run(new EndLoop().ToString())));
+            AddInstruction(new EndLoop());
         }
         private void AddDrag_Click(object sender, RoutedEventArgs e)
         {
-            InstructionsTextBox.Document.Blocks.Add(new Paragraph(new Run(new MouseDrag().ToString())));
+            AddInstruction(new MouseDrag());
         }
 
         #endregion
 
+        #region Instructions 
         private void InstructionsTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            InstructionsParser.Instance.SpellCheck(InstructionsTextBox.Document);
+            bool isRecording = RecordButton.IsChecked ?? false;
+            //SpellCorrect = parser.SpellCheck(InstructionsTextBox.Document);
+            PlayButton.IsEnabled = SpellCorrect && !isRecording;
         }
+
+        public void AddInstruction(Instruction instruction)
+        {
+            //InstructionsTextBox.Document.Blocks.InsertBefore(InstructionsTextBox.CaretPosition.Paragraph, new Paragraph(new Run(instruction.ToString())));
+        }
+
+        public void UpdateLast(Instruction instruction)
+        {
+            //InstructionsTextBox.CaretPosition = InstructionsTextBox.CaretPosition.GetLineStartPosition(-1);
+            //InstructionsTextBox.CaretPosition.DeleteTextInRun(InstructionsTextBox.CaretPosition.GetTextRunLength(LogicalDirection.Forward));
+            //InstructionsTextBox.CaretPosition.InsertTextInRun(instruction.ToString());
+            //InstructionsTextBox.CaretPosition = InstructionsTextBox.CaretPosition.GetLineStartPosition(1);
+        }
+
+        public void EnableTextBox(bool enabled)
+        {
+            //InstructionsTextBox.IsEnabled = enabled;
+        }
+
+        public void HighlightLine(int number, SolidColorBrush brush)
+        {
+            //BlockCollection blocks = InstructionsTextBox.Document.Blocks;
+
+            //int i = 0;
+            //foreach (Block block in blocks)
+            //{
+            //    if (i++ == number)
+            //    {
+            //        TextRange range = new TextRange(block.ContentStart, block.ContentEnd);
+            //        range.ApplyPropertyValue(TextElement.ForegroundProperty, brush);
+            //    }
+            //}
+        }
+        #endregion
     }
 }

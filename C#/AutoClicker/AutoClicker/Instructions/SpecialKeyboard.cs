@@ -15,7 +15,7 @@ namespace AutoClicker.Instructions
 
         public SpecialKeyboard() : this(VirtualKeyCode.RETURN, false, false, false, 0,1) { }
 
-        public SpecialKeyboard(VirtualKeyCode key, bool shift, bool ctrl, bool alt,  int delay, int repetitions) : base(Action.SPECIAL_KEYBOARD, delay, repetitions)
+        public SpecialKeyboard(VirtualKeyCode key, bool shift, bool ctrl, bool alt,  int delay, int repetitions) : base(Action.KEYBOARD, delay, repetitions)
         {
             Shift = shift;
             Ctrl = ctrl;
@@ -27,7 +27,6 @@ namespace AutoClicker.Instructions
         protected override void SpecificExecute()
         {
             InputSimulator.KeyPress(Key, GetHotkeys());
-            //simulator.Keyboard.ModifiedKeyStroke(GetHotkeys(), Key);
         }
      
         protected List<VirtualKeyCode> GetHotkeys()
@@ -50,11 +49,23 @@ namespace AutoClicker.Instructions
 
         public override string ToString()
         {
-            return base.ToString() + " " +
-                Property.KEY + "=" + Key + " " +
-                Property.SHIFT + "=" + Shift + " " +
-                Property.CONTROL + "=" + Ctrl + " " +
-                Property.ALT + "=" + Alt;
+            string s = base.ToString() + " " +
+                Property.KEY + "=" + Key + " ";
+
+            if (Shift)
+            {
+                s += Property.SHIFT + "=" + Shift + " ";
+            }
+            if (Ctrl)
+            {
+                s += Property.CONTROL + "=" + Ctrl + " ";
+            }
+            if (Alt)
+            {
+                s += Property.ALT + "=" + Alt + " ";
+            }
+
+            return s;
         }
 
         public override bool Equals(object obj)

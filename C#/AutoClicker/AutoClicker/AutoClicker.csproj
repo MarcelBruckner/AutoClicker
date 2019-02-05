@@ -69,6 +69,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="IKeyboardListener.cs" />
     <Compile Include="Instructions\EndLoop.cs" />
     <Compile Include="Instructions\Instruction.cs" />
     <Compile Include="Instructions\Loop.cs" />

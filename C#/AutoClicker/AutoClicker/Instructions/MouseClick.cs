@@ -23,16 +23,18 @@ namespace AutoClicker.Instructions
 
         protected override void SpecificExecute()
         {
-            Console.WriteLine("Doing click");
-
             InputSimulator.MouseClick(Position, Button);
         }
         
         public override string ToString()
         {
-            return base.ToString() + " " +
-                Property.BUTTON.ToString() + "=" + Button + " " +
-                Property.X.ToString() + "=" + Position.X + " " +
+            string s = base.ToString() + " ";
+
+            if (Button != 0)
+            {
+                s += Property.BUTTON.ToString() + "=" + Button + " ";
+            }
+             return s += Property.X.ToString() + "=" + Position.X + " " +
                 Property.Y.ToString() + "=" + Position.Y;
         }
 

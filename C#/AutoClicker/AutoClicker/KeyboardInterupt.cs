@@ -5,23 +5,13 @@ using System.Windows.Forms;
 
 namespace AutoClicker
 {
-    class KeyboardInterupt
+    class KeyboardInterupt : IKeyboardListener
     {
-        public ToggleButton RecordButton { get; private set; }
-        public ToggleButton PlayButton { get; private set; }
+        private Action onInterupt;
 
-        public KeyboardInterupt(ToggleButton recordButton, ToggleButton playButton)
+        public KeyboardInterupt(Action onInterupt)
         {
-            RecordButton = recordButton;
-            PlayButton = playButton;
-            HookManager.KeyDown += KeyBreak;
-        }
-
-        public void RemoveAllHooks()
-        {
-            HookManager.KeyDown -= KeyBreak;
-            RecordButton.Focus();
-            PlayButton.Focus();
+            this.onInterupt = onInterupt;           
         }
 
         private void KeyBreak(object sender, KeyEventArgs e)
@@ -29,11 +19,19 @@ namespace AutoClicker
             Keys key = e.KeyCode;
             if (key == Keys.F7)
             {
-                RecordButton.IsChecked = false;
-                PlayButton.IsChecked = false;
+                onInterupt();
                 e.Handled = true;
-                RemoveAllHooks();
             }
+        }
+
+        public void AddHooks()
+        {
+            HookManager.KeyDown += KeyBreak;
+        }
+
+        public void RemoveHooks()
+        {
+            HookManager.KeyDown -= KeyBreak;
         }
     }
 }

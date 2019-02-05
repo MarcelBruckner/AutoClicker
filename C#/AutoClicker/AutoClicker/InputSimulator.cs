@@ -131,8 +131,10 @@ namespace AutoClicker
         {
             MoveMouse(position);
 
-            INPUT mouseDownInput = new INPUT();
-            mouseDownInput.type = SendInputEventType.InputMouse;
+            INPUT mouseDownInput = new INPUT
+            {
+                type = SendInputEventType.InputMouse
+            };
 
             MouseEventFlags flags;
             switch (button)
@@ -161,13 +163,15 @@ namespace AutoClicker
         public static void MoveMouse(Point position)
         {
             Cursor.Position = position;
-            Thread.Sleep(50);
+            //Thread.Sleep(50);
         }
 
         public static void KeyDown(VirtualKeyCode key)
         {
-            INPUT keyDownInput = new INPUT();
-            keyDownInput.type = SendInputEventType.InputKeyboard;
+            INPUT keyDownInput = new INPUT
+            {
+                type = SendInputEventType.InputKeyboard
+            };
 
             keyDownInput.mkhi.ki.wVk = (ushort)key;
             //keyDownInput.mkhi.ki.wVk = 0;
@@ -181,8 +185,10 @@ namespace AutoClicker
 
         public static void KeyUp(VirtualKeyCode key)
         {
-            INPUT keyUpInput = new INPUT();
-            keyUpInput.type = SendInputEventType.InputKeyboard;
+            INPUT keyUpInput = new INPUT
+            {
+                type = SendInputEventType.InputKeyboard
+            };
 
             keyUpInput.mkhi.ki.wVk = (ushort)key;
             keyUpInput.mkhi.ki.dwFlags = (uint)KeyboardEventFlags.KEYEVENTF_KEYUP;
