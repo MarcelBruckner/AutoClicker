@@ -8,6 +8,7 @@ using Microsoft.Win32;
 using System.IO;
 using System.Windows.Documents;
 using System.Threading;
+using System.Collections.Generic;
 
 namespace AutoClicker
 {
@@ -18,7 +19,7 @@ namespace AutoClicker
     {
         public int Repetitions { get; set; }
 
-        private Instruction mainLoop = new Instruction(Instruction.InstructionType.LOOP);
+        private Instruction mainLoop = new Instruction(Instruction.Action.LOOP);
         private Recorder recorder;
         private KeyboardInterupt interupt;
         private const string FILE_FILTER = "AutoClicker Files (*.autocl)|*.autocl";
@@ -27,7 +28,6 @@ namespace AutoClicker
         {
             InitializeComponent();
             InstructionsTextBox.Document.Blocks.Clear();
-            Thread.Sleep(500);
         }
 
         #region Buttons
@@ -68,8 +68,8 @@ namespace AutoClicker
 
             bw.DoWork += (sender, args) =>
             {
-                mainLoop = InstructionsParser.Instance.Parse(StringManager.RichTextBoxToString(InstructionsTextBox), 0, 0, Repetitions);
-                mainLoop.Execute();
+                mainLoop = InstructionsParser.Instance.Parse(StringManager.RichTextBoxToString(InstructionsTextBox), 0, Repetitions);
+                    mainLoop.Execute();
             };
 
             bw.RunWorkerCompleted += (sender, args) =>
@@ -193,11 +193,15 @@ namespace AutoClicker
         }
         private void AddDelay_Click(object sender, RoutedEventArgs e)
         {
-            InstructionsTextBox.Document.Blocks.Add(new Paragraph(new Run(new Instruction(Instruction.InstructionType.DELAY).ToString())));
+            InstructionsTextBox.Document.Blocks.Add(new Paragraph(new Run(new Delay().ToString())));
         }
         private void AddLoop_Click(object sender, RoutedEventArgs e)
         {
-            InstructionsTextBox.Document.Blocks.Add(new Paragraph(new Run(new Instruction(Instruction.InstructionType.LOOP).ToString())));
+            InstructionsTextBox.Document.Blocks.Add(new Paragraph(new Run(new Loop().ToString())));
+        }
+        private void AddEndLoop_Click(object sender, RoutedEventArgs e)
+        {
+            InstructionsTextBox.Document.Blocks.Add(new Paragraph(new Run(new EndLoop().ToString())));
         }
         private void AddDrag_Click(object sender, RoutedEventArgs e)
         {
@@ -205,5 +209,10 @@ namespace AutoClicker
         }
 
         #endregion
+
+        private void InstructionsTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            InstructionsParser.Instance.SpellCheck(InstructionsTextBox.Document);
+        }
     }
 }

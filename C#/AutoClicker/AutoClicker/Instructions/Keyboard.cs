@@ -12,18 +12,14 @@ namespace AutoClicker.Instructions
     {
         public string Text { get; set; }
 
-        protected static readonly InputSimulator simulator = new InputSimulator();
+        private static readonly InputSimulator simulator = new InputSimulator();
 
-        public Keyboard() : this("", 0, 0, 1) { }
+        public Keyboard() : this("", 0, 1) { }
 
-        public Keyboard(string text, int[] standards) : this(text, standards[0], standards[1], standards[2]) { }
-
-        public Keyboard(string text, int delayPrevious, int delayAfter, int repetitions) : base(InstructionType.KEYBOARD, delayPrevious, delayAfter, repetitions)
+        public Keyboard(string text, int delay, int repetitions) : base(Action.KEYBOARD,  delay, repetitions)
         {            
             Text = text;
         }
-
-        public Keyboard(Dictionary<string, string> raw) : base(raw) { }
 
         protected override void SpecificExecute()
         {
@@ -32,23 +28,11 @@ namespace AutoClicker.Instructions
                 simulator.Keyboard.KeyPress((VirtualKeyCode)c);
             }
         }
-
-        protected override void Parse(Dictionary<string, string> raw)
-        {
-            base.Parse(raw);
-
-            bool hasText = raw.ContainsKey(InstructionProperty.TEXT.ToString());
-            if (!hasText)
-            {
-                throw new MissingPropertyException(InstructionProperty.TEXT.ToString(), "x");
-            }
-            Text = raw[InstructionProperty.TEXT.ToString()];
-        }
-
+        
         public override string ToString()
         {
             return base.ToString() + " " +
-                InstructionProperty.TEXT.ToString() + "=" + Text;
+                Property.TEXT.ToString() + "=" + Text;
         }
 
         public override bool Equals(object obj)

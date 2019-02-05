@@ -84,6 +84,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Instructions\EndLoop.cs" />
+    <Compile Include="Instructions\Instruction.cs" />
+    <Compile Include="Instructions\Loop.cs" />
     <Compile Include="Instructions\MouseDrag.cs" />
     <Compile Include="Instructions\SpecialKeyboard.cs" />
     <Compile Include="KeyboardInterupt.cs" />
@@ -101,7 +104,7 @@
     <Compile Include="Instructions\Keyboard.cs" />
     <Compile Include="MissingPropertyException.cs" />
     <Compile Include="InstructionsParser.cs" />
-    <Compile Include="Instructions\Instruction.cs" />
+    <Compile Include="Instructions\Delay.cs" />
     <Compile Include="Instructions\MouseClick.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

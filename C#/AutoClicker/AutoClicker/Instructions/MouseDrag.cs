@@ -11,17 +11,13 @@ namespace AutoClicker.Instructions
     {
         public Point End { get; private set; }
 
-        public MouseDrag() : this(0, 0, 0,0,0, 0, 0, 1) { }
+        public MouseDrag() : this(0, 0, 0,0, 0, 0, 1) { }
 
-        public MouseDrag(int button, int x, int y, int endX, int endY, int[] standards) : this(button, x, y, endX, endY, standards[0], standards[1], standards[2]) { }
-
-        public MouseDrag(int button, int x, int y, int endX, int endY, int delayPrevious, int delayAfter, int repetitions) : base(button, x, y, delayPrevious, delayAfter, repetitions)
+        public MouseDrag(int button, int x, int y, int endX, int endY, int delay, int repetitions) : base(button, x, y, delay, repetitions)
         {
-            Type = InstructionType.DRAG;
+            Type = Action.DRAG;
             End = new Point(endX, endY);
         }
-
-        public MouseDrag(Dictionary<string, string> raw) : base(raw) { }
 
         protected override void SpecificExecute()
         {
@@ -30,35 +26,7 @@ namespace AutoClicker.Instructions
             MouseSimulator.MouseDown(Position, Button);
             MouseSimulator.MouseUp(End, Button);
         }
-
-        protected override void Parse(Dictionary<string, string> raw)
-        {
-            base.Parse(raw);
-
-            bool hasEndX = raw.ContainsKey(InstructionProperty.END_X.ToString());
-            bool hasEndY = raw.ContainsKey(InstructionProperty.END_Y.ToString());
-
-            if (!hasEndX || !hasEndY)
-            {
-                MissingPropertyException e = new MissingPropertyException();
-
-                if (!hasEndX)
-                {
-                    e.AddMissingProperty(InstructionProperty.END_X.ToString(), "0");
-                }
-                if (!hasEndY)
-                {
-                    e.AddMissingProperty(InstructionProperty.END_Y.ToString(), "0");
-                }
-
-                throw e;
-            }
-
-            int endX = int.Parse(raw[InstructionProperty.END_X.ToString()]);
-            int endY = int.Parse(raw[InstructionProperty.END_Y.ToString()]);
-            End = new Point(endX, endY);
-        }
-
+        
         public override bool Equals(object obj)
         {
             var drag = obj as MouseDrag;
@@ -78,8 +46,8 @@ namespace AutoClicker.Instructions
         public override string ToString()
         {
             return base.ToString() + " " +
-                InstructionProperty.END_X + "=" + End.X + " " +
-                InstructionProperty.END_Y + "=" + End.Y;
+                Property.END_X + "=" + End.X + " " +
+                Property.END_Y + "=" + End.Y;
         }
     }
 }

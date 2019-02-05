@@ -7,6 +7,7 @@ using System.Drawing;
 using WindowsInput.Native;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Threading;
 
 namespace AutoClicker
 {
@@ -23,7 +24,9 @@ namespace AutoClicker
         private bool isCtrlDown = false;
         private bool isShiftDown = false;
 
-        private Instruction current = new Instruction(Instruction.InstructionType.LOOP);
+        private Instruction current = null;
+        private MouseClick mouseDownPosition;
+        private bool isRepeated = false;
 
         #region Init Deinit
         public Recorder(System.Windows.Controls.RichTextBox target)
@@ -72,7 +75,7 @@ namespace AutoClicker
             }
 
             Instruction instruction;
-            int[] standards = new[] { GetDelay(), 0, 1 };
+            int delay = GetDelay();
 
             bool isNumber = false;
             if(key.ToString().Length > 1)
@@ -82,11 +85,11 @@ namespace AutoClicker
 
             if (isNumber || key == Keys.Enter || key == Keys.Tab || key == Keys.Back || key == Keys.Space || isAltDown || isShiftDown || isCtrlDown)
             {
-                instruction = new SpecialKeyboard(key + "", isShiftDown, isCtrlDown, isAltDown, standards);
+                instruction = new SpecialKeyboard((VirtualKeyCode)(int)key, isShiftDown, isCtrlDown, isAltDown, delay,1);
             }
             else
             {
-                instruction = new Keyboard(key + "", standards);
+                instruction = new Keyboard(key + "", delay,1);
             }
             AddOrIncrement(instruction);
         }
@@ -126,24 +129,23 @@ namespace AutoClicker
         {
             int button = GetButton(e.Button);
             Point p = Cursor.Position;
-            current = new MouseClick(button, p.X, p.Y, GetDelay(), 0, 1);
+            mouseDownPosition = new MouseClick(button, p.X, p.Y, GetDelay(), 1);
         }
 
         private void MouseUp(object sender, MouseEventArgs e)
         {
             int button = GetButton(e.Button);
             Point p = Cursor.Position;
-            MouseClick end = new MouseClick(button, p.X, p.Y, GetDelay(), 0, 1);
+            MouseClick end = new MouseClick(button, p.X, p.Y, GetDelay(), 1);
 
-            MouseClick start = current as MouseClick;
+            MouseClick start = mouseDownPosition as MouseClick;
             if (start != null && start.Button == end.Button && end.Distance(start) > MouseClick.MAX_UNCERTAINTY)
             {
-                AddOrIncrement(new MouseDrag(start.Button, start.Position.X, start.Position.Y, end.Position.X, end.Position.Y, start.DelayPrevious, end.DelayAfter, 1));
+                AddOrIncrement(new MouseDrag(start.Button, start.Position.X, start.Position.Y, end.Position.X, end.Position.Y, GetDelay(), 1));
             }
             else {
                 AddOrIncrement(start);
             }
-            Console.WriteLine("MouseClick: " + e.Location);
         }
 
         private int GetButton(MouseButtons button)
@@ -172,37 +174,39 @@ namespace AutoClicker
 
         private bool AddOrIncrement(Instruction instruction)
         {
-            if (instruction.Equals(current) && instruction.DelayPrevious < REPETITION_MAX_DELAY)
+            if (instruction.Equals(current) && instruction.Delay < REPETITION_MAX_DELAY)
             {
-                RemoveLastLine();
                 current.IncrementRepetition();
+                UpdateLast(current.ToString());
+                isRepeated = true;
             }
             else
             {
+                if (isRepeated && current != null)
+                {
+                    isRepeated = false;
+                    AddText(instruction.ToString());
+                }
+                else
+                {
+                        AddText(instruction.ToString());
+                    }
                 current = instruction;
             }
 
-            AddText(current.ToString());
-
             return true;
-        }
-
-        private void RemoveLastLine()
-        {
-            string all = StringManager.RichTextBoxToString(target);
-            var last = all.LastIndexOf("\n", all.Length - 5);
-
-            if (last > 0)
-            {
-                target.Document.Blocks.Clear();
-                AddText(all.Substring(0, last - 1));
-            }
         }
 
         private void AddText(string text)
         {
             target.Document.Blocks.Add(new Paragraph(new Run(text)));
             target.ScrollToEnd();
+        }
+
+        private void UpdateLast(string text)
+        {
+            target.Document.Blocks.Remove(target.Document.Blocks.LastBlock);
+            AddText(text);
         }
         #endregion
     }

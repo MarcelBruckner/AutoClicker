@@ -26,7 +26,10 @@
                         <MenuItem Header="Special" Click="AddSpecialKeyboard_Click"/>
                     </MenuItem>
                     <MenuItem Header="_Delay" Click="AddDelay_Click"/>
-                    <MenuItem Header="_Loop" Click="AddLoop_Click"/>
+                    <MenuItem Header="_Loop">
+                        <MenuItem Header="_Start" Click="AddLoop_Click"/>
+                        <MenuItem Header="_End" Click="AddEndLoop_Click"/>
+                    </MenuItem>
                 </MenuItem>
             </Menu>
 
@@ -52,6 +55,13 @@
                 <CheckBox x:Name="InfiniteCheckBox" Checked="InfiniteCheckBox_Checked" Unchecked="InfiniteCheckBox_Unchecked" VerticalAlignment="Center" Margin="5 0" Grid.Column="5" Content="Infinite"/>
             </Grid>
 
+            <RichTextBox x:Name="InstructionsTextBox" Margin="5" Padding="2" VerticalScrollBarVisibility="Auto" IsUndoEnabled="True" TextChanged="InstructionsTextBox_TextChanged" AcceptsTab="True" >
+                <RichTextBox.Resources>
+                    <Style TargetType="{x:Type Paragraph}">
+                        <Setter Property="Margin" Value="0"/>
+                    </Style>
+                </RichTextBox.Resources>
+            </RichTextBox>
             
             <!--Instructions Grid-->
             <!--<DataGrid x:Name="InstructionsDataGrid" 
@@ -72,8 +82,8 @@
                     <DataGridTextColumn Header="Position Radius" x:Name="PositionRadiusColumn"  Binding="{Binding PositionRadius}"/>
                     <DataGridTextColumn Header="Wheel" x:Name="WheelColumn"  Binding="{Binding WheelDirection}"/>
                     <DataGridTextColumn Header="Amount" x:Name="WheelAmountColumn"  Binding="{Binding WheelAmount}"/>
-                    <DataGridTextColumn Header="Delay" x:Name="DelayColumn"  Binding="{Binding Delay}"/>
-                    <DataGridTextColumn Header="Delay Radius" x:Name="DelayRadiusColumn"  Binding="{Binding DelayRadius}"/>
+                    <DataGridTextColumn Header="Instruction" x:Name="InstructionColumn"  Binding="{Binding Instruction}"/>
+                    <DataGridTextColumn Header="Instruction Radius" x:Name="InstructionRadiusColumn"  Binding="{Binding InstructionRadius}"/>
                     <DataGridCheckBoxColumn Header="Shift" x:Name="ShiftColumn"  Binding="{Binding Shift}"/>
                     <DataGridCheckBoxColumn Header="Ctrl" x:Name="CtrlColumn"  Binding="{Binding Ctrl}"/>
                     <DataGridCheckBoxColumn Header="Alt" x:Name="AltColumn"  Binding="{Binding Alt}"/>
@@ -82,13 +92,6 @@
             
             </DataGrid>-->
 
-            <RichTextBox x:Name="InstructionsTextBox" Margin="5" Padding="2" VerticalScrollBarVisibility="Auto">
-                <RichTextBox.Resources>
-                    <Style TargetType="{x:Type Paragraph}">
-                        <Setter Property="Margin" Value="0"/>
-                    </Style>
-                </RichTextBox.Resources>
-            </RichTextBox>
 
         </DockPanel>
     </Border>

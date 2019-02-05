@@ -1,28 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace AutoClicker.Instructions
 {
     public class Instruction
     {
-        public enum InstructionType
+        public enum Action
         {
             KEYBOARD,
             SPECIAL_KEYBOARD,
             CLICK,
             DELAY,
             LOOP,
-            DRAG
+            DRAG,
+            END_LOOP,
+            EMPTY
         }
 
-        public enum InstructionProperty
+        public enum Property
         {
             TYPE,
-            PREVIOUS,
             AFTER,
             REPETITIONS,
             X,
@@ -33,86 +30,28 @@ namespace AutoClicker.Instructions
             CONTROL,
             SHIFT,
             ALT,
-            TEXT
+            TEXT,
+            KEY
         }
 
-        private bool _isRunning;
+        public Action Type { get; protected set; }
 
-        public int DelayPrevious { get; protected set; }
-        public int DelayAfter { get; protected set; }
+        public virtual bool IsRunning { get; set; }
+        public int Delay { get; protected set; }
         public int Repetitions { get; protected set; }
 
-        public InstructionType Type { get; protected set; }
-
-        public List<Instruction> Instructions { get; private set; } = new List<Instruction>();
-
-        public bool IsRunning
-        {
-            get => _isRunning;
-            set
-            {
-                foreach(Instruction instruction in Instructions)
-                {
-                    instruction.IsRunning = value;
-                }
-                _isRunning = value;
-            }
-        }
         #region Constructors
-        public Instruction(InstructionType type) : this(type, 1) { }
+        public Instruction(Action type) : this(type, 1) { }
 
-        public Instruction(InstructionType type, int repetitions) : this(type, 0, 0, repetitions) { }
+        public Instruction(Action type, int repetitions) : this(type, 0, repetitions) { }
 
-        public Instruction(InstructionType type, int delayPrevious, int delayAfter, int repetitions)
+        public Instruction(Action type, int delay, int repetitions)
         {
             Type = type;
-            DelayPrevious = delayPrevious;
-            DelayAfter = delayAfter;
+            Delay = delay;
             Repetitions = repetitions;
         }
-
-        public Instruction(Dictionary<string, string> raw)
-        {
-            Parse(raw);
-        }
         #endregion
-
-        #region Parse Helpers
-        private int ParsePreviousDelay(Dictionary<string, string> raw)
-        {
-            if (raw.ContainsKey(InstructionProperty.PREVIOUS.ToString()))
-            {
-                return int.Parse(raw[InstructionProperty.PREVIOUS.ToString()]);
-            }
-            return 0;
-        }
-
-        private int ParseAfterDelay(Dictionary<string, string> raw)
-        {
-            if (raw.ContainsKey(InstructionProperty.AFTER.ToString()))
-            {
-                return int.Parse(raw[InstructionProperty.AFTER.ToString()]);
-            }
-            return 0;
-        }
-
-        private int ParseRepetitions(Dictionary<string, string> raw)
-        {
-            if (raw.ContainsKey(InstructionProperty.REPETITIONS.ToString()))
-            {
-                return int.Parse(raw[InstructionProperty.REPETITIONS.ToString()]);
-            }
-            return 1;
-        }
-        #endregion
-
-        protected virtual void Parse(Dictionary<string, string> raw)
-        {
-            DelayPrevious = ParsePreviousDelay(raw);
-            DelayAfter = ParseAfterDelay(raw);
-            Repetitions = ParseRepetitions(raw);
-            Type = (InstructionType)Enum.Parse(typeof(InstructionType), raw[InstructionProperty.TYPE.ToString().ToLower()]);
-        }
 
         public void Execute()
         {
@@ -120,29 +59,13 @@ namespace AutoClicker.Instructions
             int i = 0;
             while (IsRunning && (Repetitions == -1 || i < Repetitions))
             {
-                Thread.Sleep(DelayPrevious);
                 SpecificExecute();
-                Thread.Sleep(DelayAfter);
+                Thread.Sleep(Delay);
                 i++;
             }
         }
 
-        protected virtual void SpecificExecute()
-        {
-            foreach (Instruction instruction in Instructions)
-            {
-                if (!IsRunning)
-                {
-                    return;
-                }
-                instruction.Execute();
-            }
-        }
-
-        public void Add(Instruction instruction)
-        {
-            Instructions.Add(instruction);
-        }
+        protected virtual void SpecificExecute() { }
 
         public void IncrementRepetition()
         {
@@ -151,16 +74,9 @@ namespace AutoClicker.Instructions
 
         public override string ToString()
         {
-            string s = InstructionProperty.TYPE + "=" + Type + " " + 
-                InstructionProperty.PREVIOUS + "=" + DelayPrevious + " " + 
-                InstructionProperty.AFTER + "=" + DelayAfter + " " + 
-                InstructionProperty.REPETITIONS + "=" + Repetitions;
-
-            if(Type == InstructionType.LOOP)
-            {
-                s += "\n";
-                s += StringManager.END_LOOP;
-            }
+            string s = Type + " " +
+                Property.AFTER + "=" + Delay + " " +
+                Property.REPETITIONS + "=" + Repetitions;
 
             return s;
         }

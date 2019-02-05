@@ -14,17 +14,13 @@ namespace AutoClicker.Instructions
         public int Button { get; private set; }
         public Point Position { get; private set; }
 
-        public MouseClick() : this(0,0,0, 0, 0, 1) { }
-
-        public MouseClick(int button, int x, int y, int[] standards) : this(button, x, y, standards[0], standards[1], standards[2]) { }
-
-        public MouseClick(int button, int x, int y, int delayPrevious, int delayAfter, int repetitions) : base(InstructionType.CLICK, delayPrevious, delayAfter, repetitions)
+        public MouseClick() : this(0,0, 0, 0, 1) { }
+        
+        public MouseClick(int button, int x, int y, int delay, int repetitions) : base(Action.CLICK, delay, repetitions)
         {
             Button = button;
             Position = new Point(x, y);
         }
-
-        public MouseClick(Dictionary<string, string> raw) : base(raw) { }
 
         protected override void SpecificExecute()
         {
@@ -32,51 +28,18 @@ namespace AutoClicker.Instructions
 
             MouseSimulator.MouseClick(Position, Button);
         }
-
-        protected override void Parse(Dictionary<string, string> raw)
-        {
-            base.Parse(raw);
-
-            bool hasButton = raw.ContainsKey(InstructionProperty.BUTTON.ToString());
-            bool hasX = raw.ContainsKey(InstructionProperty.X.ToString());
-            bool hasY = raw.ContainsKey(InstructionProperty.Y.ToString());
-
-            if (!hasButton || !hasX || !hasY)
-            {
-                MissingPropertyException e = new MissingPropertyException();
-
-                if (!hasButton)
-                {
-                    e.AddMissingProperty(InstructionProperty.BUTTON.ToString(), "0");
-                }
-                if (!hasX)
-                {
-                    e.AddMissingProperty(InstructionProperty.X.ToString(), "0");
-                }
-                if (!hasY)
-                {
-                    e.AddMissingProperty(InstructionProperty.Y.ToString(), "0");
-                }
-
-                throw e;
-            }
-
-            Button = int.Parse(raw[InstructionProperty.BUTTON.ToString()]);
-            Position = new Point(int.Parse(raw[InstructionProperty.X.ToString()]), int.Parse(raw[InstructionProperty.Y.ToString()]));
-        }
-
+        
         public override string ToString()
         {
             return base.ToString() + " " +
-                InstructionProperty.BUTTON.ToString() + "=" + Button + " " +
-                InstructionProperty.X.ToString() + "=" + Position.X + " " +
-                InstructionProperty.Y.ToString() + "=" + Position.Y;
+                Property.BUTTON.ToString() + "=" + Button + " " +
+                Property.X.ToString() + "=" + Position.X + " " +
+                Property.Y.ToString() + "=" + Position.Y;
         }
 
         public override bool Equals(object obj)
         {
-            var click = obj as MouseClick;
-            return click != null &&
+            return obj is MouseClick click &&
                    base.Equals(obj) &&
                    Button == click.Button &&
                    Distance(click) < MAX_UNCERTAINTY;
