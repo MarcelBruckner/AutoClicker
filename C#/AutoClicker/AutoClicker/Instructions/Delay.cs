@@ -14,7 +14,7 @@ namespace AutoClicker.Instructions
 
         public Delay(int repetitions) : this(0, repetitions) { }
 
-        public Delay(int delay, int repetitions) : base(Action.DELAY,delay,repetitions)
+        public Delay(int delay, int repetitions) : base(Action.DELAY,delay,repetitions, false, false, false)
         {
             Delay = delay;
             Repetitions = repetitions;

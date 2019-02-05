@@ -11,6 +11,8 @@ using System.Threading;
 using System.Collections.Generic;
 using System.Windows.Media;
 using System.Collections.ObjectModel;
+using System.Runtime.Serialization.Formatters.Binary;
+using Newtonsoft.Json;
 
 namespace AutoClicker
 {
@@ -21,15 +23,14 @@ namespace AutoClicker
     {
         public int Repetitions { get; set; }
 
-        private ObservableCollection<Instruction> Instructions = new ObservableCollection<Instruction>();
+        public ObservableCollection<Instruction> Instructions { get; private set; } = new ObservableCollection<Instruction>();
         private Recorder recorder;
         private KeyboardInterupt interupt;
         private InstructionsParser parser;
 
-        public bool IsRunning { get => _isRunning; set => _isRunning = value; }
+        public bool IsRunning { get; set; }
 
         private bool _withDelay;
-        private bool _isRunning;
 
         public bool WithDelay
         {
@@ -51,10 +52,6 @@ namespace AutoClicker
             recorder = new Recorder(this);
             interupt = new KeyboardInterupt(OnKeyboardInterupt);
             InstructionsDataGrid.ItemsSource = Instructions;
-            Instructions.Add(new MouseClick());
-            Instructions.Add(new MouseDrag());
-            Instructions.Add(new Keyboard());
-            Instructions.Add(new Delay());
         }
 
         #region Buttons
@@ -77,7 +74,7 @@ namespace AutoClicker
 
         private void RecordButton_Unchecked(object sender, RoutedEventArgs e)
         {
-            PlayButton.IsEnabled = SpellCorrect;
+            PlayButton.IsEnabled = true;
             IsRunning = false;
             e.Handled = true;
 
@@ -105,10 +102,10 @@ namespace AutoClicker
 
             bw.DoWork += (sender, args) =>
             {
-                //Instru = parser.Parse(StringManager.RichTextBoxToString(InstructionsTextBox), 0, Repetitions);
-                foreach (Instruction instruction in Instructions)
+                for(int i = 0; i < Instructions.Count; i++)
                 {
-                    instruction.Execute();
+                    //HighlightLine(i, Brushes.Blue);
+                    Instructions[i].Execute();
                 }
             };
 
@@ -122,12 +119,6 @@ namespace AutoClicker
             };
 
             bw.RunWorkerAsync(); // start the background worker
-        }
-
-        private void ClearButton_Click(object sender, RoutedEventArgs e)
-        {
-
-            //InstructionsTextBox.Document.Blocks.Clear();
         }
         #endregion
 
@@ -195,9 +186,13 @@ namespace AutoClicker
             };
             if (dialog.ShowDialog() == true)
             {
-                //InstructionsTextBox.Document.Blocks.Clear();
                 string script = File.ReadAllText(dialog.FileName);
-                //InstructionsTextBox.Document.Blocks.Add(new Paragraph(new Run(script)));
+                Instructions.Clear();
+                List<Instruction> read = JsonConvert.DeserializeObject<List<Instruction>>(script);
+                foreach(Instruction instruction in read)
+                {
+                    Instructions.Add(instruction); 
+                }
             }
         }
 
@@ -210,7 +205,8 @@ namespace AutoClicker
             };
             if (dialog.ShowDialog() == true)
             {
-                //File.WriteAllLines(dialog.FileName, new[] { StringManager.RichTextBoxToString(InstructionsTextBox) });
+                string json = JsonConvert.SerializeObject(Instructions);
+                File.WriteAllText(dialog.FileName, json);
             }
         }
 
@@ -220,34 +216,43 @@ namespace AutoClicker
         }
         #endregion
 
-        #region Add Menu
+        #region Edit Menu
         private void AddClick_Click(object sender, RoutedEventArgs e)
         {
-            Instructions.Add(new MouseClick());
+            AddInstruction(new Instruction(Instruction.Action.CLICK));
         }
-        private void AddNormalKeyboard_Click(object sender, RoutedEventArgs e)
+        private void AddKeyboard_Click(object sender, RoutedEventArgs e)
         {
-            AddInstruction(new Keyboard());
-        }
-        private void AddSpecialKeyboard_Click(object sender, RoutedEventArgs e)
-        {
-            AddInstruction(new SpecialKeyboard());
+            AddInstruction(new Instruction(Instruction.Action.KEYBOARD));
         }
         private void AddDelay_Click(object sender, RoutedEventArgs e)
         {
-            AddInstruction(new Delay());
+            AddInstruction(new Instruction(Instruction.Action.DELAY));
         }
         private void AddLoop_Click(object sender, RoutedEventArgs e)
         {
-            AddInstruction(new Loop());
+            AddInstruction(new Instruction(Instruction.Action.LOOP));
         }
         private void AddEndLoop_Click(object sender, RoutedEventArgs e)
         {
-            AddInstruction(new EndLoop());
+            AddInstruction(new Instruction(Instruction.Action.END_LOOP));
         }
         private void AddDrag_Click(object sender, RoutedEventArgs e)
         {
-            AddInstruction(new MouseDrag());
+            AddInstruction(new Instruction(Instruction.Action.DRAG));
+        }
+
+        private void SelectedLineRemove_Click(object sender, RoutedEventArgs e)
+        {
+            int row = InstructionsDataGrid.SelectedIndex;
+            if(row >= 0)
+            {
+                Instructions.RemoveAt(row);
+            }
+        }
+        private void Clear_Click(object sender, RoutedEventArgs e)
+        {
+            Instructions.Clear();
         }
 
         #endregion
@@ -256,41 +261,39 @@ namespace AutoClicker
         private void InstructionsTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             bool isRecording = RecordButton.IsChecked ?? false;
-            //SpellCorrect = parser.SpellCheck(InstructionsTextBox.Document);
             PlayButton.IsEnabled = SpellCorrect && !isRecording;
         }
 
         public void AddInstruction(Instruction instruction)
         {
-            //InstructionsTextBox.Document.Blocks.InsertBefore(InstructionsTextBox.CaretPosition.Paragraph, new Paragraph(new Run(instruction.ToString())));
+            int row = InstructionsDataGrid.SelectedIndex;
+            if(row < 0)
+            {
+                row = Instructions.Count;
+            }
+            Instructions.Insert(row, instruction);
+            InstructionsDataGrid.ScrollIntoView(instruction);
         }
 
-        public void UpdateLast(Instruction instruction)
+        public void UpdateDelay(int line, int delay)
         {
-            //InstructionsTextBox.CaretPosition = InstructionsTextBox.CaretPosition.GetLineStartPosition(-1);
-            //InstructionsTextBox.CaretPosition.DeleteTextInRun(InstructionsTextBox.CaretPosition.GetTextRunLength(LogicalDirection.Forward));
-            //InstructionsTextBox.CaretPosition.InsertTextInRun(instruction.ToString());
-            //InstructionsTextBox.CaretPosition = InstructionsTextBox.CaretPosition.GetLineStartPosition(1);
+            Instructions[line].Delay = delay;
         }
-
-        public void EnableTextBox(bool enabled)
-        {
-            //InstructionsTextBox.IsEnabled = enabled;
-        }
-
+        
         public void HighlightLine(int number, SolidColorBrush brush)
         {
-            //BlockCollection blocks = InstructionsTextBox.Document.Blocks;
-
-            //int i = 0;
-            //foreach (Block block in blocks)
-            //{
-            //    if (i++ == number)
-            //    {
-            //        TextRange range = new TextRange(block.ContentStart, block.ContentEnd);
-            //        range.ApplyPropertyValue(TextElement.ForegroundProperty, brush);
-            //    }
-            //}
+            for (int i = 0; i < Instructions.Count; i++)
+            {
+                DataGridRow row = (DataGridRow)InstructionsDataGrid.ItemContainerGenerator.ContainerFromIndex(i);
+                if (i == number)
+                {
+                    row.Background = brush;
+                }
+                else
+                {
+                    row.Background = Brushes.White;
+                }
+            }
         }
         #endregion
     }

@@ -23,19 +23,21 @@
                     <Separator/>
                     <MenuItem Header="_Close" Click="Close_Click"/>
                 </MenuItem>
-                <MenuItem Header="_Add">
-                    <MenuItem Header="_Delay" Click="AddDelay_Click"/>
+                <MenuItem Header="_Edit">
                     <MenuItem Header="_Click">
                         <MenuItem Header="_Normal" Click="AddClick_Click"/>
                         <MenuItem Header="_Drag" Click="AddDrag_Click"/>
                     </MenuItem>
-                    <MenuItem Header="_Keyboard Input">
-                        <MenuItem Header="_Normal" Click="AddNormalKeyboard_Click"/>
-                        <MenuItem Header="Special" Click="AddSpecialKeyboard_Click"/>
-                    </MenuItem>
+                        <MenuItem Header="_Keyboard" Click="AddKeyboard_Click"/>
                     <MenuItem Header="_Loop">
                         <MenuItem Header="_Start" Click="AddLoop_Click"/>
                         <MenuItem Header="_End" Click="AddEndLoop_Click"/>
+                    </MenuItem>
+                    <MenuItem Header="_Delay" Click="AddDelay_Click"/>
+                    <Separator/>
+                    <MenuItem Header="_Remove">
+                        <MenuItem Header="_Selected Line" Click="SelectedLineRemove_Click"/>
+                        <MenuItem Header="Clear" Click="Clear_Click"/>
                     </MenuItem>
                 </MenuItem>
             </Menu>
@@ -49,8 +51,7 @@
 
                 <StackPanel Orientation="Horizontal" Grid.Column="0" VerticalAlignment="Center">
                     <ToggleButton x:Name="PlayButton" IsChecked="{Binding IsPlaying}" Checked="PlayButton_Checked" Unchecked="PlayButton_Unchecked" Padding="5 2" Grid.Column="1" Content="Play" Margin="5 0"/>
-                    <Button x:Name="ClearButton" Click="ClearButton_Click" Content="Clear" Padding="5 2" Margin="5 0"/>
-                    <ToggleButton x:Name="RecordButton" IsChecked="{Binding IsRecorded}" Checked="RecordButton_Checked" Unchecked="RecordButton_Unchecked" Padding="5 2"  Grid.Column="0" Content="Record" Margin="5 0"/>
+                     <ToggleButton x:Name="RecordButton" IsChecked="{Binding IsRecorded}" Checked="RecordButton_Checked" Unchecked="RecordButton_Unchecked" Padding="5 2"  Grid.Column="0" Content="Record" Margin="5 0"/>
                     <CheckBox x:Name="RecordWithDelayCheckBox" IsChecked="{ Binding ElementName=mainWindow, Path=WithDelay}" VerticalAlignment="Center" Content="With Delay" Margin="5 2"/>
                 </StackPanel>
 
@@ -73,29 +74,26 @@
             <!--<Button Content="test"/>-->
             <!--Instructions Grid-->
             <DataGrid DockPanel.Dock="Top" x:Name="InstructionsDataGrid" 
-                      AutoGenerateColumns="True"
+                      AutoGenerateColumns="False"
                       CanUserAddRows="false"
+                      VerticalScrollBarVisibility="Visible"
                       ItemsSource="{Binding ElementName=mainWindow, Path=Instructions}"
                       >
 
-                <!--<DataGrid.Columns>
-                    <DataGridTextColumn Header="Type" x:Name="IdColumn"  Binding="{Binding Type}"/>
-                    <DataGridTextColumn Header="Button" x:Name="ButtonColumn"  Binding="{Binding Button}"/>
-                    <DataGridTextColumn Header="#" x:Name="ClickCountColumn"  Binding="{Binding Repeti}"/>
-                    <DataGridTextColumn Header="X" x:Name="XColumn"  Binding="{Binding X}"/>
-                    <DataGridTextColumn Header="Y" x:Name="YColumn"  Binding="{Binding Y}"/>
-                    <DataGridTextColumn Header="Drag X" x:Name="DragXColumn"  Binding="{Binding DragX}"/>
-                    <DataGridTextColumn Header="Drag Y" x:Name="DragYColumn"  Binding="{Binding DragY}"/>
-                    <DataGridTextColumn Header="Position Radius" x:Name="PositionRadiusColumn"  Binding="{Binding PositionRadius}"/>
-                    <DataGridTextColumn Header="Wheel" x:Name="WheelColumn"  Binding="{Binding WheelDirection}"/>
-                    <DataGridTextColumn Header="Amount" x:Name="WheelAmountColumn"  Binding="{Binding WheelAmount}"/>
-                    <DataGridTextColumn Header="Instruction" x:Name="InstructionColumn"  Binding="{Binding Instruction}"/>
-                    <DataGridTextColumn Header="Instruction Radius" x:Name="InstructionRadiusColumn"  Binding="{Binding InstructionRadius}"/>
-                    <DataGridCheckBoxColumn Header="Shift" x:Name="ShiftColumn"  Binding="{Binding Shift}"/>
-                    <DataGridCheckBoxColumn Header="Ctrl" x:Name="CtrlColumn"  Binding="{Binding Ctrl}"/>
-                    <DataGridCheckBoxColumn Header="Alt" x:Name="AltColumn"  Binding="{Binding Alt}"/>
-                    <DataGridTextColumn Header="Keyboard" x:Name="KeyboardColumn"  Binding="{Binding Keyboard}"/>
-                </DataGrid.Columns>-->
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Type" x:Name="IdColumn"  Binding="{Binding Type}" Width="3*"/>
+                    <DataGridTextColumn Header="Delay" x:Name="DelayColumn"  Binding="{Binding Delay}" Width="2*"/>
+                    <DataGridTextColumn Header="#" x:Name="ClickCountColumn"  Binding="{Binding Repetitions}" Width="1*"/>
+                    <DataGridTextColumn Header="Button" x:Name="ButtonColumn"  Binding="{Binding Button}" Width="2*"/>
+                    <DataGridTextColumn Header="X" x:Name="XColumn"  Binding="{Binding X}" Width="2*"/>
+                    <DataGridTextColumn Header="Y" x:Name="YColumn"  Binding="{Binding Y}" Width="2*"/>
+                    <DataGridTextColumn Header="End X" x:Name="DragXColumn"  Binding="{Binding EndX}" Width="2*"/>
+                    <DataGridTextColumn Header="End Y" x:Name="DragYColumn"  Binding="{Binding EndY}" Width="2*"/>
+                    <DataGridCheckBoxColumn Header="Shift" x:Name="ShiftColumn"  Binding="{Binding Shift}" Width="1*"/>
+                    <DataGridCheckBoxColumn Header="Ctrl" x:Name="CtrlColumn"  Binding="{Binding Ctrl}" Width="1*"/>
+                    <DataGridCheckBoxColumn Header="Alt" x:Name="AltColumn"  Binding="{Binding Alt}" Width="1*"/>
+                    <DataGridTextColumn Header="Key" x:Name="KeyboardColumn"  Binding="{Binding Key}" Width="2*"/>
+                </DataGrid.Columns>
 
             </DataGrid>
 

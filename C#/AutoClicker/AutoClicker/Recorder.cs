@@ -7,12 +7,15 @@ using System.Drawing;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Threading;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Data;
 
 namespace AutoClicker
 {
     class Recorder : IKeyboardListener
     {
-        private const int REPETITION_MAX_DELAY = 200;
+        private const int REPETITION_MAX_DELAY = 200000;
         public bool IsRecording { get; set; }
 
         private MainWindow window;
@@ -25,6 +28,7 @@ namespace AutoClicker
 
         public bool WithDelay { get; set; }
 
+        //private int current = -1;
         private Instruction current = null;
         private MouseClick mouseDownPosition;
 
@@ -36,7 +40,7 @@ namespace AutoClicker
 
         public void AddHooks()
         {
-            window.EnableTextBox(false);
+            //instructions.(false);
             HookManager.KeyDown += KeyDown;
             HookManager.KeyUp += KeyUp;
 
@@ -52,7 +56,7 @@ namespace AutoClicker
 
             HookManager.MouseDown -= MouseDown;
             HookManager.MouseUp -= MouseUp;
-            window.EnableTextBox(true);
+            //instructions.EnableTextBox(true);
             IsRecording = false;
         }
         #endregion
@@ -73,15 +77,7 @@ namespace AutoClicker
                 return;
             }
 
-            Instruction instruction;
-            if (key == Keys.Enter || key == Keys.Tab || key == Keys.Back || key == Keys.Space || isAltDown || isShiftDown || isCtrlDown)
-            {
-                instruction = new SpecialKeyboard((VirtualKeyCode)(int)key, isShiftDown, isCtrlDown, isAltDown, 0, 1);
-            }
-            else
-            {
-                instruction = new Keyboard((char)key + "", 0, 1);
-            }
+            Instruction instruction = new Keyboard((VirtualKeyCode)(int)key, 0, 1, isShiftDown, isCtrlDown, isAltDown);
             AddOrIncrement(instruction);
         }
 
@@ -120,19 +116,19 @@ namespace AutoClicker
         {
             int button = GetButton(e.Button);
             Point p = Cursor.Position;
-            mouseDownPosition = new MouseClick(button, p.X, p.Y, 0, 1);
+            mouseDownPosition = new MouseClick(button, p.X, p.Y, 0, 1, isShiftDown, isCtrlDown, isAltDown);
         }
 
         private void MouseUp(object sender, MouseEventArgs e)
         {
             int button = GetButton(e.Button);
             Point p = Cursor.Position;
-            MouseClick end = new MouseClick(button, p.X, p.Y, 0, 1);
+            MouseClick end = new MouseClick(button, p.X, p.Y, 0, 1, isShiftDown, isCtrlDown, isAltDown);
 
             MouseClick start = mouseDownPosition as MouseClick;
             if (start != null && start.Button == end.Button && end.Distance(start) > MouseClick.MAX_UNCERTAINTY)
             {
-                AddOrIncrement(new MouseDrag(start.Button, start.Position.X, start.Position.Y, end.Position.X, end.Position.Y, 0, 1));
+                AddOrIncrement(new MouseDrag(start.Button, start.X, start.Y, end.X, end.Y, 0, 1, isShiftDown, isCtrlDown, isAltDown));
             }
             else
             {
@@ -166,20 +162,24 @@ namespace AutoClicker
         private bool AddOrIncrement(Instruction instruction)
         {
             int delay = GetDelay();
+
+            if(current == null)
+            {
+                window.AddInstruction(instruction);
+                current = instruction;
+                return true;
+            }
+
             if (instruction.Equals(current) && delay < REPETITION_MAX_DELAY)
             {
-                current.IncrementRepetition();
-                window.UpdateLast(current);
+                current.Repetitions++;
+                //instructions.UpdateLast(current);
             }
             else
             {
-                if (current != null)
+                if (WithDelay)
                 {
-                    if (WithDelay)
-                    {
-                        current.Delay = delay;
-                    }
-                    window.UpdateLast(current);
+                    current.Delay = delay;
                 }
                 window.AddInstruction(instruction);
                 current = instruction;

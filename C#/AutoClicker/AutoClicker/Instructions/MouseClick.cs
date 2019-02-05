@@ -10,22 +10,15 @@ namespace AutoClicker.Instructions
     {
         public const int MAX_UNCERTAINTY = 10;
 
-        public int Button { get; private set; }
-        public Point Position { get; private set; }
+        public MouseClick() : this(0, 0, 0, 0, 1, false, false, false) { }
 
-        public MouseClick() : this(0,0, 0, 0, 1) { }
-        
-        public MouseClick(int button, int x, int y, int delay, int repetitions) : base(Action.CLICK, delay, repetitions)
+        public MouseClick(int button, int x, int y, int delay, int repetitions, bool shift, bool ctrl, bool alt) : base(Action.CLICK, delay, repetitions, shift, ctrl, alt)
         {
             Button = button;
-            Position = new Point(x, y);
+            X = x;
+            Y = y;
         }
 
-        protected override void SpecificExecute()
-        {
-            InputSimulator.MouseClick(Position, Button);
-        }
-        
         public override string ToString()
         {
             string s = base.ToString() + " ";
@@ -34,8 +27,8 @@ namespace AutoClicker.Instructions
             {
                 s += Property.BUTTON.ToString() + "=" + Button + " ";
             }
-             return s += Property.X.ToString() + "=" + Position.X + " " +
-                Property.Y.ToString() + "=" + Position.Y;
+            return s += Property.X.ToString() + "=" + X + " " +
+               Property.Y.ToString() + "=" + Y;
         }
 
         public override bool Equals(object obj)
@@ -46,18 +39,21 @@ namespace AutoClicker.Instructions
                    Distance(click) < MAX_UNCERTAINTY;
         }
 
-        public override int GetHashCode()
-        {
-            var hashCode = -1258872215;
-            hashCode = hashCode * -1521134295 + base.GetHashCode();
-            hashCode = hashCode * -1521134295 + Button.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<Point>.Default.GetHashCode(Position);
-            return hashCode;
-        }
+
 
         public int Distance(MouseClick other)
         {
-            return (int) Math.Sqrt((Position.X - other.Position.X) * (Position.X - other.Position.X) + (Position.Y - other.Position.Y) * (Position.Y - other.Position.Y));
+            return (int)Math.Sqrt((X - other.X) * (X - other.X) + (Y - other.Y) * (Y - other.Y));
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = -1406273814;
+            hashCode = hashCode * -1521134295 + base.GetHashCode();
+            hashCode = hashCode * -1521134295 + Button.GetHashCode();
+            hashCode = hashCode * -1521134295 + X.GetHashCode();
+            hashCode = hashCode * -1521134295 + Y.GetHashCode();
+            return hashCode;
         }
     }
 }

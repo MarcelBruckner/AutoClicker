@@ -100,9 +100,16 @@ namespace AutoClicker
         }
         #endregion
 
-        public static void MouseDown(Point position, int button)
+        public static void MouseDrag(int button, int x, int y, int endX, int endY, params VirtualKeyCode[] hotkeys)
         {
-            MoveMouse(position);
+            MouseDown(button, x, y, hotkeys);
+            MouseUp(button, endX, endY, hotkeys);
+        }
+
+        public static void MouseDown(int button, int x, int y,  params VirtualKeyCode[] hotkeys)
+        {
+            KeyDown(hotkeys);
+            MoveMouse(x,y);
 
             INPUT mouseDownInput = new INPUT
             {
@@ -127,9 +134,9 @@ namespace AutoClicker
             SendInput(1, ref mouseDownInput, Marshal.SizeOf(new INPUT()));
         }
 
-        public static void MouseUp(Point position, int button)
+        public static void MouseUp(int button, int x, int y, params VirtualKeyCode[] hotkeys)
         {
-            MoveMouse(position);
+            MoveMouse(x,y);
 
             INPUT mouseDownInput = new INPUT
             {
@@ -152,73 +159,73 @@ namespace AutoClicker
 
             mouseDownInput.mkhi.mi.dwFlags = flags;
             SendInput(1, ref mouseDownInput, Marshal.SizeOf(new INPUT()));
+            KeyUp(hotkeys);
+        }
+        
+        public static void MouseClick(int button, int x, int y,  params VirtualKeyCode[] hotkeys)
+        {
+            MouseDown(button, x, y, hotkeys);
+            MouseUp(button, x, y, hotkeys);
         }
 
-        public static void MouseClick(Point position, int button)
+        public static void MoveMouse(int x, int y)
         {
-            MouseDown(position, button);
-            MouseUp(position, button);
-        }
-
-        public static void MoveMouse(Point position)
-        {
-            Cursor.Position = position;
+            Cursor.Position = new Point(x, y);
             //Thread.Sleep(50);
         }
 
-        public static void KeyDown(VirtualKeyCode key)
+        public static void KeyDown(params VirtualKeyCode[] keys)
         {
-            INPUT keyDownInput = new INPUT
+            foreach (VirtualKeyCode key in keys)
             {
-                type = SendInputEventType.InputKeyboard
-            };
+                INPUT keyDownInput = new INPUT
+                {
+                    type = SendInputEventType.InputKeyboard
+                };
 
-            keyDownInput.mkhi.ki.wVk = (ushort)key;
-            //keyDownInput.mkhi.ki.wVk = 0;
-            //keyDownInput.mkhi.ki.dwFlags = (uint)KeyboardEventFlags.KEYEVENTF_SCANCODE;
+                keyDownInput.mkhi.ki.wVk = (ushort)key;
+                //keyDownInput.mkhi.ki.wVk = 0;
+                //keyDownInput.mkhi.ki.dwFlags = (uint)KeyboardEventFlags.KEYEVENTF_SCANCODE;
 
-            //ushort mapped = (ushort)MapVirtualKey((uint)key, 0);
-            //keyDownInput.mkhi.ki.wScan = mapped;
+                //ushort mapped = (ushort)MapVirtualKey((uint)key, 0);
+                //keyDownInput.mkhi.ki.wScan = mapped;
 
-            SendInput(1, ref keyDownInput, Marshal.SizeOf(new INPUT()));
+                SendInput(1, ref keyDownInput, Marshal.SizeOf(new INPUT()));
+            }
         }
 
-        public static void KeyUp(VirtualKeyCode key)
+        public static void KeyUp(params VirtualKeyCode[] keys)
         {
-            INPUT keyUpInput = new INPUT
+            foreach (VirtualKeyCode key in keys)
             {
-                type = SendInputEventType.InputKeyboard
-            };
+                INPUT keyUpInput = new INPUT
+                {
+                    type = SendInputEventType.InputKeyboard
+                };
 
-            keyUpInput.mkhi.ki.wVk = (ushort)key;
-            keyUpInput.mkhi.ki.dwFlags = (uint)KeyboardEventFlags.KEYEVENTF_KEYUP;
-            //keyUpInput.mkhi.ki.wVk = 0;
-            //keyUpInput.mkhi.ki.dwFlags = (uint)KeyboardEventFlags.KEYEVENTF_SCANCODE | (uint)KeyboardEventFlags.KEYEVENTF_KEYUP;
+                keyUpInput.mkhi.ki.wVk = (ushort)key;
+                keyUpInput.mkhi.ki.dwFlags = (uint)KeyboardEventFlags.KEYEVENTF_KEYUP;
+                //keyUpInput.mkhi.ki.wVk = 0;
+                //keyUpInput.mkhi.ki.dwFlags = (uint)KeyboardEventFlags.KEYEVENTF_SCANCODE | (uint)KeyboardEventFlags.KEYEVENTF_KEYUP;
 
-            //ushort mapped = (ushort)MapVirtualKey((uint)key, 0);
-            //keyUpInput.mkhi.ki.wScan = mapped;
+                //ushort mapped = (ushort)MapVirtualKey((uint)key, 0);
+                //keyUpInput.mkhi.ki.wScan = mapped;
 
-            SendInput(1, ref keyUpInput, Marshal.SizeOf(new INPUT()));
+                SendInput(1, ref keyUpInput, Marshal.SizeOf(new INPUT()));
+            }
         }
-
 
         public static void KeyPress(VirtualKeyCode key)
         {
-            KeyPress(key, new List<VirtualKeyCode>());
+            KeyPress(key);
         }
 
-        public static void KeyPress(VirtualKeyCode key, IEnumerable<VirtualKeyCode> hotkeys)
+        public static void KeyPress(VirtualKeyCode key, params VirtualKeyCode[] hotkeys)
         {
-            foreach(VirtualKeyCode hotkey in hotkeys)
-            {
-                KeyDown(hotkey);
-            }
+            KeyDown(hotkeys);
             KeyDown(key);
             KeyUp(key);
-            foreach (VirtualKeyCode hotkey in hotkeys)
-            {
-                KeyUp(hotkey);
-            }
+            KeyUp(hotkeys);
         }
 
     }

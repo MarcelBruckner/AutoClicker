@@ -20,5 +20,6 @@ namespace AutoClicker
         {
             return new TextRange(box.Document.ContentStart, box.Document.ContentEnd).Text;
         }
+
     }
 }

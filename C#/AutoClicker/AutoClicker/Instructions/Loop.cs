@@ -29,9 +29,9 @@ namespace AutoClicker.Instructions
 
         public Loop() : this(1) { }
 
-        public Loop(int repetitions) : this(0, repetitions) { }
+        public Loop(int repetitions) : this(0, repetitions, false, false, false) { }
 
-        public Loop(int delay, int repetitions) : base(Action.LOOP, delay, repetitions) { }
+        public Loop(int delay, int repetitions, bool shift, bool ctrl, bool alt) : base(Action.LOOP, delay, repetitions, shift, ctrl, alt) { }
         
         protected override void SpecificExecute()
         {

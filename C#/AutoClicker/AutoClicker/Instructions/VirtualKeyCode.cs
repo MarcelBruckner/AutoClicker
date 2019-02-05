@@ -12,6 +12,7 @@ namespace AutoClicker.Instructions
     //     The list of VirtualKeyCodes (see: http://msdn.microsoft.com/en-us/library/ms645540(VS.85).aspx)
     public enum VirtualKeyCode
     {
+        NONE = 0,
         //
         // Zusammenfassung:
         //     Left mouse button

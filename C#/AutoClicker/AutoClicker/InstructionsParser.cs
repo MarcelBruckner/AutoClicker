@@ -19,9 +19,9 @@ namespace AutoClicker
             this.window = window;
         }
 
-        public Instruction Parse(string instructions, int delay, int repetitions)
+        public Instruction Parse(string instructions, int delay, int repetitions, bool shift, bool ctrl, bool alt)
         {
-            Loop mainLoop = new Loop(delay, repetitions);
+            Loop mainLoop = new Loop(delay, repetitions, shift, ctrl, alt);
 
             string[] lines = instructions.Split('\n');
             for (int i = 0; i < lines.Length; i++)
@@ -49,7 +49,23 @@ namespace AutoClicker
                         pRepetitions = (int)parsed[Instruction.Property.REPETITIONS];
                     }
 
-                    
+                    bool hasShift = false;
+                    bool hasCtrl = false;
+                    bool hasAlt = false;
+                    if (parsed.ContainsKey(Instruction.Property.SHIFT))
+                    {
+                        hasShift = (bool)parsed[Instruction.Property.SHIFT];
+                    }
+                    if (parsed.ContainsKey(Instruction.Property.CONTROL))
+                    {
+                        hasCtrl = (bool)parsed[Instruction.Property.CONTROL];
+                    }
+                    if (parsed.ContainsKey(Instruction.Property.ALT))
+                    {
+                        hasAlt = (bool)parsed[Instruction.Property.ALT];
+                    }
+
+
                     if (type.Equals(Instruction.Action.CLICK) || type.Equals(Instruction.Action.DRAG))
                     {
                         int button = 0;
@@ -63,7 +79,8 @@ namespace AutoClicker
                             mainLoop.Add(new MouseClick(button,
                                 (int)parsed[Instruction.Property.X],
                                 (int)parsed[Instruction.Property.Y],
-                                pDelay, pRepetitions
+                                pDelay, pRepetitions,
+                                hasShift, hasCtrl, hasAlt
                                 ));
                         }
                         else
@@ -73,36 +90,24 @@ namespace AutoClicker
                             (int)parsed[Instruction.Property.Y],
                             (int)parsed[Instruction.Property.END_X],
                             (int)parsed[Instruction.Property.END_Y],
-                            pDelay, pRepetitions));
+                            pDelay, pRepetitions,
+                                hasShift, hasCtrl, hasAlt));
                         }
                     }
                     else if (type.Equals(Instruction.Action.SPECIAL_KEYBOARD))
                     {
-                        bool hasShift = false;
-                        bool hasCtrl = false;
-                        bool hasAlt = false;
-                        if (parsed.ContainsKey(Instruction.Property.SHIFT))
-                        {
-                            hasShift = (bool)parsed[Instruction.Property.SHIFT];
-                        }
-                        if (parsed.ContainsKey(Instruction.Property.CONTROL))
-                        {
-                            hasCtrl = (bool)parsed[Instruction.Property.CONTROL];
-                        }
-                        if (parsed.ContainsKey(Instruction.Property.ALT))
-                        {
-                            hasAlt = (bool)parsed[Instruction.Property.ALT];
-                        }
+                        
 
-                        mainLoop.Add(new SpecialKeyboard(
+                        mainLoop.Add(new Keyboard(
                             (VirtualKeyCode)parsed[Instruction.Property.KEY],
-                            hasShift, hasCtrl, hasAlt,
-                            pDelay, pRepetitions
+                            pDelay, pRepetitions,
+                            hasShift, hasCtrl, hasAlt
                             ));
                     }
                     else if (type.Equals(Instruction.Action.KEYBOARD))
                     {
-                        mainLoop.Add(new Keyboard((string)parsed[Instruction.Property.TEXT], pDelay, pRepetitions));
+                        mainLoop.Add(new Keyboard((VirtualKeyCode)parsed[Instruction.Property.KEY], pDelay, pRepetitions,
+                                hasShift, hasCtrl, hasAlt));
                     }
                     else if (type.Equals(Instruction.Action.DELAY))
                     {
@@ -122,7 +127,7 @@ namespace AutoClicker
 
                             loopText += line + "\n";
                         }
-                        mainLoop.Add(Parse(loopText, pDelay, pRepetitions));
+                        mainLoop.Add(Parse(loopText, pDelay, pRepetitions, hasShift, hasCtrl, hasAlt));
                     }
                     //else if (parsed[Instruction.Property.TYPE].Equals(Instruction.Action.END_LOOP)) { }
                     else
