@@ -21,17 +21,69 @@ namespace AutoClicker
     /// </summary>
     public partial class MainWindow : Window
     {
-        public int Repetitions { get; set; }
+        private const string FILE_FILTER = "AutoClicker Files (*.autocl)|*.autocl";
+        private bool _withDelay;
+        private bool _infinite;
+        private bool _isRunning;
+        private bool _isRecording;
+        private int allRepetitions;
 
         public ObservableCollection<Instruction> Instructions { get; private set; } = new ObservableCollection<Instruction>();
         private Recorder recorder;
         private KeyboardInterupt interupt;
-        private InstructionsParser parser;
+        //private InstructionsParser parser;
 
-        public bool IsRunning { get; set; }
+        public bool IsRecording
+        {
+            get => _isRecording;
+            set
+            {
+                _isRecording = value;
+                PlayButton.IsEnabled = !value;
 
-        private bool _withDelay;
-
+                if (_isRecording)
+                {
+                    IsRunning = false;
+                    interupt.AddHooks();
+                    recorder.AddHooks();
+                }
+                else
+                {
+                    interupt.RemoveHooks();
+                    recorder.RemoveHooks();
+                }
+            }
+        }
+        public bool IsRunning
+        {
+            get => _isRunning;
+            set
+            {
+                _isRunning = value;
+                RecordButton.IsEnabled = !value;
+                InstructionsDataGrid.IsEnabled = !value;
+                if (_isRunning)
+                {
+                    IsRecording = false;
+                    interupt.AddHooks();
+                    OnPlay();
+                }
+                else
+                {
+                    interupt.RemoveHooks();
+                    runningInstruction.IsRunning = value;
+                }
+            }
+        }
+        public bool Infinite
+        {
+            get => _infinite;
+            set
+            {
+                _infinite = value;
+                RepetitionsTextBox.IsEnabled = !value;
+            }
+        }
         public bool WithDelay
         {
             get => _withDelay;
@@ -41,14 +93,14 @@ namespace AutoClicker
                 recorder.WithDelay = value;
             }
         }
+        public int Repetitions { get; set; }
 
-        private const string FILE_FILTER = "AutoClicker Files (*.autocl)|*.autocl";
-        private bool SpellCorrect { get; set; }
+        private Instruction runningInstruction = new Instruction();
 
         public MainWindow()
         {
             InitializeComponent();
-            parser = new InstructionsParser(this);
+            //parser = new InstructionsParser(this);
             recorder = new Recorder(this);
             interupt = new KeyboardInterupt(OnKeyboardInterupt);
             InstructionsDataGrid.ItemsSource = Instructions;
@@ -63,50 +115,64 @@ namespace AutoClicker
             recorder.RemoveHooks();
         }
 
-
-        private void RecordButton_Checked(object sender, RoutedEventArgs e)
-        {
-            PlayButton.IsEnabled = false;
-            IsRunning = false;
-            interupt.AddHooks();
-            recorder.AddHooks();
-        }
-
-        private void RecordButton_Unchecked(object sender, RoutedEventArgs e)
-        {
-            PlayButton.IsEnabled = true;
-            IsRunning = false;
-            e.Handled = true;
-
-            interupt.RemoveHooks();
-            recorder.RemoveHooks();
-        }
-
-        private void PlayButton_Checked(object sender, RoutedEventArgs e)
-        {
-            RecordButton.IsEnabled = false;
-            interupt.AddHooks();
-            OnPlay();
-        }
-
-        private void PlayButton_Unchecked(object sender, RoutedEventArgs e)
-        {
-            RecordButton.IsEnabled = true;
-            IsRunning = false;
-            interupt.RemoveHooks();
-        }
-
         private void OnPlay()
         {
-            BackgroundWorker bw = new BackgroundWorker();
+            allRepetitions = Repetitions;
+            BackgroundWorker bw = new BackgroundWorker()
+            {
+                WorkerReportsProgress = true
+            };
 
             bw.DoWork += (sender, args) =>
             {
-                for(int i = 0; i < Instructions.Count; i++)
+                for (int i = 0; Infinite || i < allRepetitions; i++)
                 {
-                    //HighlightLine(i, Brushes.Blue);
-                    Instructions[i].Execute();
+                    for (int j = 0; j < Instructions.Count; j++)
+                    {
+                        if (!IsRunning)
+                        {
+                            return;
+                        }
+
+                        runningInstruction = Instructions[j];
+                        if (runningInstruction.Type == Instruction.Action.LOOP)
+                        {
+                            int loopRepetitions = runningInstruction.Repetitions;
+                            for (int l = 1; l < loopRepetitions ; l++)
+                            {
+                                int loopCounter = j + 1;
+                                while (loopCounter < Instructions.Count)
+                                {
+                                    if (!IsRunning)
+                                    {
+                                        return;
+                                    }
+                                    runningInstruction = Instructions[loopCounter];
+                                    if (runningInstruction.Type == Instruction.Action.END_LOOP)
+                                    {
+                                        loopCounter = j;
+                                        break;
+                                    }
+
+                                    bw.ReportProgress((i + 1) / 101, new[] { i + 1, loopCounter });
+                                    runningInstruction.IsRunning = true;
+                                    loopCounter++;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            bw.ReportProgress((i + 1) / 101, new[] { i + 1, j });
+                            Instructions[j].IsRunning = true;
+                        }
+                    }
                 }
+            };
+
+            bw.ProgressChanged += (sender, args) =>
+            {
+                RepetitionsTextBox.Text = "" +((int[]) args.UserState)[0];
+                HighlightLine(((int[])args.UserState)[1], Brushes.AntiqueWhite, Brushes.Black);
             };
 
             bw.RunWorkerCompleted += (sender, args) =>
@@ -116,23 +182,14 @@ namespace AutoClicker
                     Console.WriteLine(args.Error.ToString());  // do your error handling here
                 }
                 PlayButton.IsChecked = false;
+                RepetitionsTextBox.Text = allRepetitions + "";
+
+                ResetHighlights();
             };
 
             bw.RunWorkerAsync(); // start the background worker
         }
-        #endregion
 
-        #region Infinite Checkbox
-        private void InfiniteCheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            RepetitionsTextBox.IsEnabled = false;
-            Repetitions = -1;
-        }
-
-        private void InfiniteCheckBox_Unchecked(object sender, RoutedEventArgs e)
-        {
-            RepetitionsTextBox.IsEnabled = true;
-        }
         #endregion
 
         #region TextBoxes
@@ -189,9 +246,9 @@ namespace AutoClicker
                 string script = File.ReadAllText(dialog.FileName);
                 Instructions.Clear();
                 List<Instruction> read = JsonConvert.DeserializeObject<List<Instruction>>(script);
-                foreach(Instruction instruction in read)
+                foreach (Instruction instruction in read)
                 {
-                    Instructions.Add(instruction); 
+                    Instructions.Add(instruction);
                 }
             }
         }
@@ -245,7 +302,7 @@ namespace AutoClicker
         private void SelectedLineRemove_Click(object sender, RoutedEventArgs e)
         {
             int row = InstructionsDataGrid.SelectedIndex;
-            if(row >= 0)
+            if (row >= 0)
             {
                 Instructions.RemoveAt(row);
             }
@@ -258,43 +315,145 @@ namespace AutoClicker
         #endregion
 
         #region Instructions 
-        private void InstructionsTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            bool isRecording = RecordButton.IsChecked ?? false;
-            PlayButton.IsEnabled = SpellCorrect && !isRecording;
-        }
-
         public void AddInstruction(Instruction instruction)
         {
-            int row = InstructionsDataGrid.SelectedIndex;
-            if(row < 0)
+            int row = InstructionsDataGrid.SelectedIndex + 1;
+            if (row <= 0 || row > Instructions.Count)
             {
                 row = Instructions.Count;
             }
             Instructions.Insert(row, instruction);
             InstructionsDataGrid.ScrollIntoView(instruction);
+            InstructionsDataGrid.SelectedIndex = row;
         }
 
         public void UpdateDelay(int line, int delay)
         {
             Instructions[line].Delay = delay;
         }
-        
-        public void HighlightLine(int number, SolidColorBrush brush)
+
+        public void ResetHighlights()
         {
             for (int i = 0; i < Instructions.Count; i++)
             {
-                DataGridRow row = (DataGridRow)InstructionsDataGrid.ItemContainerGenerator.ContainerFromIndex(i);
-                if (i == number)
+                DataGridRow row = GetDataGridRowFromIndex(i);
+                row.Foreground = Brushes.Black;
+                row.Background = Brushes.White;
+            }
+        }
+
+        public void HighlightLine(int number, SolidColorBrush foreground, SolidColorBrush background)
+        {
+            ResetHighlights();
+            DataGridRow row = GetDataGridRowFromIndex(number);
+            row.Foreground = foreground;
+            row.Background = background;
+        }
+
+        public delegate Point GetDragDropPosition(IInputElement element);
+
+        private bool IsMouseOnTargetRow(Visual target, GetDragDropPosition pos)
+        {
+            try
+            {
+                Rect posBounds = VisualTreeHelper.GetDescendantBounds(target);
+                Point mousePos = pos((IInputElement)target);
+                return posBounds.Contains(mousePos);
+            }
+            catch { return false; }
+        }
+
+        private DataGridRow GetDataGridRowFromIndex(int index)
+        {
+            if(InstructionsDataGrid.ItemContainerGenerator.Status != System.Windows.Controls.Primitives.GeneratorStatus.ContainersGenerated)
+            {
+                return null;
+            }
+            return InstructionsDataGrid.ItemContainerGenerator.ContainerFromIndex(index) as DataGridRow;
+        }
+
+        private int GetDataGridItemCurrentRowIndex(GetDragDropPosition pos)
+        {
+            int curIndex = -1;
+            for (int i = 0; i < Instructions.Count; i++)
+            {
+                DataGridRow row = GetDataGridRowFromIndex(i);
+                if(IsMouseOnTargetRow(row, pos))
                 {
-                    row.Background = brush;
+                    curIndex = i;
+                    break;
                 }
-                else
+            }
+            return curIndex;
+        }
+
+        int prevRowIndex = -1;
+
+        private void InstructionsDataGrid_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            prevRowIndex = GetDataGridItemCurrentRowIndex(e.GetPosition);
+
+            if(prevRowIndex < 0)
+            {
+                return;
+            }
+
+            InstructionsDataGrid.SelectedIndex = prevRowIndex;
+            Instruction selected = Instructions[prevRowIndex];
+
+            if(selected == null)
+            {
+                return;
+            }
+
+            DragDropEffects dragDropEffects = DragDropEffects.Move;
+
+            DeleteRowBox.Visibility = Visibility.Visible;
+            try
+            {
+                if (DragDrop.DoDragDrop(InstructionsDataGrid, selected, dragDropEffects) != DragDropEffects.None)
                 {
-                    row.Background = Brushes.White;
+                    InstructionsDataGrid.SelectedItem = selected;
                 }
+            }catch(Exception ex)
+            {
+                Console.WriteLine("Error in preview left mouse: " + ex.Message);
+            }
+        }
+
+        private void InstructionsDataGrid_Drop(object sender, DragEventArgs e)
+        {
+            DeleteRowBox.Visibility = Visibility.Hidden;
+            if (prevRowIndex < 0)
+            {
+                return;
+            }
+
+            int index = GetDataGridItemCurrentRowIndex(e.GetPosition);
+
+            if(index == prevRowIndex)
+            {
+                return;
+            }
+            Instruction toMove = Instructions[prevRowIndex];
+            Instructions.RemoveAt(prevRowIndex);
+            if (index >= 0)
+            {
+                Instructions.Insert(index, toMove);
             }
         }
         #endregion
+        
+        private void DeleteRowBox_Drop(object sender, DragEventArgs e)
+        {
+            DeleteRowBox.Visibility = Visibility.Hidden;
+            if (prevRowIndex < 0)
+            {
+                return;
+            }
+            
+            Instruction toMove = Instructions[prevRowIndex];
+            Instructions.RemoveAt(prevRowIndex);
+        }
     }
 }

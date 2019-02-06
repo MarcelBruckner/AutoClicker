@@ -41,7 +41,7 @@ namespace AutoClicker.Instructions
                 {
                     return;
                 }
-                instruction.Execute();
+                instruction.IsRunning = true;
             }
         }
 

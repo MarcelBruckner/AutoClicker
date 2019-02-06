@@ -4,26 +4,28 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:AutoClicker"
         xmlns:local1="clr-namespace:AutoClicker.Instructions"
         mc:Ignorable="d"
-        Title="Auto Clicker" Height="500" Width="700">
+        Title="Auto Clicker" Height="500" Width="700" Background="LightGray">
 
     <!--<Window.Resources>
         <local1:InstructionList x:Key="InstructionsListDataGrid"/>
     </Window.Resources>-->
 
-    <Border Padding="5 0 5 0">
+    <!--<Border Padding="5 0 5 5">-->
         <DockPanel LastChildFill="True">
 
-            <Menu DockPanel.Dock="Top" Margin="0 2 0 0" >
+            <Menu DockPanel.Dock="Top" Padding="0 2" >
                 <MenuItem Header="_File">
                     <MenuItem Header="_Open" Click="Open_Click"/>
                     <MenuItem Header="_Save" Click="Save_Click"/>
                     <Separator/>
                     <MenuItem Header="_Close" Click="Close_Click"/>
                 </MenuItem>
-                <MenuItem Header="_Edit">
+            <Separator/>
+            <MenuItem Header="_Edit">
                     <MenuItem Header="_Click">
                         <MenuItem Header="_Normal" Click="AddClick_Click"/>
                         <MenuItem Header="_Drag" Click="AddDrag_Click"/>
@@ -35,10 +37,7 @@
                     </MenuItem>
                     <MenuItem Header="_Delay" Click="AddDelay_Click"/>
                     <Separator/>
-                    <MenuItem Header="_Remove">
-                        <MenuItem Header="_Selected Line" Click="SelectedLineRemove_Click"/>
-                        <MenuItem Header="Clear" Click="Clear_Click"/>
-                    </MenuItem>
+                    <MenuItem Header="Clear" Click="Clear_Click"/>
                 </MenuItem>
             </Menu>
 
@@ -50,16 +49,17 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Orientation="Horizontal" Grid.Column="0" VerticalAlignment="Center">
-                    <ToggleButton x:Name="PlayButton" IsChecked="{Binding IsPlaying}" Checked="PlayButton_Checked" Unchecked="PlayButton_Unchecked" Padding="5 2" Grid.Column="1" Content="Play" Margin="5 0"/>
-                     <ToggleButton x:Name="RecordButton" IsChecked="{Binding IsRecorded}" Checked="RecordButton_Checked" Unchecked="RecordButton_Unchecked" Padding="5 2"  Grid.Column="0" Content="Record" Margin="5 0"/>
+                    <ToggleButton x:Name="PlayButton" IsChecked="{Binding ElementName=mainWindow, Path=IsRunning}" Padding="5 2" Grid.Column="1" Content="Play" Margin="5 0"/>
+                    <ToggleButton x:Name="RecordButton" IsChecked="{Binding ElementName=mainWindow, Path=IsRecording}" Padding="5 2"  Grid.Column="0" Content="Record" Margin="5 0"/>
                     <CheckBox x:Name="RecordWithDelayCheckBox" IsChecked="{ Binding ElementName=mainWindow, Path=WithDelay}" VerticalAlignment="Center" Content="With Delay" Margin="5 2"/>
+                    <TextBlock Text="Delete" Foreground="White" Visibility="Hidden" Background="Red" AllowDrop="True" x:Name="DeleteRowBox" Drop="DeleteRowBox_Drop" Padding="5" Margin="5 0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </StackPanel>
 
-                <TextBlock Grid.Column="1" Text="Auto Clicker" FontWeight="Bold" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <TextBlock Foreground="Black" FontSize="16" Grid.Column="1" Text="Auto Clicker" FontWeight="Bold" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
                 <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                    <TextBox x:Name="RepetitionsTextBox" TextChanged="RepetitionsTextBox_TextChanged" MaxLength="5" Text="1" VerticalAlignment="Center" Width="40" TextAlignment="Right"/>
-                    <CheckBox x:Name="InfiniteCheckBox" Checked="InfiniteCheckBox_Checked" Unchecked="InfiniteCheckBox_Unchecked" VerticalAlignment="Center" Margin="5 0" Content="Infinite"/>
+                    <TextBox x:Name="RepetitionsTextBox" TextChanged="RepetitionsTextBox_TextChanged" Text="5" MaxLength="5" VerticalAlignment="Center" Width="40" TextAlignment="Right"/>
+                    <CheckBox x:Name="InfiniteCheckBox" IsChecked="{Binding ElementName=mainWindow, Path=Infinite}" VerticalAlignment="Center" Margin="5 0" Content="Infinite"/>
                 </StackPanel>
             </Grid>
 
@@ -78,6 +78,10 @@
                       CanUserAddRows="false"
                       VerticalScrollBarVisibility="Visible"
                       ItemsSource="{Binding ElementName=mainWindow, Path=Instructions}"
+                      AllowDrop="True"
+                      PreviewMouseLeftButtonDown="InstructionsDataGrid_PreviewMouseLeftButtonDown"
+                      Drop="InstructionsDataGrid_Drop"
+                      Margin="5 0 5 5"
                       >
 
                 <DataGrid.Columns>
@@ -96,8 +100,6 @@
                 </DataGrid.Columns>
 
             </DataGrid>
-
-
         </DockPanel>
-    </Border>
+    <!--</Border>-->
 </Window>

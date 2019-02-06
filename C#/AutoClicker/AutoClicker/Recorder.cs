@@ -15,7 +15,7 @@ namespace AutoClicker
 {
     class Recorder : IKeyboardListener
     {
-        private const int REPETITION_MAX_DELAY = 200000;
+        private const int REPETITION_MAX_DELAY = 200;
         public bool IsRecording { get; set; }
 
         private MainWindow window;

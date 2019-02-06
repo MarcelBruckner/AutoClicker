@@ -19,6 +19,7 @@ namespace AutoClicker.Instructions
         private int _y;
         private int _endX;
         private int _endY;
+        private bool _isRunning = false;
         #endregion
 
         public enum Action
@@ -52,7 +53,20 @@ namespace AutoClicker.Instructions
 
         public Action Type { get; set; }
 
-        public virtual bool IsRunning { get; set; } = false;
+        public virtual bool IsRunning
+        {
+            get => _isRunning;
+            set {
+                _isRunning = value;
+                int i = 0;
+                while (IsRunning && (Repetitions == -1 || i < Repetitions))
+                {
+                    SpecificExecute();
+                    Thread.Sleep(Delay);
+                    i++;
+                }
+            }
+        }
 
         public int Delay { get => _delay; set { _delay = value; OnPropertyChanged("Delay"); } }
         public int Repetitions { get => _repetitions; set { _repetitions = value; OnPropertyChanged("Repetitions"); } }
@@ -70,9 +84,8 @@ namespace AutoClicker.Instructions
         public int EndX { get => _endX; set { _endX = value; OnPropertyChanged("EndX"); } }
         public int EndY { get => _endY; set { _endY = value; OnPropertyChanged("EndY"); } }
 
-
         #region Constructors
-        public Instruction() : this(Action.CLICK, 0, 1, false, false, false) { }
+        public Instruction() : this(Action.DELAY, 0, 1, false, false, false) { }
 
         public Instruction(Action type) : this(type, 0, 1, false, false, false) { }
 
@@ -102,20 +115,7 @@ namespace AutoClicker.Instructions
 
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion
-
-        public void Execute()
-        {
-            IsRunning = true;
-            int i = 0;
-            while (IsRunning && (Repetitions == -1 || i < Repetitions))
-            {
-                SpecificExecute();
-                Thread.Sleep(Delay);
-                i++;
-            }
-            IsRunning = false;
-        }
-
+        
         protected virtual void SpecificExecute()
         {
             switch (Type)
