@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Collections.ObjectModel;
 using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
+using System.Linq;
 
 namespace AutoClicker
 {
@@ -71,7 +72,11 @@ namespace AutoClicker
                 else
                 {
                     interupt.RemoveHooks();
-                    runningInstruction.IsRunning = value;
+                    runningInstruction.IsRunning = false;
+                    foreach(Instruction instruction in Instructions)
+                    {
+                        instruction.IsRunning = false;
+                    }
                 }
             }
         }
@@ -100,7 +105,6 @@ namespace AutoClicker
         public MainWindow()
         {
             InitializeComponent();
-            //parser = new InstructionsParser(this);
             recorder = new Recorder(this);
             interupt = new KeyboardInterupt(OnKeyboardInterupt);
             InstructionsDataGrid.ItemsSource = Instructions;
@@ -241,14 +245,30 @@ namespace AutoClicker
             {
                 Filter = FILE_FILTER
             };
-            if (dialog.ShowDialog() == true)
+            while (true)
             {
-                string script = File.ReadAllText(dialog.FileName);
-                Instructions.Clear();
-                List<Instruction> read = JsonConvert.DeserializeObject<List<Instruction>>(script);
-                foreach (Instruction instruction in read)
+                if (dialog.ShowDialog() == true)
                 {
-                    Instructions.Add(instruction);
+                    try
+                    {
+                        string script = File.ReadAllText(dialog.FileName);
+                        List<Instruction> read = JsonConvert.DeserializeObject<List<Instruction>>(script);
+                        Instructions.Clear();
+                        read.ForEach(instruction =>
+                        {
+                            instruction.IsRunning = false;
+                            Instructions.Add(instruction);
+                        });
+                        break;
+                    }
+                    catch
+                    {
+                        MessageBox.Show("File has wrong format or is corrupted.");
+                    }
+                }
+                else
+                {
+                    break;
                 }
             }
         }
@@ -262,8 +282,15 @@ namespace AutoClicker
             };
             if (dialog.ShowDialog() == true)
             {
-                string json = JsonConvert.SerializeObject(Instructions);
-                File.WriteAllText(dialog.FileName, json);
+                try
+                {
+                    string json = JsonConvert.SerializeObject(Instructions);
+                    File.WriteAllText(dialog.FileName, json);
+                }
+                catch
+                {
+                    MessageBox.Show("Couldn't write to file.");
+                }
             }
         }
 
@@ -406,9 +433,9 @@ namespace AutoClicker
                 return;
             }
 
-            DragDropEffects dragDropEffects = DragDropEffects.Move;
-
             DeleteRowBox.Visibility = Visibility.Visible;
+
+            DragDropEffects dragDropEffects = DragDropEffects.Move;
             try
             {
                 if (DragDrop.DoDragDrop(InstructionsDataGrid, selected, dragDropEffects) != DragDropEffects.None)
