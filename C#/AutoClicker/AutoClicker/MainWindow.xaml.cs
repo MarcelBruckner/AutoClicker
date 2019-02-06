@@ -441,9 +441,12 @@ namespace AutoClicker
             {
                 Instructions.Insert(index, toMove);
             }
+            else
+            {
+                Instructions.Add(toMove);
+            }
         }
-        #endregion
-        
+
         private void DeleteRowBox_Drop(object sender, DragEventArgs e)
         {
             DeleteRowBox.Visibility = Visibility.Hidden;
@@ -451,9 +454,10 @@ namespace AutoClicker
             {
                 return;
             }
-            
+
             Instruction toMove = Instructions[prevRowIndex];
             Instructions.RemoveAt(prevRowIndex);
         }
+        #endregion
     }
 }
