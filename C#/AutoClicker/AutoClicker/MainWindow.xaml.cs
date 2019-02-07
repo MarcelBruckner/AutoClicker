@@ -2,7 +2,6 @@
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using AutoClicker.Instructions;
 using System.ComponentModel;
 using Microsoft.Win32;
 using System.IO;
@@ -139,7 +138,7 @@ namespace AutoClicker
                         }
 
                         runningInstruction = Instructions[j];
-                        if (runningInstruction.Type == Instruction.Action.LOOP)
+                        if (runningInstruction.Type == InstructionType.LOOP)
                         {
                             int loopRepetitions = runningInstruction.Repetitions;
                             for (int l = 1; l < loopRepetitions ; l++)
@@ -152,7 +151,7 @@ namespace AutoClicker
                                         return;
                                     }
                                     runningInstruction = Instructions[loopCounter];
-                                    if (runningInstruction.Type == Instruction.Action.END_LOOP)
+                                    if (runningInstruction.Type == InstructionType.END_LOOP)
                                     {
                                         loopCounter = j;
                                         break;
@@ -303,27 +302,27 @@ namespace AutoClicker
         #region Edit Menu
         private void AddClick_Click(object sender, RoutedEventArgs e)
         {
-            AddInstruction(new Instruction(Instruction.Action.CLICK));
+            AddInstruction(new Instruction(InstructionType.CLICK));
         }
         private void AddKeyboard_Click(object sender, RoutedEventArgs e)
         {
-            AddInstruction(new Instruction(Instruction.Action.KEYBOARD));
+            AddInstruction(new Instruction(InstructionType.KEYBOARD));
         }
         private void AddDelay_Click(object sender, RoutedEventArgs e)
         {
-            AddInstruction(new Instruction(Instruction.Action.DELAY));
+            AddInstruction(new Instruction(InstructionType.DELAY));
         }
         private void AddLoop_Click(object sender, RoutedEventArgs e)
         {
-            AddInstruction(new Instruction(Instruction.Action.LOOP));
+            AddInstruction(new Instruction(InstructionType.LOOP));
         }
         private void AddEndLoop_Click(object sender, RoutedEventArgs e)
         {
-            AddInstruction(new Instruction(Instruction.Action.END_LOOP));
+            AddInstruction(new Instruction(InstructionType.END_LOOP));
         }
         private void AddDrag_Click(object sender, RoutedEventArgs e)
         {
-            AddInstruction(new Instruction(Instruction.Action.DRAG));
+            AddInstruction(new Instruction(InstructionType.DRAG));
         }
 
         private void SelectedLineRemove_Click(object sender, RoutedEventArgs e)
@@ -433,8 +432,6 @@ namespace AutoClicker
                 return;
             }
 
-            DeleteRowBox.Visibility = Visibility.Visible;
-
             DragDropEffects dragDropEffects = DragDropEffects.Move;
             try
             {
@@ -450,7 +447,6 @@ namespace AutoClicker
 
         private void InstructionsDataGrid_Drop(object sender, DragEventArgs e)
         {
-            DeleteRowBox.Visibility = Visibility.Hidden;
             if (prevRowIndex < 0)
             {
                 return;
@@ -474,16 +470,47 @@ namespace AutoClicker
             }
         }
 
-        private void DeleteRowBox_Drop(object sender, DragEventArgs e)
+        private void DeleteFromContextMenu_Click(object sender, RoutedEventArgs e)
         {
-            DeleteRowBox.Visibility = Visibility.Hidden;
-            if (prevRowIndex < 0)
-            {
-                return;
-            }
+            //Get the clicked MenuItem
+            var menuItem = (MenuItem)sender;
 
-            Instruction toMove = Instructions[prevRowIndex];
-            Instructions.RemoveAt(prevRowIndex);
+            //Get the ContextMenu to which the menuItem belongs
+            var contextMenu = (ContextMenu)menuItem.Parent;
+
+            //Find the placementTarget
+            var item = (DataGrid)contextMenu.PlacementTarget;
+
+            //Get the underlying item, that you cast to your object that is bound
+            //to the DataGrid (and has subject and state as property)
+            var toDeleteFromBindedList = (Instruction)item.SelectedCells[0].Item;
+
+            //Remove the toDeleteFromBindedList object from your ObservableCollection
+            Instructions.Remove(toDeleteFromBindedList);
+        }
+        #endregion
+
+        #region Cells
+        private void ShiftColumnCell_Click(object sender, RoutedEventArgs e)
+        {
+            Instruction i = GetInstructionFromCell(sender);
+            i.Shift ^= true;
+        }
+
+        private void CtrlColumnCell_Click(object sender, RoutedEventArgs e)
+        {
+            GetInstructionFromCell(sender).Ctrl ^= true;
+        }
+
+        private void AltColumnCell_Click(object sender, RoutedEventArgs e)
+        {
+            GetInstructionFromCell(sender).Alt ^= true;
+        }
+
+        private Instruction GetInstructionFromCell(object sender)
+        {
+            DataGridCell cell = sender as DataGridCell;
+            return cell.DataContext as Instruction;
         }
         #endregion
     }

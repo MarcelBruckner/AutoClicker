@@ -1,7 +1,6 @@
 ﻿using Gma.UserActivityMonitor;
 using System;
 using System.Windows.Forms;
-using AutoClicker.Instructions;
 using System.Windows.Documents;
 using System.Drawing;
 using System.Windows.Controls;
@@ -30,7 +29,7 @@ namespace AutoClicker
 
         //private int current = -1;
         private Instruction current = null;
-        private MouseClick mouseDownPosition;
+        private Instruction mouseDownPosition;
 
         #region Init Deinit
         public Recorder(MainWindow window)
@@ -46,6 +45,9 @@ namespace AutoClicker
 
             HookManager.MouseDown += MouseDown;
             HookManager.MouseUp += MouseUp;
+
+            HookManager.MouseWheel += MouseWheel;
+
             IsRecording = true;
         }
 
@@ -56,7 +58,9 @@ namespace AutoClicker
 
             HookManager.MouseDown -= MouseDown;
             HookManager.MouseUp -= MouseUp;
-            //instructions.EnableTextBox(true);
+
+            HookManager.MouseWheel -= MouseWheel;
+
             IsRecording = false;
         }
         #endregion
@@ -77,7 +81,7 @@ namespace AutoClicker
                 return;
             }
 
-            Instruction instruction = new Keyboard((VirtualKeyCode)(int)key, 0, 1, isShiftDown, isCtrlDown, isAltDown);
+            Instruction instruction = new Instruction((VirtualKeyCode)(int)key, 0, 1, isShiftDown, isCtrlDown, isAltDown);
             AddOrIncrement(instruction);
         }
 
@@ -114,21 +118,21 @@ namespace AutoClicker
 
         private void MouseDown(object sender, MouseEventArgs e)
         {
-            int button = GetButton(e.Button);
+            ButtonType button = (ButtonType)GetButton(e.Button);
             Point p = Cursor.Position;
-            mouseDownPosition = new MouseClick(button, p.X, p.Y, 0, 1, isShiftDown, isCtrlDown, isAltDown);
+            mouseDownPosition = new Instruction(button, p.X, p.Y, isShiftDown, isCtrlDown, isAltDown);
         }
 
         private void MouseUp(object sender, MouseEventArgs e)
         {
-            int button = GetButton(e.Button);
+            ButtonType button = GetButton(e.Button);
             Point p = Cursor.Position;
-            MouseClick end = new MouseClick(button, p.X, p.Y, 0, 1, isShiftDown, isCtrlDown, isAltDown);
+            Instruction end = new Instruction(button, p.X, p.Y, isShiftDown, isCtrlDown, isAltDown);
 
-            MouseClick start = mouseDownPosition as MouseClick;
-            if (start != null && start.Button == end.Button && end.Distance(start) > MouseClick.MAX_UNCERTAINTY)
+            Instruction start = mouseDownPosition as Instruction;
+            if (start != null && start.Button == end.Button && end.Distance(start) > Instruction.MAX_UNCERTAINTY)
             {
-                AddOrIncrement(new MouseDrag(start.Button, start.X, start.Y, end.X, end.Y, 0, 1, isShiftDown, isCtrlDown, isAltDown));
+                AddOrIncrement(new Instruction(start.Button, start.X, start.Y, end.X, end.Y, isShiftDown, isCtrlDown, isAltDown));
             }
             else
             {
@@ -136,17 +140,29 @@ namespace AutoClicker
             }
         }
 
-        private int GetButton(MouseButtons button)
+        private void MouseWheel(object sender, MouseEventArgs e)
         {
+            Instruction instruction = new Instruction(e.Delta, e.X, e.Y, isShiftDown, isCtrlDown, isAltDown);
+            AddOrIncrement(instruction);
+            Console.WriteLine("Wheeling: " + e.Delta);
+        }
+
+        private ButtonType GetButton(MouseButtons button)
+        {
+            ButtonType _button;
             switch (button)
             {
                 case MouseButtons.Middle:
-                    return 2;
+                    _button = ButtonType.MIDDLE;
+                    break;
                 case MouseButtons.Right:
-                    return 1;
+                    _button = ButtonType.RIGHT;
+                    break;
                 default:
-                    return 0;
+                    _button = ButtonType.LEFT;
+                    break;
             }
+            return _button;
         }
         #endregion
 
@@ -172,8 +188,14 @@ namespace AutoClicker
 
             if (instruction.Equals(current) && delay < REPETITION_MAX_DELAY)
             {
-                current.Repetitions++;
-                //instructions.UpdateLast(current);
+                if (instruction.Type == InstructionType.WHEEL)
+                {
+                    current.WheelDelta += instruction.WheelDelta;
+                }
+                else
+                {
+                    current.Repetitions++;
+                }
             }
             else
             {

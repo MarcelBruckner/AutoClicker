@@ -4,102 +4,184 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:core="clr-namespace:System;assembly=mscorlib"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        xmlns:local="clr-namespace:AutoClicker"
-        xmlns:local1="clr-namespace:AutoClicker.Instructions"
+        xmlns:autoclicker="clr-namespace:AutoClicker"
         mc:Ignorable="d"
         Title="Auto Clicker" Height="500" Width="700" Background="LightGray">
 
-    <!--<Window.Resources>
-        <local1:InstructionList x:Key="InstructionsListDataGrid"/>
-    </Window.Resources>-->
-
+    <Window.Resources>
+        <autoclicker:CheckBoxColumnConverter x:Key="CheckBoxColumnConverter_Converter"/>
+        <ObjectDataProvider x:Key="Types" MethodName="GetValues" ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="autoclicker:InstructionType"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="Keys" MethodName="GetValues" ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="autoclicker:VirtualKeyCode"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="ButtonTypes" MethodName="GetValues" ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="autoclicker:ButtonType"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
+    
     <!--<Border Padding="5 0 5 5">-->
-        <DockPanel LastChildFill="True">
+    <DockPanel LastChildFill="True">
 
-            <Menu DockPanel.Dock="Top" Padding="0 2" >
-                <MenuItem Header="_File">
-                    <MenuItem Header="_Open" Click="Open_Click"/>
-                    <MenuItem Header="_Save" Click="Save_Click"/>
-                    <Separator/>
-                    <MenuItem Header="_Close" Click="Close_Click"/>
-                </MenuItem>
-            <Separator/>
+        <Grid DockPanel.Dock="Top">
+            <Rectangle Height="0.5" Fill="Black"/>
+        </Grid>
+        <Menu DockPanel.Dock="Top" Padding="0 2" >
+            <MenuItem Header="_File">
+                <MenuItem Header="_Open" Click="Open_Click"/>
+                <MenuItem Header="_Save" Click="Save_Click"/>
+                <Separator/>
+                <MenuItem Header="_Close" Click="Close_Click"/>
+            </MenuItem>
+            <!--<Separator/>-->
             <MenuItem Header="_Edit">
+                <MenuItem Header="Clear" Click="Clear_Click"/>
+            </MenuItem>
+        </Menu>
+        <Grid DockPanel.Dock="Top">
+            <Rectangle Height="0.5" Fill="Black"/>
+        </Grid>
+
+        <Grid DockPanel.Dock="Top" Margin="5 10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Orientation="Horizontal" Grid.Column="0" VerticalAlignment="Center">
+                <ToggleButton x:Name="PlayButton" IsChecked="{Binding ElementName=mainWindow, Path=IsRunning}" Padding="5 2" Grid.Column="1" Content="Play" Margin="5 0"/>
+                <ToggleButton x:Name="RecordButton" IsChecked="{Binding ElementName=mainWindow, Path=IsRecording}" Padding="5 2"  Grid.Column="0" Content="Record" Margin="5 0"/>
+                <CheckBox x:Name="RecordWithDelayCheckBox" IsChecked="{ Binding ElementName=mainWindow, Path=WithDelay}" VerticalAlignment="Center" Content="With Delay" Margin="5 2"/>
+            </StackPanel>
+
+            <TextBlock Foreground="Black" FontSize="16" Grid.Column="1" Text="Auto Clicker" FontWeight="Bold" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+            <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <TextBox x:Name="RepetitionsTextBox" TextChanged="RepetitionsTextBox_TextChanged" Text="5" MaxLength="5" VerticalAlignment="Center" Width="40" TextAlignment="Right"/>
+                <CheckBox x:Name="InfiniteCheckBox" IsChecked="{Binding ElementName=mainWindow, Path=Infinite}" VerticalAlignment="Center" Margin="5 0" Content="Infinite"/>
+            </StackPanel>
+        </Grid>
+        
+        <DataGrid DockPanel.Dock="Top" x:Name="InstructionsDataGrid" 
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="false"
+                      CanUserSortColumns="False"
+                      CanUserReorderColumns="False"
+                      VerticalScrollBarVisibility="Visible"
+                      ItemsSource="{Binding ElementName=mainWindow, Path=Instructions}"
+                      AllowDrop="True"
+                      Drop="InstructionsDataGrid_Drop"
+                      Margin="5"
+                      >
+            <!--PreviewMouseLeftButtonDown="InstructionsDataGrid_PreviewMouseLeftButtonDown"-->
+
+            <ItemsControl.ContextMenu>
+                <ContextMenu>
                     <MenuItem Header="_Click">
                         <MenuItem Header="_Normal" Click="AddClick_Click"/>
                         <MenuItem Header="_Drag" Click="AddDrag_Click"/>
                     </MenuItem>
-                        <MenuItem Header="_Keyboard" Click="AddKeyboard_Click"/>
+                    <MenuItem Header="_Keyboard" Click="AddKeyboard_Click"/>
                     <MenuItem Header="_Loop">
                         <MenuItem Header="_Start" Click="AddLoop_Click"/>
                         <MenuItem Header="_End" Click="AddEndLoop_Click"/>
                     </MenuItem>
                     <MenuItem Header="_Delay" Click="AddDelay_Click"/>
                     <Separator/>
-                    <MenuItem Header="Clear" Click="Clear_Click"/>
-                </MenuItem>
-            </Menu>
+                    <MenuItem Header="Delete" Click="DeleteFromContextMenu_Click"/>
+                </ContextMenu>
+            </ItemsControl.ContextMenu>
+            
+            <DataGrid.Columns>
+                <DataGridComboBoxColumn Header="Type" x:Name="TypeColumn" Width="3*" TextBlock.TextAlignment="Center" SelectedValueBinding="{Binding Type}" ItemsSource="{Binding Source={StaticResource Types}}"/>
 
-            <Grid DockPanel.Dock="Top" Margin="5 10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="0.5*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
+                <DataGridTextColumn Header="Delay" x:Name="DelayColumn"  Binding="{Binding Delay}" Width="2*">
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="InstructionsDataGrid_PreviewMouseLeftButtonDown"/>
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="#" x:Name="ClickCountColumn"  Binding="{Binding Repetitions}" Width="1*">
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="InstructionsDataGrid_PreviewMouseLeftButtonDown"/>
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
 
-                <StackPanel Orientation="Horizontal" Grid.Column="0" VerticalAlignment="Center">
-                    <ToggleButton x:Name="PlayButton" IsChecked="{Binding ElementName=mainWindow, Path=IsRunning}" Padding="5 2" Grid.Column="1" Content="Play" Margin="5 0"/>
-                    <ToggleButton x:Name="RecordButton" IsChecked="{Binding ElementName=mainWindow, Path=IsRecording}" Padding="5 2"  Grid.Column="0" Content="Record" Margin="5 0"/>
-                    <CheckBox x:Name="RecordWithDelayCheckBox" IsChecked="{ Binding ElementName=mainWindow, Path=WithDelay}" VerticalAlignment="Center" Content="With Delay" Margin="5 2"/>
-                    <TextBlock Text="Delete" Foreground="White" Visibility="Hidden" Background="Red" AllowDrop="True" x:Name="DeleteRowBox" Drop="DeleteRowBox_Drop" Padding="5" Margin="5 0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                </StackPanel>
+                <DataGridComboBoxColumn Header="Button" x:Name="ButtonColumn" Width="2*" SelectedValueBinding="{Binding Button}" ItemsSource="{Binding Source={StaticResource ButtonTypes}}" />
 
-                <TextBlock Foreground="Black" FontSize="16" Grid.Column="1" Text="Auto Clicker" FontWeight="Bold" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <DataGridTextColumn Header="X" x:Name="XColumn" TextBlock.TextAlignment="Center" Binding="{Binding X}" Width="2*">
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="InstructionsDataGrid_PreviewMouseLeftButtonDown"/>
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Y" x:Name="YColumn"  Binding="{Binding Y}" Width="2*">
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="InstructionsDataGrid_PreviewMouseLeftButtonDown"/>
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="End X" x:Name="DragXColumn"  Binding="{Binding EndX}" Width="2*">
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="InstructionsDataGrid_PreviewMouseLeftButtonDown"/>
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="End Y" x:Name="DragYColumn"  Binding="{Binding EndY}" Width="2*">
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="InstructionsDataGrid_PreviewMouseLeftButtonDown"/>
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Wheel" x:Name="WheelColumn"  Binding="{Binding WheelDelta}" Width="2*">
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="InstructionsDataGrid_PreviewMouseLeftButtonDown"/>
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
+                <DataGridCheckBoxColumn Header="Shift" x:Name="ShiftColumn" Width="1*" Binding="{Binding Shift}">
+                    <DataGridCheckBoxColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ShiftColumnCell_Click"/>
+                        </Style>
+                    </DataGridCheckBoxColumn.CellStyle>
+                </DataGridCheckBoxColumn>
+                <DataGridCheckBoxColumn Header="Ctrl" x:Name="CtrlColumn" Width="1*" Binding="{Binding Ctrl}">
+                    <DataGridCheckBoxColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="CtrlColumnCell_Click"/>
+                        </Style>
+                    </DataGridCheckBoxColumn.CellStyle>
+                </DataGridCheckBoxColumn>
+                <DataGridCheckBoxColumn Header="Alt" x:Name="AltColumn" Width="1*" Binding="{Binding Alt}">
+                    <DataGridCheckBoxColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="AltColumnCell_Click"/>
+                        </Style>
+                    </DataGridCheckBoxColumn.CellStyle>
+                </DataGridCheckBoxColumn>
+                <DataGridComboBoxColumn Header="Type" x:Name="KeyColumn" Width="3*" SelectedValueBinding="{Binding Key}" ItemsSource="{Binding Source={StaticResource Keys}}" />
+            </DataGrid.Columns>
 
-                <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                    <TextBox x:Name="RepetitionsTextBox" TextChanged="RepetitionsTextBox_TextChanged" Text="5" MaxLength="5" VerticalAlignment="Center" Width="40" TextAlignment="Right"/>
-                    <CheckBox x:Name="InfiniteCheckBox" IsChecked="{Binding ElementName=mainWindow, Path=Infinite}" VerticalAlignment="Center" Margin="5 0" Content="Infinite"/>
-                </StackPanel>
-            </Grid>
-
-            <!--<RichTextBox DockPanel.Dock="Top" x:Name="InstructionsTextBox" Margin="5,5.4,5,372.4" Padding="2" VerticalScrollBarVisibility="Auto" IsUndoEnabled="True" TextChanged="InstructionsTextBox_TextChanged" AcceptsTab="True" >
-                <RichTextBox.Resources>
-                    <Style TargetType="{x:Type Paragraph}">
-                        <Setter Property="Margin" Value="0"/>
-                    </Style>
-                </RichTextBox.Resources>
-            </RichTextBox>-->
-
-            <!--<Button Content="test"/>-->
-            <!--Instructions Grid-->
-            <DataGrid DockPanel.Dock="Top" x:Name="InstructionsDataGrid" 
-                      AutoGenerateColumns="False"
-                      CanUserAddRows="false"
-                      VerticalScrollBarVisibility="Visible"
-                      ItemsSource="{Binding ElementName=mainWindow, Path=Instructions}"
-                      AllowDrop="True"
-                      PreviewMouseLeftButtonDown="InstructionsDataGrid_PreviewMouseLeftButtonDown"
-                      Drop="InstructionsDataGrid_Drop"
-                      Margin="5 0 5 5"
-                      >
-
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Type" x:Name="IdColumn"  Binding="{Binding Type}" Width="3*"/>
-                    <DataGridTextColumn Header="Delay" x:Name="DelayColumn"  Binding="{Binding Delay}" Width="2*"/>
-                    <DataGridTextColumn Header="#" x:Name="ClickCountColumn"  Binding="{Binding Repetitions}" Width="1*"/>
-                    <DataGridTextColumn Header="Button" x:Name="ButtonColumn"  Binding="{Binding Button}" Width="2*"/>
-                    <DataGridTextColumn Header="X" x:Name="XColumn"  Binding="{Binding X}" Width="2*"/>
-                    <DataGridTextColumn Header="Y" x:Name="YColumn"  Binding="{Binding Y}" Width="2*"/>
-                    <DataGridTextColumn Header="End X" x:Name="DragXColumn"  Binding="{Binding EndX}" Width="2*"/>
-                    <DataGridTextColumn Header="End Y" x:Name="DragYColumn"  Binding="{Binding EndY}" Width="2*"/>
-                    <DataGridCheckBoxColumn Header="Shift" x:Name="ShiftColumn"  Binding="{Binding Shift}" Width="1*"/>
-                    <DataGridCheckBoxColumn Header="Ctrl" x:Name="CtrlColumn"  Binding="{Binding Ctrl}" Width="1*"/>
-                    <DataGridCheckBoxColumn Header="Alt" x:Name="AltColumn"  Binding="{Binding Alt}" Width="1*"/>
-                    <DataGridTextColumn Header="Key" x:Name="KeyboardColumn"  Binding="{Binding Key}" Width="2*"/>
-                </DataGrid.Columns>
-
-            </DataGrid>
-        </DockPanel>
+        </DataGrid>
+    </DockPanel>
     <!--</Border>-->
 </Window>

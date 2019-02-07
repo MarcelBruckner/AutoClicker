@@ -1,5 +1,4 @@
-﻿using AutoClicker.Instructions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices;
@@ -100,6 +99,10 @@ namespace AutoClicker
         }
         #endregion
 
+        public static void MouseDrag(ButtonType button, int x, int y, int endX, int endY, params VirtualKeyCode[] hotkeys)
+        {
+            MouseDrag((int)button, x, y, endX, endY, hotkeys);
+        }
         public static void MouseDrag(int button, int x, int y, int endX, int endY, params VirtualKeyCode[] hotkeys)
         {
             MouseDown(button, x, y, hotkeys);
@@ -162,6 +165,10 @@ namespace AutoClicker
             KeyUp(hotkeys);
         }
         
+        public static void MouseClick(ButtonType button, int x, int y,  params VirtualKeyCode[] hotkeys)
+        {
+            MouseClick((int)button, x, y, hotkeys);
+        }
         public static void MouseClick(int button, int x, int y,  params VirtualKeyCode[] hotkeys)
         {
             MouseDown(button, x, y, hotkeys);
@@ -170,8 +177,10 @@ namespace AutoClicker
 
         public static void MoveMouse(int x, int y)
         {
-            Cursor.Position = new Point(x, y);
-            //Thread.Sleep(50);
+            Point toMove = new Point(x, y);
+            Cursor.Position = toMove;
+            Thread.Sleep(20);
+            Cursor.Position = toMove;
         }
 
         public static void KeyDown(params VirtualKeyCode[] keys)
@@ -228,5 +237,16 @@ namespace AutoClicker
             KeyUp(hotkeys);
         }
 
+        public static void MouseWheel(int x, int y, int delta)
+        {
+            MoveMouse(x, y);
+            INPUT mouseDownInput = new INPUT
+            {
+                type = SendInputEventType.InputMouse
+            };
+            mouseDownInput.mkhi.mi.dwFlags = MouseEventFlags.MOUSEEVENTF_WHEEL;
+            mouseDownInput.mkhi.mi.mouseData = (uint)delta;
+            SendInput(1, ref mouseDownInput, Marshal.SizeOf(new INPUT()));
+        }
     }
 }
