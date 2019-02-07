@@ -157,6 +157,7 @@
                         </Style>
                     </DataGridTextColumn.CellStyle>
                 </DataGridTextColumn>
+                
                 <DataGridCheckBoxColumn Header="Shift" x:Name="ShiftColumn" Width="1*" Binding="{Binding Shift}">
                     <DataGridCheckBoxColumn.CellStyle>
                         <Style TargetType="DataGridCell">
@@ -178,6 +179,7 @@
                         </Style>
                     </DataGridCheckBoxColumn.CellStyle>
                 </DataGridCheckBoxColumn>
+                
                 <DataGridComboBoxColumn Header="Type" x:Name="KeyColumn" Width="3*" SelectedValueBinding="{Binding Key}" ItemsSource="{Binding Source={StaticResource Keys}}" />
             </DataGrid.Columns>
 

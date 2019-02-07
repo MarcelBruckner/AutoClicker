@@ -164,6 +164,8 @@ namespace AutoClicker
             switch (Type)
             {
                 case InstructionType.WHEEL:
+                    standards &= ClickSame(other) && Math.Sign(WheelDelta) == Math.Sign(other.WheelDelta);
+                    break;
                 case InstructionType.CLICK:
                     standards &= ClickSame(other);
                     break;
