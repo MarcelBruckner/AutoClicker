@@ -146,10 +146,20 @@
     <Resource Include="favicon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\pause.png" />
     <Resource Include="Images\play.png" />
     <Resource Include="Images\record.png" />
-    <Resource Include="Images\stop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\stopwatch.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\record2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\stopwatch2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\infinity.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

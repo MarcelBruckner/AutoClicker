@@ -8,6 +8,8 @@ namespace AutoClicker
 {
     public class Instruction : INotifyPropertyChanged
     {
+        Random x = new Random(0);
+
         #region Raw Properties
         private long _delay;
         private int _repetitions;
@@ -35,21 +37,29 @@ namespace AutoClicker
             {
                 _isRunning = value;
                 OnPropertyChanged("IsRunning");
-                int i = 0;
-                while (IsRunning && i < Repetitions)
-                {
-                    SpecificExecute();
-                    DoDelay();
-                    i++;
-                }
-                _isRunning = false;
-                OnPropertyChanged("IsRunning");
             }
         }
 
-        public InstructionType Type { get => _type; set { _type = value; Console.WriteLine(value); OnPropertyChanged("Type"); } }
+        public void Run()
+        {
+            int r = x.Next();
+            Console.WriteLine("started new run: " + r);
+            IsRunning = true;
+            int i = 0;
+            while (IsRunning && i < Repetitions)
+            {
+                SpecificExecute();
+                DoDelay();
+                i++;
+            }
+            IsRunning = false;
+            Console.WriteLine("finished new run: " + r);
+        }
 
-        public long Delay { get => _delay; set { _delay = value; OnPropertyChanged("Delay"); } }
+        public InstructionType Type { get => _type; set { _type = value; OnPropertyChanged("Type"); } }
+
+        public long Delay { get => _delay;
+            set { _delay = value; OnPropertyChanged("Delay"); } }
         public int Repetitions { get => _repetitions; set { _repetitions = value; OnPropertyChanged("Repetitions"); } }
 
         public bool Shift { get => _shift; set { _shift = value; OnPropertyChanged("Shift"); } }
@@ -140,8 +150,17 @@ namespace AutoClicker
             {
                 toDelay -= delayStep;
                 Thread.Sleep(delayStep);
+                Console.WriteLine("Delay Left: " + toDelay);
             }
-            Thread.Sleep(toDelay);
+            if (IsRunning)
+            {
+                Thread.Sleep(toDelay);
+                Console.WriteLine("Delay Finished");
+            }
+            else
+            {
+                Console.WriteLine("Interupted!");
+            }
         }
 
         protected virtual void SpecificExecute()

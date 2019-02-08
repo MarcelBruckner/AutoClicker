@@ -19,7 +19,7 @@ namespace AutoClicker
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
         private const string FILE_FILTER = "AutoClicker Files (*.autocl)|*.autocl";
         private bool _withDelay;
@@ -40,9 +40,9 @@ namespace AutoClicker
             {
                 _isRecording = value;
                 PlayButton.IsEnabled = !value;
-
                 if (_isRecording)
                 {
+                    StopAll();
                     IsRunning = false;
                     interupt.AddHooks();
                     recorder.AddHooks();
@@ -52,6 +52,7 @@ namespace AutoClicker
                     interupt.RemoveHooks();
                     recorder.RemoveHooks();
                 }
+                OnPropertyChanged("IsRecording");
             }
         }
         public bool IsRunning
@@ -71,13 +72,9 @@ namespace AutoClicker
                 else
                 {
                     interupt.RemoveHooks();
-                    runningInstruction.IsRunning = false;
-                    foreach(Instruction instruction in Instructions)
-                    {
-                        instruction.IsRunning = false;
-                    }
-                    ResetHighlights();
+                    StopAll();
                 }
+                OnPropertyChanged("IsRunning");
             }
         }
         public bool Infinite
@@ -87,6 +84,7 @@ namespace AutoClicker
             {
                 _infinite = value;
                 RepetitionsTextBox.IsEnabled = !value;
+                OnPropertyChanged("Infinite");
             }
         }
         public bool WithDelay
@@ -96,10 +94,18 @@ namespace AutoClicker
             {
                 _withDelay = value;
                 recorder.WithDelay = value;
+                OnPropertyChanged("WithDelay");
             }
         }
-        public int Repetitions { get; set; }
-
+        public int Repetitions
+        {
+            get => _repetitions;
+            set
+            {
+                _repetitions = value;
+                OnPropertyChanged("Repetitions");
+            }
+        }
         private Instruction runningInstruction = new Instruction();
 
         public MainWindow()
@@ -118,17 +124,28 @@ namespace AutoClicker
             //Instructions.Add(new Instruction(InstructionType.DELAY));
         }
 
+        private void StopAll()
+        {
+            runningInstruction.IsRunning = false;
+            foreach (Instruction instruction in Instructions)
+            {
+                instruction.IsRunning = false;
+            }
+        }
+
         #region Buttons
         public void OnKeyboardInterupt()
         {
-            RecordButton.IsChecked = false;
-            PlayButton.IsChecked = false;
+            StopAll();
+            IsRecording = false;
+            IsRunning = false;
             interupt.RemoveHooks();
             recorder.RemoveHooks();
         }
 
         private void OnPlay()
         {
+            StopAll();
             allRepetitions = Repetitions;
             BackgroundWorker bw = new BackgroundWorker()
             {
@@ -143,6 +160,7 @@ namespace AutoClicker
                     {
                         if (!IsRunning)
                         {
+                            StopAll();
                             return;
                         }
 
@@ -150,13 +168,14 @@ namespace AutoClicker
                         if (runningInstruction.Type == InstructionType.LOOP)
                         {
                             int loopRepetitions = runningInstruction.Repetitions;
-                            for (int l = 1; l < loopRepetitions ; l++)
+                            for (int l = 1; l < loopRepetitions; l++)
                             {
                                 int loopCounter = j + 1;
                                 while (loopCounter < Instructions.Count)
                                 {
                                     if (!IsRunning)
                                     {
+                                        StopAll();
                                         return;
                                     }
                                     runningInstruction = Instructions[loopCounter];
@@ -167,7 +186,7 @@ namespace AutoClicker
                                     }
 
                                     bw.ReportProgress((i + 1) / 101, new[] { i + 1, loopCounter });
-                                    runningInstruction.IsRunning = true;
+                                    runningInstruction.Run();
                                     loopCounter++;
                                 }
                             }
@@ -175,8 +194,7 @@ namespace AutoClicker
                         else
                         {
                             bw.ReportProgress((i + 1) / 101, new[] { i + 1, j });
-                            Instructions[j].IsRunning = true;
-                            Instructions[j].IsRunning = true;
+                            runningInstruction.Run();
                         }
                     }
                 }
@@ -184,8 +202,7 @@ namespace AutoClicker
 
             bw.ProgressChanged += (sender, args) =>
             {
-                RepetitionsTextBox.Text = "" +((int[]) args.UserState)[0];
-                HighlightLine(((int[])args.UserState)[1], Brushes.AntiqueWhite, Brushes.Black);
+                RepetitionsTextBox.Text = "" + ((int[])args.UserState)[0];
             };
 
             bw.RunWorkerCompleted += (sender, args) =>
@@ -194,10 +211,8 @@ namespace AutoClicker
                 {
                     Console.WriteLine(args.Error.ToString());  // do your error handling here
                 }
-                PlayButton.IsChecked = false;
+                IsRunning = false;
                 RepetitionsTextBox.Text = allRepetitions + "";
-
-                ResetHighlights();
             };
 
             bw.RunWorkerAsync(); // start the background worker
@@ -260,6 +275,7 @@ namespace AutoClicker
                 {
                     try
                     {
+                        StopAll();
                         string script = File.ReadAllText(dialog.FileName);
                         List<Instruction> read = JsonConvert.DeserializeObject<List<Instruction>>(script);
                         Instructions.Clear();
@@ -293,6 +309,7 @@ namespace AutoClicker
             {
                 try
                 {
+                    StopAll();
                     string json = JsonConvert.SerializeObject(Instructions);
                     File.WriteAllText(dialog.FileName, json);
                 }
@@ -368,39 +385,6 @@ namespace AutoClicker
             Instructions[line].Delay = delay;
         }
 
-        public void ResetHighlights()
-        {
-            
-            //for (int i = 0; i < Instructions.Count; i++)
-            //{
-            //    try
-            //    {
-            //        DataGridRow row = GetDataGridRowFromIndex(i);
-            //        row.Foreground = Brushes.Black;
-            //        row.Background = Brushes.White;
-            //    }
-            //    catch(Exception e)
-            //    {
-            //        Console.WriteLine("Error reset: " + e.Message);
-            //    }
-            //}
-        }
-
-        public void HighlightLine(int number, SolidColorBrush foreground, SolidColorBrush background)
-        {
-            //ResetHighlights();
-            //try
-            //{
-            //    DataGridRow row = GetDataGridRowFromIndex(number);
-
-            //    row.Foreground = foreground;
-            //    row.Background = background;
-            //}catch(Exception e)
-            //{
-            //    Console.WriteLine("In highlight: " + e.Message);
-            //}
-        }
-
         public delegate Point GetDragDropPosition(IInputElement element);
 
         private bool IsMouseOnTargetRow(Visual target, GetDragDropPosition pos)
@@ -416,7 +400,7 @@ namespace AutoClicker
 
         private DataGridRow GetDataGridRowFromIndex(int index)
         {
-            if(InstructionsDataGrid.ItemContainerGenerator.Status != System.Windows.Controls.Primitives.GeneratorStatus.ContainersGenerated)
+            if (InstructionsDataGrid.ItemContainerGenerator.Status != System.Windows.Controls.Primitives.GeneratorStatus.ContainersGenerated)
             {
                 return null;
             }
@@ -429,7 +413,7 @@ namespace AutoClicker
             for (int i = 0; i < Instructions.Count; i++)
             {
                 DataGridRow row = GetDataGridRowFromIndex(i);
-                if(IsMouseOnTargetRow(row, pos))
+                if (IsMouseOnTargetRow(row, pos))
                 {
                     curIndex = i;
                     break;
@@ -439,12 +423,20 @@ namespace AutoClicker
         }
 
         int prevRowIndex = -1;
+        private int _repetitions;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(string name)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
 
         private void InstructionsDataGrid_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             prevRowIndex = GetDataGridItemCurrentRowIndex(e.GetPosition);
 
-            if(prevRowIndex < 0)
+            if (prevRowIndex < 0)
             {
                 return;
             }
@@ -452,7 +444,7 @@ namespace AutoClicker
             InstructionsDataGrid.SelectedIndex = prevRowIndex;
             Instruction selected = Instructions[prevRowIndex];
 
-            if(selected == null)
+            if (selected == null)
             {
                 return;
             }
@@ -464,7 +456,8 @@ namespace AutoClicker
                 {
                     InstructionsDataGrid.SelectedItem = selected;
                 }
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine("Error in preview left mouse: " + ex.Message);
             }
@@ -479,7 +472,7 @@ namespace AutoClicker
 
             int index = GetDataGridItemCurrentRowIndex(e.GetPosition);
 
-            if(index == prevRowIndex)
+            if (index == prevRowIndex)
             {
                 return;
             }

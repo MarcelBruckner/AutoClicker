@@ -8,7 +8,7 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:autoclicker="clr-namespace:AutoClicker"
         mc:Ignorable="d"
-        Title="Auto Clicker" Height="500" Width="900" Background="LightGray">
+        Title="Auto Clicker" Height="500" Width="900" Background="White">
 
     <Window.Resources>
         <!--<Style TargetType="DataGridColumnHeader">
@@ -68,20 +68,51 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel Orientation="Horizontal" Grid.Column="0" VerticalAlignment="Center">
-                <ToggleButton x:Name="PlayButton" IsChecked="{Binding ElementName=mainWindow, Path=IsRunning}" Padding="5 2" Grid.Column="1" Margin="5 0" Width="35">
-                    <Image Source="Images/play.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                <ToggleButton x:Name="PlayButton" BorderThickness="0" Background="Transparent" IsChecked="{Binding ElementName=mainWindow, Path=IsRunning, Mode=TwoWay}" Padding="2" Margin="5 0" Width="35" Height="35">
+                    <Image Source="Images/play.png" RenderOptions.BitmapScalingMode="HighQuality">
+                        <Image.ToolTip>
+                            <ToolTip>
+                                <TextBlock Text="Start playing the script."/>
+                            </ToolTip>
+                        </Image.ToolTip>
+                    </Image>
                 </ToggleButton>
-                <ToggleButton x:Name="RecordButton" IsChecked="{Binding ElementName=mainWindow, Path=IsRecording}" Padding="5 2"  Grid.Column="0" Margin="5 0" Width="35">
-                    <Image Source="Images/record.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                <ToggleButton x:Name="RecordButton" BorderThickness="0" Background="Transparent" IsChecked="{Binding ElementName=mainWindow, Path=IsRecording, Mode=TwoWay}" Padding="2" Margin="5 0" Width="35" Height="35">
+                    <Image Source="Images/record2.png" RenderOptions.BitmapScalingMode="HighQuality">
+                        <Image.ToolTip>
+                            <ToolTip>
+                                <TextBlock Text="Start recording some instructions."/>
+                            </ToolTip>
+                        </Image.ToolTip>
+                    </Image>
                 </ToggleButton>
-                <CheckBox x:Name="RecordWithDelayCheckBox" IsChecked="{ Binding ElementName=mainWindow, Path=WithDelay}" VerticalAlignment="Center" Content="With Delay" Margin="5 2"/>
+                <ToggleButton x:Name="WithDelayButton" BorderThickness="0" Background="Transparent" IsChecked="{Binding ElementName=mainWindow, Path=WithDelay, Mode=TwoWay}" Padding="2" Margin="5 0" Width="35" Height="35">
+                    <Image Source="Images/stopwatch2.png" RenderOptions.BitmapScalingMode="HighQuality">
+                        <Image.ToolTip>
+                            <ToolTip>
+                                <TextBlock Text="Enable delay measurement between instructions."/>
+                            </ToolTip>
+                        </Image.ToolTip>
+                    </Image>
+                </ToggleButton>
+                <!--<CheckBox x:Name="RecordWithDelayCheckBox" IsChecked="{ Binding ElementName=mainWindow, Path=WithDelay, Mode=TwoWay}" VerticalAlignment="Center" Content="With Delay" Margin="5 2"/>-->
             </StackPanel>
 
             <TextBlock Foreground="Black" FontSize="16" Grid.Column="1" Text="Auto Clicker" FontWeight="Bold" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
             <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                <TextBox x:Name="RepetitionsTextBox" TextChanged="RepetitionsTextBox_TextChanged" Text="5" MaxLength="5" VerticalAlignment="Center" Width="40" TextAlignment="Right"/>
-                <CheckBox x:Name="InfiniteCheckBox" IsChecked="{Binding ElementName=mainWindow, Path=Infinite}" VerticalAlignment="Center" Margin="5 0" Content="Infinite"/>
+                <TextBox x:Name="RepetitionsTextBox" IsEnabled="False" TextChanged="RepetitionsTextBox_TextChanged" Text="5" MaxLength="5" VerticalAlignment="Center" Width="40" TextAlignment="Right" Padding="2"/>
+
+                <ToggleButton x:Name="InfiniteButton" BorderThickness="0" Background="Transparent" IsChecked="{Binding ElementName=mainWindow, Path=Infinite, Mode=TwoWay}" Padding="2" Margin="5 0" Width="35" Height="35">
+                    <Image Source="Images/infinity.png" RenderOptions.BitmapScalingMode="HighQuality">
+                        <Image.ToolTip>
+                            <ToolTip>
+                                <TextBlock Text="Enable infinite looping."/>
+                            </ToolTip>
+                        </Image.ToolTip>
+                    </Image>
+                </ToggleButton>
+                <!--<CheckBox x:Name="InfiniteCheckBox" IsChecked="{Binding ElementName=mainWindow, Path=Infinite, Mode=TwoWay}" VerticalAlignment="Center" Margin="5 0" Content="Infinite"/>-->
             </StackPanel>
         </Grid>
         
