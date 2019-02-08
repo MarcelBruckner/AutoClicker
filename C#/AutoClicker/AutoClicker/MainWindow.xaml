@@ -113,7 +113,20 @@
                     <MenuItem Header="Delete" Click="DeleteFromContextMenu_Click"/>
                 </ContextMenu>
             </ItemsControl.ContextMenu>
-            
+
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsRunning}" Value="True">
+                            <Setter Property="Background" Value="Black"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsRunning}" Value="False">
+                            <Setter Property="Background" Value="White"></Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
+
             <DataGrid.Columns>
                 <!--<DataGridComboBoxColumn Header="Type" x:Name="TypeColumn" Width="3*" SelectedValueBinding="{Binding Type}" ItemsSource="{Binding Source={StaticResource Types}}"/>-->
                 <DataGridTemplateColumn Header="Type" x:Name="TypeColumn" Width="*"  MinWidth="100" TextElement.FontStretch="Expanded">

@@ -23,7 +23,7 @@ namespace AutoClicker
     {
         private const string FILE_FILTER = "AutoClicker Files (*.autocl)|*.autocl";
         private bool _withDelay;
-        private bool _infinite;
+        private bool _infinite = true;
         private bool _isRunning;
         private bool _isRecording;
         private int allRepetitions;
@@ -76,6 +76,7 @@ namespace AutoClicker
                     {
                         instruction.IsRunning = false;
                     }
+                    ResetHighlights();
                 }
             }
         }
@@ -174,6 +175,7 @@ namespace AutoClicker
                         else
                         {
                             bw.ReportProgress((i + 1) / 101, new[] { i + 1, j });
+                            Instructions[j].IsRunning = true;
                             Instructions[j].IsRunning = true;
                         }
                     }
@@ -368,20 +370,35 @@ namespace AutoClicker
 
         public void ResetHighlights()
         {
-            for (int i = 0; i < Instructions.Count; i++)
-            {
-                DataGridRow row = GetDataGridRowFromIndex(i);
-                row.Foreground = Brushes.Black;
-                row.Background = Brushes.White;
-            }
+            
+            //for (int i = 0; i < Instructions.Count; i++)
+            //{
+            //    try
+            //    {
+            //        DataGridRow row = GetDataGridRowFromIndex(i);
+            //        row.Foreground = Brushes.Black;
+            //        row.Background = Brushes.White;
+            //    }
+            //    catch(Exception e)
+            //    {
+            //        Console.WriteLine("Error reset: " + e.Message);
+            //    }
+            //}
         }
 
         public void HighlightLine(int number, SolidColorBrush foreground, SolidColorBrush background)
         {
-            ResetHighlights();
-            DataGridRow row = GetDataGridRowFromIndex(number);
-            row.Foreground = foreground;
-            row.Background = background;
+            //ResetHighlights();
+            //try
+            //{
+            //    DataGridRow row = GetDataGridRowFromIndex(number);
+
+            //    row.Foreground = foreground;
+            //    row.Background = background;
+            //}catch(Exception e)
+            //{
+            //    Console.WriteLine("In highlight: " + e.Message);
+            //}
         }
 
         public delegate Point GetDragDropPosition(IInputElement element);

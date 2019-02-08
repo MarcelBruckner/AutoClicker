@@ -28,24 +28,26 @@ namespace AutoClicker
 
         private const int delayStep = 500;
 
-        public virtual bool IsRunning
+        public bool IsRunning
         {
             get => _isRunning;
             set
             {
                 _isRunning = value;
+                OnPropertyChanged("IsRunning");
                 int i = 0;
-                while (IsRunning && (Repetitions == -1 || i < Repetitions))
+                while (IsRunning && i < Repetitions)
                 {
                     SpecificExecute();
                     DoDelay();
                     i++;
                 }
+                _isRunning = false;
+                OnPropertyChanged("IsRunning");
             }
         }
 
-        public InstructionType Type { get => _type;
-            set { _type = value; Console.WriteLine(value);  OnPropertyChanged("Type"); } }
+        public InstructionType Type { get => _type; set { _type = value; Console.WriteLine(value); OnPropertyChanged("Type"); } }
 
         public long Delay { get => _delay; set { _delay = value; OnPropertyChanged("Delay"); } }
         public int Repetitions { get => _repetitions; set { _repetitions = value; OnPropertyChanged("Repetitions"); } }
@@ -54,11 +56,9 @@ namespace AutoClicker
         public bool Ctrl { get => _ctrl; set { _ctrl = value; OnPropertyChanged("Ctrl"); } }
         public bool Alt { get => _alt; set { _alt = value; OnPropertyChanged("Alt"); } }
 
-        public VirtualKeyCode Key { get => _key;
-            set { _key = value; OnPropertyChanged("Key"); } }
+        public VirtualKeyCode Key { get => _key; set { _key = value; OnPropertyChanged("Key"); } }
 
-        public ButtonType Button { get => _button;
-            set { _button = value; OnPropertyChanged("Button"); } }
+        public ButtonType Button { get => _button; set { _button = value; OnPropertyChanged("Button"); } }
         public int X { get => _x; set { _x = value; OnPropertyChanged("X"); } }
         public int Y { get => _y; set { _y = value; OnPropertyChanged("Y"); } }
 
@@ -139,7 +139,7 @@ namespace AutoClicker
             while (IsRunning && toDelay > delayStep)
             {
                 toDelay -= delayStep;
-                Thread.Sleep(toDelay);
+                Thread.Sleep(delayStep);
             }
             Thread.Sleep(toDelay);
         }
