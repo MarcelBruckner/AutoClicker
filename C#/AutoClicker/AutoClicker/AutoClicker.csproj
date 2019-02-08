@@ -79,6 +79,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="CheckBoxColumnConverter.cs" />
+    <Compile Include="Converters\ComboBoxConverter.cs" />
+    <Compile Include="Converters\ValueToEqualsParameterConverter.cs" />
     <Compile Include="IKeyboardListener.cs" />
     <Compile Include="Enums\ButtonType.cs" />
     <Compile Include="Enums\InstructionType.cs" />
@@ -142,6 +144,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="favicon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\pause.png" />
+    <Resource Include="Images\play.png" />
+    <Resource Include="Images\record.png" />
+    <Resource Include="Images\stop.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

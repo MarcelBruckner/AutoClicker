@@ -22,25 +22,30 @@ namespace AutoClicker
         private int _endY;
         private bool _isRunning = false;
         private int _wheelDelta;
+        private InstructionType _type;
         internal static readonly int MAX_UNCERTAINTY = 20;
         #endregion
 
-        public InstructionType Type { get; set; }
+        private const int delayStep = 500;
 
         public virtual bool IsRunning
         {
             get => _isRunning;
-            set {
+            set
+            {
                 _isRunning = value;
                 int i = 0;
                 while (IsRunning && (Repetitions == -1 || i < Repetitions))
                 {
                     SpecificExecute();
-                    Thread.Sleep((int)Delay);
+                    DoDelay();
                     i++;
                 }
             }
         }
+
+        public InstructionType Type { get => _type;
+            set { _type = value; Console.WriteLine(value);  OnPropertyChanged("Type"); } }
 
         public long Delay { get => _delay; set { _delay = value; OnPropertyChanged("Delay"); } }
         public int Repetitions { get => _repetitions; set { _repetitions = value; OnPropertyChanged("Repetitions"); } }
@@ -49,9 +54,11 @@ namespace AutoClicker
         public bool Ctrl { get => _ctrl; set { _ctrl = value; OnPropertyChanged("Ctrl"); } }
         public bool Alt { get => _alt; set { _alt = value; OnPropertyChanged("Alt"); } }
 
-        public VirtualKeyCode Key { get => _key; set { _key = value; OnPropertyChanged("Key"); } }
+        public VirtualKeyCode Key { get => _key;
+            set { _key = value; OnPropertyChanged("Key"); } }
 
-        public ButtonType Button { get => _button; set { _button = value; OnPropertyChanged("Button"); } }
+        public ButtonType Button { get => _button;
+            set { _button = value; OnPropertyChanged("Button"); } }
         public int X { get => _x; set { _x = value; OnPropertyChanged("X"); } }
         public int Y { get => _y; set { _y = value; OnPropertyChanged("Y"); } }
 
@@ -124,7 +131,19 @@ namespace AutoClicker
 
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion
-        
+
+        private void DoDelay()
+        {
+            int toDelay = (int)Delay;
+
+            while (IsRunning && toDelay > delayStep)
+            {
+                toDelay -= delayStep;
+                Thread.Sleep(toDelay);
+            }
+            Thread.Sleep(toDelay);
+        }
+
         protected virtual void SpecificExecute()
         {
             switch (Type)
@@ -155,12 +174,12 @@ namespace AutoClicker
                 return false;
             }
 
-            bool standards = 
+            bool standards =
                 Type == other.Type &&
                 Shift == other.Shift &&
                 Alt == other.Alt &&
                 Ctrl == other.Alt;
-            
+
             switch (Type)
             {
                 case InstructionType.WHEEL:

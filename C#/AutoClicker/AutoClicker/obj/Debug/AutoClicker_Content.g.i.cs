@@ -8,6 +8,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("favicon.ico")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/pause.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/play.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/record.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/stop.png")]
 
 
