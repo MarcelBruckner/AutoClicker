@@ -15,12 +15,20 @@
             <Setter Property="HorizontalContentAlignment" Value="Center" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
         </Style>-->
+        <Style TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
         <Style TargetType="DataGridCell">
             <Setter Property="HorizontalContentAlignment" Value="Center" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
         </Style>
-        <autoclicker:ValueToEqualsParameterConverter x:Key="Testconverter"/>
-        <autoclicker:ComboBoxConverter x:Key="StaticComboBoxConverter"/>
+        <autoclicker:ValueToEqualsParameterConverter x:Key="TextBoxConverter"/>
+        <autoclicker:ComboBoxConverter x:Key="ComboBoxConverter"/>
         <ObjectDataProvider x:Key="Types" MethodName="GetValues" ObjectType="{x:Type core:Enum}">
             <ObjectDataProvider.MethodParameters>
                 <x:Type Type="autoclicker:InstructionType"/>
@@ -150,9 +158,11 @@
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding IsRunning}" Value="True">
                             <Setter Property="Background" Value="Black"></Setter>
+                            <Setter Property="Foreground" Value="White"></Setter>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding IsRunning}" Value="False">
                             <Setter Property="Background" Value="White"></Setter>
+                            <Setter Property="Foreground" Value="Black"></Setter>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -177,7 +187,7 @@
                                     <MultiDataTrigger.Conditions>
                                         <Condition>
                                             <Condition.Binding>
-                                                <Binding Path="Type" Converter="{StaticResource Testconverter}" >
+                                                <Binding Path="Type" Converter="{StaticResource TextBoxConverter}" >
                                                     <Binding.ConverterParameter>
                                                         <autoclicker:InstructionType>CLICK</autoclicker:InstructionType>
                                                     </Binding.ConverterParameter>
@@ -189,7 +199,7 @@
                                         </Condition>
                                         <Condition>
                                             <Condition.Binding>
-                                                <Binding Path="Type" Converter="{StaticResource Testconverter}" >
+                                                <Binding Path="Type" Converter="{StaticResource TextBoxConverter}" >
                                                     <Binding.ConverterParameter>
                                                         <autoclicker:InstructionType>WHEEL</autoclicker:InstructionType>
                                                     </Binding.ConverterParameter>
@@ -201,7 +211,7 @@
                                         </Condition>
                                         <Condition>
                                             <Condition.Binding>
-                                                <Binding Path="Type" Converter="{StaticResource Testconverter}" >
+                                                <Binding Path="Type" Converter="{StaticResource TextBoxConverter}" >
                                                     <Binding.ConverterParameter>
                                                         <autoclicker:InstructionType>DELAY</autoclicker:InstructionType>
                                                     </Binding.ConverterParameter>
@@ -213,7 +223,7 @@
                                         </Condition>
                                         <Condition>
                                             <Condition.Binding>
-                                                <Binding Path="Type" Converter="{StaticResource Testconverter}" >
+                                                <Binding Path="Type" Converter="{StaticResource TextBoxConverter}" >
                                                     <Binding.ConverterParameter>
                                                         <autoclicker:InstructionType>DRAG</autoclicker:InstructionType>
                                                     </Binding.ConverterParameter>
@@ -225,7 +235,7 @@
                                         </Condition>
                                         <Condition>
                                             <Condition.Binding>
-                                                <Binding Path="Type" Converter="{StaticResource Testconverter}" >
+                                                <Binding Path="Type" Converter="{StaticResource TextBoxConverter}" >
                                                     <Binding.ConverterParameter>
                                                         <autoclicker:InstructionType>KEYBOARD</autoclicker:InstructionType>
                                                     </Binding.ConverterParameter>
@@ -237,7 +247,7 @@
                                         </Condition>
                                         <Condition>
                                             <Condition.Binding>
-                                                <Binding Path="Type" Converter="{StaticResource Testconverter}" >
+                                                <Binding Path="Type" Converter="{StaticResource TextBoxConverter}" >
                                                     <Binding.ConverterParameter>
                                                         <autoclicker:InstructionType>END_LOOP</autoclicker:InstructionType>
                                                     </Binding.ConverterParameter>
@@ -265,7 +275,7 @@
                                     <MultiDataTrigger.Conditions>
                                         <Condition>
                                             <Condition.Binding>
-                                                <Binding Path="Type" Converter="{StaticResource Testconverter}" >
+                                                <Binding Path="Type" Converter="{StaticResource TextBoxConverter}" >
                                                     <Binding.ConverterParameter>
                                                         <autoclicker:InstructionType>CLICK</autoclicker:InstructionType>
                                                     </Binding.ConverterParameter>
@@ -277,7 +287,7 @@
                                         </Condition>
                                         <Condition>
                                             <Condition.Binding>
-                                                <Binding Path="Type" Converter="{StaticResource Testconverter}" >
+                                                <Binding Path="Type" Converter="{StaticResource TextBoxConverter}" >
                                                     <Binding.ConverterParameter>
                                                         <autoclicker:InstructionType>WHEEL</autoclicker:InstructionType>
                                                     </Binding.ConverterParameter>
@@ -289,7 +299,7 @@
                                         </Condition>
                                         <Condition>
                                             <Condition.Binding>
-                                                <Binding Path="Type" Converter="{StaticResource Testconverter}" >
+                                                <Binding Path="Type" Converter="{StaticResource TextBoxConverter}" >
                                                     <Binding.ConverterParameter>
                                                         <autoclicker:InstructionType>DELAY</autoclicker:InstructionType>
                                                     </Binding.ConverterParameter>
@@ -301,7 +311,7 @@
                                         </Condition>
                                         <Condition>
                                             <Condition.Binding>
-                                                <Binding Path="Type" Converter="{StaticResource Testconverter}" >
+                                                <Binding Path="Type" Converter="{StaticResource TextBoxConverter}" >
                                                     <Binding.ConverterParameter>
                                                         <autoclicker:InstructionType>DRAG</autoclicker:InstructionType>
                                                     </Binding.ConverterParameter>
@@ -313,7 +323,7 @@
                                         </Condition>
                                         <Condition>
                                             <Condition.Binding>
-                                                <Binding Path="Type" Converter="{StaticResource Testconverter}" >
+                                                <Binding Path="Type" Converter="{StaticResource TextBoxConverter}" >
                                                     <Binding.ConverterParameter>
                                                         <autoclicker:InstructionType>KEYBOARD</autoclicker:InstructionType>
                                                     </Binding.ConverterParameter>
@@ -325,7 +335,7 @@
                                         </Condition>
                                         <Condition>
                                             <Condition.Binding>
-                                                <Binding Path="Type" Converter="{StaticResource Testconverter}" >
+                                                <Binding Path="Type" Converter="{StaticResource TextBoxConverter}" >
                                                     <Binding.ConverterParameter>
                                                         <autoclicker:InstructionType>LOOP</autoclicker:InstructionType>
                                                     </Binding.ConverterParameter>
@@ -356,7 +366,7 @@
                                             <MultiDataTrigger.Conditions>
                                                 <Condition>
                                                     <Condition.Binding>
-                                                        <Binding Path="Type" Converter="{StaticResource StaticComboBoxConverter}" >
+                                                        <Binding Path="Type" Converter="{StaticResource ComboBoxConverter}" >
                                                             <Binding.ConverterParameter>
                                                                 <autoclicker:InstructionType>CLICK</autoclicker:InstructionType>
                                                             </Binding.ConverterParameter>
@@ -368,7 +378,7 @@
                                                 </Condition>
                                                 <Condition>
                                                     <Condition.Binding>
-                                                        <Binding Path="Type" Converter="{StaticResource StaticComboBoxConverter}" >
+                                                        <Binding Path="Type" Converter="{StaticResource ComboBoxConverter}" >
                                                             <Binding.ConverterParameter>
                                                                 <autoclicker:InstructionType>DRAG</autoclicker:InstructionType>
                                                             </Binding.ConverterParameter>
@@ -400,7 +410,7 @@
                                     <MultiDataTrigger.Conditions>
                                         <Condition>
                                             <Condition.Binding>
-                                                <Binding Path="Type" Converter="{StaticResource Testconverter}" >
+                                                <Binding Path="Type" Converter="{StaticResource TextBoxConverter}" >
                                                     <Binding.ConverterParameter>
                                                         <autoclicker:InstructionType>CLICK</autoclicker:InstructionType>
                                                     </Binding.ConverterParameter>
@@ -412,7 +422,7 @@
                                         </Condition>
                                         <Condition>
                                             <Condition.Binding>
-                                                <Binding Path="Type" Converter="{StaticResource Testconverter}" >
+                                                <Binding Path="Type" Converter="{StaticResource TextBoxConverter}" >
                                                     <Binding.ConverterParameter>
                                                         <autoclicker:InstructionType>WHEEL</autoclicker:InstructionType>
                                                     </Binding.ConverterParameter>
@@ -424,7 +434,7 @@
                                         </Condition>
                                         <Condition>
                                             <Condition.Binding>
-                                                <Binding Path="Type" Converter="{StaticResource Testconverter}" >
+                                                <Binding Path="Type" Converter="{StaticResource TextBoxConverter}" >
                                                     <Binding.ConverterParameter>
                                                         <autoclicker:InstructionType>DRAG</autoclicker:InstructionType>
                                                     </Binding.ConverterParameter>
@@ -452,7 +462,7 @@
                                     <MultiDataTrigger.Conditions>
                                         <Condition>
                                             <Condition.Binding>
-                                                <Binding Path="Type" Converter="{StaticResource Testconverter}" >
+                                                <Binding Path="Type" Converter="{StaticResource TextBoxConverter}" >
                                                     <Binding.ConverterParameter>
                                                         <autoclicker:InstructionType>CLICK</autoclicker:InstructionType>
                                                     </Binding.ConverterParameter>
@@ -464,7 +474,7 @@
                                         </Condition>
                                         <Condition>
                                             <Condition.Binding>
-                                                <Binding Path="Type" Converter="{StaticResource Testconverter}" >
+                                                <Binding Path="Type" Converter="{StaticResource TextBoxConverter}" >
                                                     <Binding.ConverterParameter>
                                                         <autoclicker:InstructionType>WHEEL</autoclicker:InstructionType>
                                                     </Binding.ConverterParameter>
@@ -476,7 +486,7 @@
                                         </Condition>
                                         <Condition>
                                             <Condition.Binding>
-                                                <Binding Path="Type" Converter="{StaticResource Testconverter}" >
+                                                <Binding Path="Type" Converter="{StaticResource TextBoxConverter}" >
                                                     <Binding.ConverterParameter>
                                                         <autoclicker:InstructionType>DRAG</autoclicker:InstructionType>
                                                     </Binding.ConverterParameter>
@@ -504,7 +514,7 @@
                                     <MultiDataTrigger.Conditions>
                                         <Condition>
                                             <Condition.Binding>
-                                                <Binding Path="Type" Converter="{StaticResource Testconverter}" >
+                                                <Binding Path="Type" Converter="{StaticResource TextBoxConverter}" >
                                                     <Binding.ConverterParameter>
                                                         <autoclicker:InstructionType>DRAG</autoclicker:InstructionType>
                                                     </Binding.ConverterParameter>
@@ -532,7 +542,7 @@
                                     <MultiDataTrigger.Conditions>
                                         <Condition>
                                             <Condition.Binding>
-                                                <Binding Path="Type" Converter="{StaticResource Testconverter}" >
+                                                <Binding Path="Type" Converter="{StaticResource TextBoxConverter}" >
                                                     <Binding.ConverterParameter>
                                                         <autoclicker:InstructionType>DRAG</autoclicker:InstructionType>
                                                     </Binding.ConverterParameter>
@@ -560,7 +570,7 @@
                                     <MultiDataTrigger.Conditions>
                                         <Condition>
                                             <Condition.Binding>
-                                                <Binding Path="Type" Converter="{StaticResource Testconverter}" >
+                                                <Binding Path="Type" Converter="{StaticResource TextBoxConverter}" >
                                                     <Binding.ConverterParameter>
                                                         <autoclicker:InstructionType>WHEEL</autoclicker:InstructionType>
                                                     </Binding.ConverterParameter>
@@ -591,7 +601,7 @@
                                             <MultiDataTrigger.Conditions>
                                                 <Condition>
                                                     <Condition.Binding>
-                                                        <Binding Path="Type" Converter="{StaticResource StaticComboBoxConverter}" >
+                                                        <Binding Path="Type" Converter="{StaticResource ComboBoxConverter}" >
                                                             <Binding.ConverterParameter>
                                                                 <autoclicker:InstructionType>CLICK</autoclicker:InstructionType>
                                                             </Binding.ConverterParameter>
@@ -603,7 +613,7 @@
                                                 </Condition>
                                                 <Condition>
                                                     <Condition.Binding>
-                                                        <Binding Path="Type" Converter="{StaticResource StaticComboBoxConverter}" >
+                                                        <Binding Path="Type" Converter="{StaticResource ComboBoxConverter}" >
                                                             <Binding.ConverterParameter>
                                                                 <autoclicker:InstructionType>DRAG</autoclicker:InstructionType>
                                                             </Binding.ConverterParameter>
@@ -615,7 +625,7 @@
                                                 </Condition>
                                                 <Condition>
                                                     <Condition.Binding>
-                                                        <Binding Path="Type" Converter="{StaticResource StaticComboBoxConverter}" >
+                                                        <Binding Path="Type" Converter="{StaticResource ComboBoxConverter}" >
                                                             <Binding.ConverterParameter>
                                                                 <autoclicker:InstructionType>KEYBOARD</autoclicker:InstructionType>
                                                             </Binding.ConverterParameter>
@@ -627,7 +637,7 @@
                                                 </Condition>
                                                 <Condition>
                                                     <Condition.Binding>
-                                                        <Binding Path="Type" Converter="{StaticResource StaticComboBoxConverter}" >
+                                                        <Binding Path="Type" Converter="{StaticResource ComboBoxConverter}" >
                                                             <Binding.ConverterParameter>
                                                                 <autoclicker:InstructionType>WHEEL</autoclicker:InstructionType>
                                                             </Binding.ConverterParameter>
@@ -660,7 +670,7 @@
                                             <MultiDataTrigger.Conditions>
                                                 <Condition>
                                                     <Condition.Binding>
-                                                        <Binding Path="Type" Converter="{StaticResource StaticComboBoxConverter}" >
+                                                        <Binding Path="Type" Converter="{StaticResource ComboBoxConverter}" >
                                                             <Binding.ConverterParameter>
                                                                 <autoclicker:InstructionType>CLICK</autoclicker:InstructionType>
                                                             </Binding.ConverterParameter>
@@ -672,7 +682,7 @@
                                                 </Condition>
                                                 <Condition>
                                                     <Condition.Binding>
-                                                        <Binding Path="Type" Converter="{StaticResource StaticComboBoxConverter}" >
+                                                        <Binding Path="Type" Converter="{StaticResource ComboBoxConverter}" >
                                                             <Binding.ConverterParameter>
                                                                 <autoclicker:InstructionType>DRAG</autoclicker:InstructionType>
                                                             </Binding.ConverterParameter>
@@ -684,7 +694,7 @@
                                                 </Condition>
                                                 <Condition>
                                                     <Condition.Binding>
-                                                        <Binding Path="Type" Converter="{StaticResource StaticComboBoxConverter}" >
+                                                        <Binding Path="Type" Converter="{StaticResource ComboBoxConverter}" >
                                                             <Binding.ConverterParameter>
                                                                 <autoclicker:InstructionType>KEYBOARD</autoclicker:InstructionType>
                                                             </Binding.ConverterParameter>
@@ -696,7 +706,7 @@
                                                 </Condition>
                                                 <Condition>
                                                     <Condition.Binding>
-                                                        <Binding Path="Type" Converter="{StaticResource StaticComboBoxConverter}" >
+                                                        <Binding Path="Type" Converter="{StaticResource ComboBoxConverter}" >
                                                             <Binding.ConverterParameter>
                                                                 <autoclicker:InstructionType>WHEEL</autoclicker:InstructionType>
                                                             </Binding.ConverterParameter>
@@ -729,7 +739,7 @@
                                             <MultiDataTrigger.Conditions>
                                                 <Condition>
                                                     <Condition.Binding>
-                                                        <Binding Path="Type" Converter="{StaticResource StaticComboBoxConverter}" >
+                                                        <Binding Path="Type" Converter="{StaticResource ComboBoxConverter}" >
                                                             <Binding.ConverterParameter>
                                                                 <autoclicker:InstructionType>CLICK</autoclicker:InstructionType>
                                                             </Binding.ConverterParameter>
@@ -741,7 +751,7 @@
                                                 </Condition>
                                                 <Condition>
                                                     <Condition.Binding>
-                                                        <Binding Path="Type" Converter="{StaticResource StaticComboBoxConverter}" >
+                                                        <Binding Path="Type" Converter="{StaticResource ComboBoxConverter}" >
                                                             <Binding.ConverterParameter>
                                                                 <autoclicker:InstructionType>DRAG</autoclicker:InstructionType>
                                                             </Binding.ConverterParameter>
@@ -753,7 +763,7 @@
                                                 </Condition>
                                                 <Condition>
                                                     <Condition.Binding>
-                                                        <Binding Path="Type" Converter="{StaticResource StaticComboBoxConverter}" >
+                                                        <Binding Path="Type" Converter="{StaticResource ComboBoxConverter}" >
                                                             <Binding.ConverterParameter>
                                                                 <autoclicker:InstructionType>KEYBOARD</autoclicker:InstructionType>
                                                             </Binding.ConverterParameter>
@@ -765,7 +775,7 @@
                                                 </Condition>
                                                 <Condition>
                                                     <Condition.Binding>
-                                                        <Binding Path="Type" Converter="{StaticResource StaticComboBoxConverter}" >
+                                                        <Binding Path="Type" Converter="{StaticResource ComboBoxConverter}" >
                                                             <Binding.ConverterParameter>
                                                                 <autoclicker:InstructionType>WHEEL</autoclicker:InstructionType>
                                                             </Binding.ConverterParameter>
@@ -799,7 +809,7 @@
                                             <MultiDataTrigger.Conditions>
                                                 <Condition>
                                                     <Condition.Binding>
-                                                        <Binding Path="Type" Converter="{StaticResource StaticComboBoxConverter}" >
+                                                        <Binding Path="Type" Converter="{StaticResource ComboBoxConverter}" >
                                                             <Binding.ConverterParameter>
                                                                 <autoclicker:InstructionType>KEYBOARD</autoclicker:InstructionType>
                                                             </Binding.ConverterParameter>

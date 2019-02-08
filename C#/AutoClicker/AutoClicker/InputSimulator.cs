@@ -109,7 +109,7 @@ namespace AutoClicker
             MouseUp(button, endX, endY, hotkeys);
         }
 
-        public static void MouseDown(int button, int x, int y,  params VirtualKeyCode[] hotkeys)
+        public static void MouseDown(int button, int x, int y, params VirtualKeyCode[] hotkeys)
         {
             KeyDown(hotkeys);
             MoveMouse(x,y);
@@ -139,7 +139,7 @@ namespace AutoClicker
 
         public static void MouseUp(int button, int x, int y, params VirtualKeyCode[] hotkeys)
         {
-            MoveMouse(x,y);
+            MoveMouse(x,y, 0);
 
             INPUT mouseDownInput = new INPUT
             {
@@ -175,11 +175,16 @@ namespace AutoClicker
             MouseUp(button, x, y, hotkeys);
         }
 
-        public static void MoveMouse(int x, int y)
+        public static void MoveMouse(Point position, int delay = 20)
+        {
+            MoveMouse(position.X, position.Y, delay);
+        }
+
+            public static void MoveMouse(int x, int y, int delay = 20)
         {
             Point toMove = new Point(x, y);
             Cursor.Position = toMove;
-            Thread.Sleep(20);
+            Thread.Sleep(delay);
             Cursor.Position = toMove;
         }
 

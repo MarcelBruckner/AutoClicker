@@ -144,23 +144,19 @@ namespace AutoClicker
 
         private void DoDelay()
         {
-            int toDelay = (int)Delay;
+            long totalDelay = Delay;
 
-            while (IsRunning && toDelay > delayStep)
+            Delay = 0;
+
+            while (IsRunning && Delay < totalDelay)
             {
-                toDelay -= delayStep;
-                Thread.Sleep(delayStep);
-                Console.WriteLine("Delay Left: " + toDelay);
+                long toDelay = Math.Min(totalDelay, Math.Min(delayStep, totalDelay - Delay));
+                Delay += toDelay;
+                Thread.Sleep((int)toDelay);
+                Console.WriteLine("Delayed: " + toDelay + " - Delay passed: " + Delay);
             }
-            if (IsRunning)
-            {
-                Thread.Sleep(toDelay);
-                Console.WriteLine("Delay Finished");
-            }
-            else
-            {
-                Console.WriteLine("Interupted!");
-            }
+
+            Delay = totalDelay;
         }
 
         protected virtual void SpecificExecute()
