@@ -1,0 +1,12 @@
+C:\Users\ga58lum\Documents\RS-Bots\C#\AutoclickerApp\AutoclickerApp\AutoclickerApp\bin\Debug\netstandard2.0\AutoclickerApp.deps.json
+C:\Users\ga58lum\Documents\RS-Bots\C#\AutoclickerApp\AutoclickerApp\AutoclickerApp\bin\Debug\netstandard2.0\AutoclickerApp.dll
+C:\Users\ga58lum\Documents\RS-Bots\C#\AutoclickerApp\AutoclickerApp\AutoclickerApp\bin\Debug\netstandard2.0\AutoclickerApp.pdb
+C:\Users\ga58lum\Documents\RS-Bots\C#\AutoclickerApp\AutoclickerApp\AutoclickerApp\obj\Debug\netstandard2.0\AutoclickerApp.csprojAssemblyReference.cache
+C:\Users\ga58lum\Documents\RS-Bots\C#\AutoclickerApp\AutoclickerApp\AutoclickerApp\obj\Debug\netstandard2.0\App.xaml.g.cs
+C:\Users\ga58lum\Documents\RS-Bots\C#\AutoclickerApp\AutoclickerApp\AutoclickerApp\obj\Debug\netstandard2.0\MainPage.xaml.g.cs
+C:\Users\ga58lum\Documents\RS-Bots\C#\AutoclickerApp\AutoclickerApp\AutoclickerApp\obj\Debug\netstandard2.0\AutoclickerApp.csproj.CoreCompileInputs.cache
+C:\Users\ga58lum\Documents\RS-Bots\C#\AutoclickerApp\AutoclickerApp\AutoclickerApp\obj\Debug\netstandard2.0\AutoclickerApp.AssemblyInfoInputs.cache
+C:\Users\ga58lum\Documents\RS-Bots\C#\AutoclickerApp\AutoclickerApp\AutoclickerApp\obj\Debug\netstandard2.0\AutoclickerApp.AssemblyInfo.cs
+C:\Users\ga58lum\Documents\RS-Bots\C#\AutoclickerApp\AutoclickerApp\AutoclickerApp\obj\Debug\netstandard2.0\XamlC.stamp
+C:\Users\ga58lum\Documents\RS-Bots\C#\AutoclickerApp\AutoclickerApp\AutoclickerApp\obj\Debug\netstandard2.0\AutoclickerApp.dll
+C:\Users\ga58lum\Documents\RS-Bots\C#\AutoclickerApp\AutoclickerApp\AutoclickerApp\obj\Debug\netstandard2.0\AutoclickerApp.pdb

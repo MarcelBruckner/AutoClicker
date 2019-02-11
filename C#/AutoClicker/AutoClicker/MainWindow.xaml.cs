@@ -108,11 +108,14 @@ namespace AutoClicker
         }
         private Instruction runningInstruction = new Instruction();
 
+        private TCPServer server;
+
         public MainWindow()
         {
             InitializeComponent();
             recorder = new Recorder(this);
             interupt = new KeyboardInterupt(OnKeyboardInterupt);
+            server = new TCPServer(); 
             InstructionsDataGrid.ItemsSource = Instructions;
 
             //Instructions.Add(new Instruction(InstructionType.CLICK));

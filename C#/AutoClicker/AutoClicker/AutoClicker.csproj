@@ -88,6 +88,7 @@
     <Compile Include="Enums\VirtualKeyCode.cs" />
     <Compile Include="KeyboardInterupt.cs" />
     <Compile Include="InputSimulator.cs" />
+    <Compile Include="TCPServer.cs" />
     <Compile Include="Recorder.cs" />
     <Compile Include="StringManager.cs" />
     <Page Include="MainWindow.xaml">
