@@ -167,9 +167,11 @@ namespace AutoClicker
                         runningInstruction = Instructions[j];
                         if (runningInstruction.Type == InstructionType.LOOP)
                         {
-                            int loopRepetitions = runningInstruction.Repetitions;
-                            for (int l = 1; l < loopRepetitions; l++)
+                            Instruction loop = Instructions[j];
+                            int loopRepetitions = loop.Repetitions;
+                            for (int l = 1; l <= loopRepetitions; l++)
                             {
+                                loop.Repetitions = l;
                                 int loopCounter = j + 1;
                                 while (loopCounter < Instructions.Count)
                                 {

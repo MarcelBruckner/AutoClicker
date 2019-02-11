@@ -45,14 +45,16 @@ namespace AutoClicker
             int r = x.Next();
             Console.WriteLine("started new run: " + r);
             IsRunning = true;
-            int i = 0;
-            while (IsRunning && i < Repetitions)
+            int totalRepetitions = Repetitions;
+            Repetitions = 1;
+            while (IsRunning && Repetitions <= totalRepetitions)
             {
                 SpecificExecute();
                 DoDelay();
-                i++;
+                Repetitions++;
             }
             IsRunning = false;
+            Repetitions = totalRepetitions;
             Console.WriteLine("finished new run: " + r);
         }
 
