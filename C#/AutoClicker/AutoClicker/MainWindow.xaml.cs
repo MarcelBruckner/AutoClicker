@@ -170,31 +170,37 @@ namespace AutoClicker
                         runningInstruction = Instructions[j];
                         if (runningInstruction.Type == InstructionType.LOOP)
                         {
-                            Instruction loop = Instructions[j];
-                            int loopRepetitions = loop.Repetitions;
-                            for (int l = 1; l <= loopRepetitions; l++)
+                            int start = j + 1;
+                            int end = Instructions.Count;
+                            for (int l = start; l < Instructions.Count; l++)
                             {
-                                loop.Repetitions = l;
-                                int loopCounter = j + 1;
-                                while (loopCounter < Instructions.Count)
+                                if(Instructions[l].Type == InstructionType.END_LOOP)
+                                {
+                                    end = l;
+                                    break;
+                                }
+                            }
+
+                            int loops = Instructions[j].Repetitions;
+                            for(int l = 0; l < loops; l++)
+                            {
+                                Instructions[j].Repetitions = l + 1;
+
+                                for (int m = start; m < end; m++)
                                 {
                                     if (!IsRunning)
                                     {
                                         StopAll();
+                                        Instructions[j].Repetitions = loops;
                                         return;
                                     }
-                                    runningInstruction = Instructions[loopCounter];
-                                    if (runningInstruction.Type == InstructionType.END_LOOP)
-                                    {
-                                        loopCounter = j;
-                                        break;
-                                    }
-
-                                    bw.ReportProgress((i + 1) / 101, new[] { i + 1, loopCounter });
+                                    bw.ReportProgress((i + 1) / 101, new[] { i + 1, m });
+                                    runningInstruction = Instructions[m];
                                     runningInstruction.Run();
-                                    loopCounter++;
                                 }
                             }
+                            Instructions[j].Repetitions = loops;
+                            j = end;
                         }
                         else
                         {
