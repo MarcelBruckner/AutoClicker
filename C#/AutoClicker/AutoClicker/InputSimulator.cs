@@ -180,7 +180,8 @@ namespace AutoClicker
         public static void MoveMouse(Point position, int duration = 50)
         {
             //HumanWindMouse(position, 100, 100, 100, 100, 1);
-            SinusMove(position);
+            //SinusMove(position);
+            SpringMove(position);
         }
 
         public static void MoveMouse(int x, int y, int duration = 50)
@@ -266,7 +267,57 @@ namespace AutoClicker
 
 
         #region Own Human
-        public static void SinusMove(Point end, int duration = 200)
+        private static void SpringMove(Point endPoint, double stiffness = 0.5, int uncertainty = 5, double damping = 1.2, int step = 10)
+        {
+            var end = PointToVector(endPoint);
+            
+            var current = PointToVector(Cursor.Position);
+            double length = (end - current).Length;
+
+            double initialLength = Math.Abs(uncertainty);
+
+            double dt = step / 50.0;
+            var velocity = RandomVector(50);
+
+            while (length > initialLength)
+            {
+                var F = -stiffness * (length) * ((current - end) / length);
+
+                if(length > 200)
+                {
+                    velocity += RandomVector(25);
+                }
+                else if (length > 50) // Math.Min(50, initialLength * 5))
+                {
+                    velocity += RandomVector(10);
+                }
+                else
+                {
+                    velocity += RandomVector((int)(initialLength / 2.0));
+                }
+
+                current += dt * velocity;
+                velocity += dt * (F - damping * velocity);
+
+                Cursor.Position = VectorToPoint(current);
+                Thread.Sleep(step);
+
+                length = (end - current).Length;
+            }
+        }
+
+        private static System.Windows.Vector RandomVector(int maxLength)
+        {
+            double angle = ConvertToRadians(rnd.Next(360));
+            return new System.Windows.Vector(Math.Sin(angle), Math.Cos(angle)) * rnd.Next(0, maxLength);
+        }
+
+        private static void PrintVector(string message, System.Windows.Vector v)
+        {
+            Console.WriteLine(message + ": " + v.X + " - " + v.Y);
+        }
+
+        private static void SinusMove(Point end, int duration = 200)
         {
             int amplitude = rnd.Next(5, 50);
             if(rnd.NextDouble() < 0.5)
@@ -276,7 +327,7 @@ namespace AutoClicker
             SinusMove(end, amplitude, duration);
         }
 
-        public static void SinusMove(Point end, int amplitude, int duration = 200)
+        private static void SinusMove(Point end, int amplitude, int duration = 200)
         {
             System.Windows.Vector origin = PointToVector(Cursor.Position);
 
@@ -326,6 +377,11 @@ namespace AutoClicker
         private static System.Windows.Vector PointToVector(Point p)
         {
             return new System.Windows.Vector(p.X, p.Y);
+        }
+
+        private static Point VectorToPoint(System.Windows.Vector v)
+        {
+            return new Point((int)v.X, (int)v.Y);
         }
 
         public static double ConvertToRadians(double angle)
