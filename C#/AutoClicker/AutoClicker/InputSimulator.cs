@@ -99,6 +99,8 @@ namespace AutoClicker
         }
         #endregion
 
+        private static Random rnd = new Random(0);
+
         public static void MouseDrag(ButtonType button, int x, int y, int endX, int endY, params VirtualKeyCode[] hotkeys)
         {
             MouseDrag((int)button, x, y, endX, endY, hotkeys);
@@ -175,17 +177,24 @@ namespace AutoClicker
             MouseUp(button, x, y, hotkeys);
         }
 
-        public static void MoveMouse(Point position, int delay = 20)
+        public static void MoveMouse(Point position, int duration = 50)
         {
-            MoveMouse(position.X, position.Y, delay);
+            HumanWindMouse(position, 100, 100, 100, 100, 1);
         }
 
-            public static void MoveMouse(int x, int y, int delay = 20)
+        public static void MoveMouse(int x, int y, int duration = 50)
         {
-            Point toMove = new Point(x, y);
-            Cursor.Position = toMove;
-            Thread.Sleep(delay);
-            Cursor.Position = toMove;
+            MoveMouse(new Point(x, y), duration);
+        }
+
+        public static void JumpMouse(Point position)
+        {
+            Cursor.Position = position;
+        }
+
+        public static void JumpMouse(int x, int y)
+        {
+            JumpMouse(new Point(x, y));
         }
 
         public static void KeyDown(params VirtualKeyCode[] keys)
@@ -252,6 +261,153 @@ namespace AutoClicker
             mouseDownInput.mkhi.mi.dwFlags = MouseEventFlags.MOUSEEVENTF_WHEEL;
             mouseDownInput.mkhi.mi.mouseData = (uint)delta;
             SendInput(1, ref mouseDownInput, Marshal.SizeOf(new INPUT()));
+        }
+
+
+
+        private static double Distance(double x1, double y1, double x2, double y2)
+        {
+            return Math.Sqrt(Math.Pow(x2 - x1, 2) + Math.Pow(y2 - y1, 2));
+        }
+
+        public static double Hypot(double x, double y)
+        {
+            return Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
+        }
+
+        private static void HumanWindMouse(Point end, double gravity, double wind, double targetArea, float mouseSpeed, float maxUncertainty = 3)
+        {
+            double veloX = 0,
+                veloY = 0,
+                windX = 0,
+                windY = 0;
+
+            //var msp = _mouseSpeed;
+            var msp = mouseSpeed;
+            var sqrt2 = Math.Sqrt(2);
+            var sqrt3 = Math.Sqrt(3);
+            var sqrt5 = Math.Sqrt(5);
+
+            var tDist = Distance(Cursor.Position, end);
+            var t = (uint)(Environment.TickCount + 10000);
+
+            while (Distance(Cursor.Position, end) > Math.Max(3, maxUncertainty))
+            {
+                if (Environment.TickCount > t)
+                {
+                    break;
+                }
+
+                float dist = Distance(Cursor.Position, end);
+                wind = Math.Min(wind, dist);
+
+                if (dist < 1)
+                {
+                    dist = 1;
+                }
+
+                var d = (Math.Round(Math.Round(tDist) * 0.3) / 7);
+
+                if (d > 25)
+                {
+                    d = 25;
+                }
+
+                if (d < 5)
+                {
+                    d = 5;
+                }
+
+                double rCnc = rnd.Next(6);
+
+                if (rCnc == 1)
+                {
+                    d = 2;
+                }
+
+                double maxStep;
+
+                if (d <= Math.Round(dist))
+                {
+                    maxStep = d;
+                }
+                else
+                {
+                    maxStep = Math.Round(dist);
+                }
+
+                if (dist >= targetArea)
+                {
+                    windX = windX / sqrt3 + (rnd.Next((int)(Math.Round(wind) * 2 + 1)) - wind) / sqrt5;
+                    windY = windY / sqrt3 + (rnd.Next((int)(Math.Round(wind) * 2 + 1)) - wind) / sqrt5;
+                }
+                else
+                {
+                    windX = windX / sqrt2;
+                    windY = windY / sqrt2;
+                }
+
+                veloX = veloX + windX;
+                veloY = veloY + windY;
+                Console.WriteLine("Velocity: " + veloX + " - " + veloY);
+                veloX = veloX + gravity * (end.X - Cursor.Position.X) / dist;
+                veloY = veloY + gravity * (end.Y - Cursor.Position.Y) / dist;
+
+
+                if (Hypot(veloX, veloY) > maxStep)
+                {
+                    Console.WriteLine("in here");
+                    var randomDist = maxStep / 2.0 + rnd.Next((int)(Math.Round(maxStep) / 2));
+                    var veloMag = Math.Sqrt(veloX * veloX + veloY * veloY);
+                    veloX = (veloX / veloMag) * randomDist;
+                    veloY = (veloY / veloMag) * randomDist;
+                }
+
+                var lastX = Cursor.Position.X;
+                var lastY = Cursor.Position.Y;
+                Point current = new Point((int)(Cursor.Position.X + veloX), (int)(Cursor.Position.Y + veloY));
+
+                if (lastX != current.X || (lastY != current.Y))
+                {
+                    Cursor.Position = current;
+                }
+
+                var w = (rnd.Next((int)(Math.Round(100 / msp))) * 6);
+
+                if (w < 5)
+                {
+                    w = 5;
+                }
+
+                w = (int)Math.Round(w * 0.9);
+                Console.WriteLine("Remaining distance: " + Distance(Cursor.Position, end));
+                Thread.Sleep(w);
+            }
+
+            Console.WriteLine("cursor switched at: " + Cursor.Position.X + " - " + Cursor.Position.Y);
+        }
+
+        private static float Distance(Point a, Point b)
+        {
+            return Length(new Point(a.X - b.X, a.Y - b.Y));
+        }
+
+        private static float Length(Point a)
+        {
+            return (float)Math.Sqrt(Math.Pow(a.X, 2) + Math.Pow(a.Y, 2));
+        }
+
+        private static Point[] Normal(Point a, Point b)
+        {
+            Point r = new Point(b.X - a.X, b.Y - a.Y);
+            r = Normalize(r);
+            return new[] { new Point(-r.Y, r.X), new Point(r.Y - r.X) };
+        }
+
+        private static Point Normalize(Point r)
+        {
+            float length = Length(r);
+            return new Point((int)Math.Ceiling(r.X / length), (int)Math.Ceiling(r.Y / length));
         }
     }
 }
