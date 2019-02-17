@@ -82,6 +82,23 @@ namespace AutoClicker
         #region Constructors
         public Instruction() : this(InstructionType.DELAY, 0, 1, false, false, false) { }
 
+        public Instruction(Instruction other)
+        {
+            Delay = other.Delay;
+            Repetitions = other.Repetitions;
+            X = other.X;
+            Y = other.Y;
+            EndX = other.EndX;
+            EndY = other.EndY;
+            Ctrl = other.Ctrl;
+            Shift = other.Shift;
+            Alt = other.Alt;
+            Button = other.Button;
+            Key = other.Key;
+            WheelDelta = other.WheelDelta;
+            Type = other.Type;
+        }
+
         public Instruction(InstructionType type) : this(type, 0, 1, false, false, false) { }
 
         public Instruction(InstructionType type, long delay, int repetitions, bool shift, bool ctrl, bool alt)

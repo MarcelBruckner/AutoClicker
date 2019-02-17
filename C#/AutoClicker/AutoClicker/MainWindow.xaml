@@ -138,9 +138,10 @@
             
             <ItemsControl.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="_Click">
+                    <MenuItem Header="_Mouse">
                         <MenuItem Header="_Normal" Click="AddClick_Click"/>
                         <MenuItem Header="_Drag" Click="AddDrag_Click"/>
+                        <MenuItem Header="_Wheel" Click="AddWheel_Click"/>
                     </MenuItem>
                     <MenuItem Header="_Keyboard" Click="AddKeyboard_Click"/>
                     <MenuItem Header="_Loop">
@@ -149,6 +150,7 @@
                     </MenuItem>
                     <MenuItem Header="_Delay" Click="AddDelay_Click"/>
                     <Separator/>
+                    <MenuItem Header="Duplicate" Click="DuplicateFromContextMenu_Click"/>
                     <MenuItem Header="Delete" Click="DeleteFromContextMenu_Click"/>
                 </ContextMenu>
             </ItemsControl.ContextMenu>

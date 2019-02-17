@@ -49,6 +49,7 @@ namespace AutoClicker
                 }
                 else
                 {
+                    Activate();
                     interupt.RemoveHooks();
                     recorder.RemoveHooks();
                 }
@@ -73,6 +74,7 @@ namespace AutoClicker
                 {
                     interupt.RemoveHooks();
                     StopAll();
+                    Activate();
                 }
                 OnPropertyChanged("IsRunning");
             }
@@ -362,6 +364,10 @@ namespace AutoClicker
         {
             AddInstruction(new Instruction(InstructionType.DRAG));
         }
+        private void AddWheel_Click(object sender, RoutedEventArgs e)
+        {
+            AddInstruction(new Instruction(InstructionType.WHEEL));
+        }
 
         private void SelectedLineRemove_Click(object sender, RoutedEventArgs e)
         {
@@ -517,6 +523,27 @@ namespace AutoClicker
             //Remove the toDeleteFromBindedList object from your ObservableCollection
             Instructions.Remove(toDeleteFromBindedList);
         }
+
+        private void DuplicateFromContextMenu_Click(object sender, RoutedEventArgs e)
+        {
+            //Get the clicked MenuItem
+            var menuItem = (MenuItem)sender;
+
+            //Get the ContextMenu to which the menuItem belongs
+            var contextMenu = (ContextMenu)menuItem.Parent;
+
+            //Find the placementTarget
+            var item = (DataGrid)contextMenu.PlacementTarget;
+
+            //Get the underlying item, that you cast to your object that is bound
+            //to the DataGrid (and has subject and state as property)
+            var toDuplicate = (Instruction)item.SelectedCells[0].Item;
+
+            //Remove the toDeleteFromBindedList object from your ObservableCollection
+            Instructions.Insert(Instructions.IndexOf(toDuplicate), new Instruction(toDuplicate));
+        }
+
+        
         #endregion
 
         #region Cells
