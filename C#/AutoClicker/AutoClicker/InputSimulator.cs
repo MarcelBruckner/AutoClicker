@@ -179,7 +179,8 @@ namespace AutoClicker
 
         public static void MoveMouse(Point position, int duration = 50)
         {
-            HumanWindMouse(position, 100, 100, 100, 100, 1);
+            //HumanWindMouse(position, 100, 100, 100, 100, 1);
+            SinusMove(position);
         }
 
         public static void MoveMouse(int x, int y, int duration = 50)
@@ -264,7 +265,77 @@ namespace AutoClicker
         }
 
 
+        #region Own Human
+        public static void SinusMove(Point end, int duration = 200)
+        {
+            int amplitude = rnd.Next(5, 50);
+            if(rnd.NextDouble() < 0.5)
+            {
+                amplitude *= -1;
+            }
+            SinusMove(end, amplitude, duration);
+        }
 
+        public static void SinusMove(Point end, int amplitude, int duration = 200)
+        {
+            System.Windows.Vector origin = PointToVector(Cursor.Position);
+
+            System.Windows.Vector a = new System.Windows.Vector();
+            System.Windows.Vector b = PointToVector(end) - origin;
+
+            double steps = Math.Min((a - b).Length, duration);
+
+            if (steps > 0)
+            {
+                double angle = -System.Windows.Vector.AngleBetween(new System.Windows.Vector(1, 0), b);
+                double backAngle = ConvertToRadians(-angle);
+
+                double interval = Math.Cos(ConvertToRadians(angle)) * b.X + -Math.Sin(ConvertToRadians(angle)) * b.Y;
+
+                List<double> coefficients = new List<double>() { 1 };
+
+                int swings = 20;
+
+                for (int i = 0; i < swings; i++)
+                {
+                    coefficients.Add((rnd.NextDouble() * 2 - 1) / swings);
+                }
+
+                for (double x = 0; x < 1.0; x += 1 / steps)
+                {
+                    double y = 0;
+                    for (int i = 0; i < coefficients.Count; i++)
+                    {
+                        y += coefficients[i] * Math.Sin(x * (i + 2) * Math.PI);
+                    }
+
+                    y *= amplitude;
+                    System.Windows.Vector current = new System.Windows.Vector(
+                        Math.Cos(backAngle) * x * interval + -Math.Sin(backAngle) * y,
+                        Math.Sin(backAngle) * x * interval + Math.Cos(backAngle) * y);
+
+                    current += origin;
+                    Cursor.Position = new Point((int)current.X, (int)current.Y);
+                    Thread.Sleep((int)(duration / steps));
+                }
+            }
+
+            Cursor.Position = (end);
+        }
+
+        private static System.Windows.Vector PointToVector(Point p)
+        {
+            return new System.Windows.Vector(p.X, p.Y);
+        }
+
+        public static double ConvertToRadians(double angle)
+        {
+            return (Math.PI / 180) * angle;
+        }
+        #endregion
+
+
+        #region Human Wind Mouse
         private static double Distance(double x1, double y1, double x2, double y2)
         {
             return Math.Sqrt(Math.Pow(x2 - x1, 2) + Math.Pow(y2 - y1, 2));
@@ -409,5 +480,6 @@ namespace AutoClicker
             float length = Length(r);
             return new Point((int)Math.Ceiling(r.X / length), (int)Math.Ceiling(r.Y / length));
         }
+        #endregion
     }
 }
