@@ -25,6 +25,7 @@ namespace AutoClicker
         private bool _isRunning = false;
         private int _wheelDelta;
         private InstructionType _type;
+        private MovementType _movement;
         internal static readonly int MAX_UNCERTAINTY = 20;
         #endregion
 
@@ -71,6 +72,7 @@ namespace AutoClicker
         public VirtualKeyCode Key { get => _key; set { _key = value; OnPropertyChanged("Key"); } }
 
         public ButtonType Button { get => _button; set { _button = value; OnPropertyChanged("Button"); } }
+        public MovementType Movement { get => _movement; set { _movement = value; OnPropertyChanged("Move"); } }
         public int X { get => _x; set { _x = value; OnPropertyChanged("X"); } }
         public int Y { get => _y; set { _y = value; OnPropertyChanged("Y"); } }
 
@@ -183,16 +185,16 @@ namespace AutoClicker
             switch (Type)
             {
                 case InstructionType.CLICK:
-                    InputSimulator.MouseClick(Button, X, Y, GetHotkeys());
+                    InputSimulator.MouseClick(Movement, Button, X, Y, GetHotkeys());
                     break;
                 case InstructionType.DRAG:
-                    InputSimulator.MouseDrag(Button, X, Y, EndX, EndY, GetHotkeys());
+                    InputSimulator.MouseDrag(Movement, Button, X, Y, EndX, EndY, GetHotkeys());
                     break;
                 case InstructionType.KEYBOARD:
                     InputSimulator.KeyPress(Key, GetHotkeys());
                     break;
                 case InstructionType.WHEEL:
-                    InputSimulator.MouseWheel(X, Y, WheelDelta);
+                    InputSimulator.MouseWheel(Movement, X, Y, WheelDelta);
                     break;
                 case InstructionType.DELAY:
                 case InstructionType.LOOP:

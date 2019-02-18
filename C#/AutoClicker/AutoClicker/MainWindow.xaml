@@ -44,6 +44,11 @@
                 <x:Type Type="autoclicker:ButtonType"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
+        <ObjectDataProvider x:Key="MovementTypes" MethodName="GetValues" ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="autoclicker:MovementType"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
     </Window.Resources>
     
     <!--<Border Padding="5 0 5 5">-->
@@ -356,11 +361,56 @@
                         </Style>
                     </DataGridTextColumn.CellStyle>
                 </DataGridTextColumn>
-                
+
                 <DataGridTemplateColumn Header="Button" x:Name="ButtonColumn" Width="*" MinWidth="80">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ComboBox SelectedValue="{Binding Path=Button, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={StaticResource ButtonTypes}}"/>
+                            <DataTemplate.Resources>
+                                <Style TargetType="ComboBox">
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition>
+                                                    <Condition.Binding>
+                                                        <Binding Path="Type" Converter="{StaticResource ComboBoxConverter}" >
+                                                            <Binding.ConverterParameter>
+                                                                <autoclicker:InstructionType>CLICK</autoclicker:InstructionType>
+                                                            </Binding.ConverterParameter>
+                                                        </Binding>
+                                                    </Condition.Binding>
+                                                    <Condition.Value>
+                                                        <core:Boolean>False</core:Boolean>
+                                                    </Condition.Value>
+                                                </Condition>
+                                                <Condition>
+                                                    <Condition.Binding>
+                                                        <Binding Path="Type" Converter="{StaticResource ComboBoxConverter}" >
+                                                            <Binding.ConverterParameter>
+                                                                <autoclicker:InstructionType>DRAG</autoclicker:InstructionType>
+                                                            </Binding.ConverterParameter>
+                                                        </Binding>
+                                                    </Condition.Binding>
+                                                    <Condition.Value>
+                                                        <core:Boolean>False</core:Boolean>
+                                                    </Condition.Value>
+                                                </Condition>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Background" Value="Transparent" />
+                                            <Setter Property="Foreground" Value="Transparent" />
+                                            <Setter Property="IsEnabled" Value="False" />
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataTemplate.Resources>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="Move" x:Name="MovementTypeColumn" Width="*" MinWidth="80">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox SelectedValue="{Binding Path=Movement, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={StaticResource MovementTypes}}"/>
                             <DataTemplate.Resources>
                                 <Style TargetType="ComboBox">
                                     <Style.Triggers>

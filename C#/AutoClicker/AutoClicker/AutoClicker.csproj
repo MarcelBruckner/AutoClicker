@@ -79,17 +79,21 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="CheckBoxColumnConverter.cs" />
+    <Compile Include="TickCounter.cs" />
     <Compile Include="Converters\ComboBoxConverter.cs" />
     <Compile Include="Converters\ValueToEqualsParameterConverter.cs" />
-    <Compile Include="CubicSplines.cs" />
+    <Compile Include="Enums\MovementType.cs" />
     <Compile Include="IKeyboardListener.cs" />
     <Compile Include="Enums\ButtonType.cs" />
     <Compile Include="Enums\InstructionType.cs" />
     <Compile Include="Instruction.cs" />
     <Compile Include="Enums\VirtualKeyCode.cs" />
+    <Compile Include="Interpolations\ICursorInterpolation.cs" />
+    <Compile Include="Interpolations\JumpInterpolation.cs" />
+    <Compile Include="Interpolations\MassSpringInterpolation.cs" />
+    <Compile Include="Interpolations\SinusInterpolation.cs" />
     <Compile Include="KeyboardInterupt.cs" />
     <Compile Include="InputSimulator.cs" />
-    <Compile Include="MathHelper.cs" />
     <Compile Include="TCPServer.cs" />
     <Compile Include="Recorder.cs" />
     <Compile Include="StringManager.cs" />
