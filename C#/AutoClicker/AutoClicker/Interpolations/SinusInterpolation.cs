@@ -17,8 +17,7 @@ namespace AutoClicker
             Vector b = End - origin;
 
             double duration = b.Length / 10 * Speed;
-            Console.WriteLine(duration);
-            if (b.Length > 0)
+            if (b.Length > TargetRadius)
             {
                 double angle = -Vector.AngleBetween(new Vector(1, 0), b);
                 double backAngle = ConvertToRadians(-angle);

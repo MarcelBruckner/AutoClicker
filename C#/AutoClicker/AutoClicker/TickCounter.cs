@@ -33,7 +33,6 @@ namespace AutoClicker
                 int current = Environment.TickCount;
                 int delta = current - lastFrame;
                 lastFrame = current;
-                Console.WriteLine(delta);
                 return delta;
             }
         }

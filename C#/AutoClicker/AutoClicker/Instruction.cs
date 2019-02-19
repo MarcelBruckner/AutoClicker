@@ -26,6 +26,8 @@ namespace AutoClicker
         private int _wheelDelta;
         private InstructionType _type;
         private MovementType _movement;
+        private double _speed = 1;
+        private int _randomRadius;
         internal static readonly int MAX_UNCERTAINTY = 20;
         #endregion
 
@@ -44,7 +46,6 @@ namespace AutoClicker
         public void Run()
         {
             int r = x.Next();
-            Console.WriteLine("started new run: " + r);
             IsRunning = true;
             int totalRepetitions = Repetitions;
             Repetitions = 1;
@@ -56,7 +57,6 @@ namespace AutoClicker
             }
             IsRunning = false;
             Repetitions = totalRepetitions;
-            Console.WriteLine("finished new run: " + r);
         }
 
         public InstructionType Type { get => _type; set { _type = value; OnPropertyChanged("Type"); } }
@@ -64,6 +64,7 @@ namespace AutoClicker
         public long Delay { get => _delay;
             set { _delay = value; OnPropertyChanged("Delay"); } }
         public int Repetitions { get => _repetitions; set { _repetitions = value; OnPropertyChanged("Repetitions"); } }
+        public double Speed { get => _speed; set { _speed = value; OnPropertyChanged("Speed"); } }
 
         public bool Shift { get => _shift; set { _shift = value; OnPropertyChanged("Shift"); } }
         public bool Ctrl { get => _ctrl; set { _ctrl = value; OnPropertyChanged("Ctrl"); } }
@@ -72,7 +73,8 @@ namespace AutoClicker
         public VirtualKeyCode Key { get => _key; set { _key = value; OnPropertyChanged("Key"); } }
 
         public ButtonType Button { get => _button; set { _button = value; OnPropertyChanged("Button"); } }
-        public MovementType Movement { get => _movement; set { _movement = value; OnPropertyChanged("Move"); } }
+        public MovementType Movement { get => _movement; set { _movement = value; OnPropertyChanged("Movement"); } }
+        public int RandomRadius { get => _randomRadius; set { _randomRadius = value; OnPropertyChanged("RandomRadius"); } }
         public int X { get => _x; set { _x = value; OnPropertyChanged("X"); } }
         public int Y { get => _y; set { _y = value; OnPropertyChanged("Y"); } }
 
@@ -128,26 +130,32 @@ namespace AutoClicker
         }
 
         // Click constructor
-        public Instruction(ButtonType button, int x, int y, bool shift, bool ctrl, bool alt) : this(button, x, y, 0L, 1, shift, ctrl, alt) { }
-        public Instruction(ButtonType button, int x, int y, long delay, int repetitions, bool shift, bool ctrl, bool alt) : this(InstructionType.CLICK, delay, repetitions, shift, ctrl, alt)
+        public Instruction(ButtonType button, MovementType movement, int x, int y, int radius, bool shift, bool ctrl, bool alt) : this(button, movement, x, y, radius, 0L, 1, shift, ctrl, alt) { }
+        public Instruction(ButtonType button, MovementType movement, int x, int y, int radius, long delay, int repetitions, bool shift, bool ctrl, bool alt) : this(InstructionType.CLICK, delay, repetitions, shift, ctrl, alt)
         {
+            RandomRadius = radius;
+            Movement = movement;
             SetMouse(button, x, y);
         }
 
         // Drag constructor
-        public Instruction(ButtonType button, int x, int y, int endX, int endY, bool shift, bool ctrl, bool alt) : this(button, x, y, endX, endY, 0L, 1, shift, ctrl, alt) { }
-        public Instruction(ButtonType button, int x, int y, int endX, int endY, long delay, int repetitions, bool shift, bool ctrl, bool alt) : this(InstructionType.DRAG, delay, repetitions, shift, ctrl, alt)
+        public Instruction(ButtonType button, MovementType movement, int x, int y, int endX, int endY, int radius, bool shift, bool ctrl, bool alt) : this(button, movement, x, y, endX, endY, radius, 0L, 1, shift, ctrl, alt) { }
+        public Instruction(ButtonType button, MovementType movement, int x, int y, int endX, int endY, int radius, long delay, int repetitions, bool shift, bool ctrl, bool alt) : this(InstructionType.DRAG, delay, repetitions, shift, ctrl, alt)
         {
             SetMouse(button, x, y);
 
+            RandomRadius = radius;
+            Movement = movement;
             EndX = endX;
             EndY = endY;
         }
 
         // Wheel constructor
-        public Instruction(int wheelDelta, int x, int y, bool shift, bool ctrl, bool alt) : this(wheelDelta, x, y, 0L, 1, shift, ctrl, alt) { }
-        public Instruction(int wheelDelta, int x, int y, long delay, int repetitions, bool shift, bool ctrl, bool alt) : this(InstructionType.WHEEL, delay, repetitions, shift, ctrl, alt)
+        public Instruction(int wheelDelta, MovementType movement, int x, int y, int radius, bool shift, bool ctrl, bool alt) : this(wheelDelta, movement, x, y, radius, 0L, 1, shift, ctrl, alt) { }
+        public Instruction(int wheelDelta, MovementType movement, int x, int y, int radius, long delay, int repetitions, bool shift, bool ctrl, bool alt) : this(InstructionType.WHEEL, delay, repetitions, shift, ctrl, alt)
         {
+            RandomRadius = radius;
+            Movement = movement;
             WheelDelta = wheelDelta;
             X = x;
             Y = y;
@@ -174,7 +182,6 @@ namespace AutoClicker
                 long toDelay = Math.Min(totalDelay, Math.Min(delayStep, totalDelay - Delay));
                 Delay += toDelay;
                 Thread.Sleep((int)toDelay);
-                Console.WriteLine("Delayed: " + toDelay + " - Delay passed: " + Delay);
             }
 
             Delay = totalDelay;
@@ -185,16 +192,16 @@ namespace AutoClicker
             switch (Type)
             {
                 case InstructionType.CLICK:
-                    InputSimulator.MouseClick(Movement, Button, X, Y, GetHotkeys());
+                    InputSimulator.MouseClick(Movement, Button, X, Y, RandomRadius, Speed, GetHotkeys());
                     break;
                 case InstructionType.DRAG:
-                    InputSimulator.MouseDrag(Movement, Button, X, Y, EndX, EndY, GetHotkeys());
+                    InputSimulator.MouseDrag(Movement, Button, X, Y, EndX, EndY, RandomRadius, Speed, GetHotkeys());
                     break;
                 case InstructionType.KEYBOARD:
                     InputSimulator.KeyPress(Key, GetHotkeys());
                     break;
                 case InstructionType.WHEEL:
-                    InputSimulator.MouseWheel(Movement, X, Y, WheelDelta);
+                    InputSimulator.MouseWheel(Movement, X, Y, WheelDelta, RandomRadius, Speed, GetHotkeys());
                     break;
                 case InstructionType.DELAY:
                 case InstructionType.LOOP:

@@ -27,6 +27,8 @@ namespace AutoClicker
         private bool _isRunning;
         private bool _isRecording;
         private int allRepetitions;
+        private int _repetitions;
+        private MovementType _movement = MovementType.SPRING;
 
         public ObservableCollection<Instruction> Instructions { get; private set; } = new ObservableCollection<Instruction>();
         private Recorder recorder;
@@ -108,6 +110,18 @@ namespace AutoClicker
                 OnPropertyChanged("Repetitions");
             }
         }
+        public MovementType Movement
+        {
+            get => _movement;
+            set
+            {
+                _movement = value;
+                foreach (Instruction instruction in Instructions)
+                {
+                    instruction.Movement = value;
+                }
+            }
+        }
         private Instruction runningInstruction = new Instruction();
 
         private TCPServer server;
@@ -117,7 +131,7 @@ namespace AutoClicker
             InitializeComponent();
             recorder = new Recorder(this);
             interupt = new KeyboardInterupt(OnKeyboardInterupt);
-            server = new TCPServer(); 
+            server = new TCPServer();
             InstructionsDataGrid.ItemsSource = Instructions;
 
             //Instructions.Add(new Instruction(InstructionType.CLICK));
@@ -176,7 +190,7 @@ namespace AutoClicker
                             int end = Instructions.Count;
                             for (int l = start; l < Instructions.Count; l++)
                             {
-                                if(Instructions[l].Type == InstructionType.END_LOOP)
+                                if (Instructions[l].Type == InstructionType.END_LOOP)
                                 {
                                     end = l;
                                     break;
@@ -184,7 +198,7 @@ namespace AutoClicker
                             }
 
                             int loops = Instructions[j].Repetitions;
-                            for(int l = 0; l < loops; l++)
+                            for (int l = 0; l < loops; l++)
                             {
                                 Instructions[j].Repetitions = l + 1;
 
@@ -277,7 +291,6 @@ namespace AutoClicker
         #region File Menu
         private void Open_Click(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine("On open");
             OpenFileDialog dialog = new OpenFileDialog()
             {
                 Filter = FILE_FILTER
@@ -313,7 +326,6 @@ namespace AutoClicker
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine("On save");
             SaveFileDialog dialog = new SaveFileDialog()
             {
                 Filter = FILE_FILTER
@@ -367,6 +379,11 @@ namespace AutoClicker
         private void AddWheel_Click(object sender, RoutedEventArgs e)
         {
             AddInstruction(new Instruction(InstructionType.WHEEL));
+        }
+        private void MovementType_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem choice = sender as MenuItem;
+            Movement = (MovementType)choice.DataContext;
         }
 
         private void SelectedLineRemove_Click(object sender, RoutedEventArgs e)
@@ -440,7 +457,6 @@ namespace AutoClicker
         }
 
         int prevRowIndex = -1;
-        private int _repetitions;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -543,7 +559,7 @@ namespace AutoClicker
             Instructions.Insert(Instructions.IndexOf(toDuplicate), new Instruction(toDuplicate));
         }
 
-        
+
         #endregion
 
         #region Cells
@@ -569,5 +585,6 @@ namespace AutoClicker
             return cell.DataContext as Instruction;
         }
         #endregion
+
     }
 }

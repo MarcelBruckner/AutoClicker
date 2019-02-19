@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows;
 
 namespace AutoClicker
@@ -131,13 +125,13 @@ namespace AutoClicker
             {
                 if (Mass > 0)
                 {
-                    Position += DT / Speed * Velocity;
+                    Position += DT * Speed * Velocity;
                 }
             }
 
             public void IntegrateVelocity()
             {
-                Velocity += DT / Speed * ((Force - Damping * Velocity) / Mass + RandomVelocity);
+                Velocity += DT * Speed * ((Force - Damping * Velocity) / Mass + RandomVelocity);
             }
 
             public double Distance(MassPoint other)

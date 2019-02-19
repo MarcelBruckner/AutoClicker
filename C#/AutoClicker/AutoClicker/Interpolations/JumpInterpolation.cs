@@ -14,6 +14,10 @@ namespace AutoClicker
 
         public override void Interpolate()
         {
+            if (Finished)
+            {
+                return;
+            }
             Vector toMove = End + RandomVector(TargetRadius);
             Cursor = toMove;
             Thread.Sleep((int)(20 * Speed));
