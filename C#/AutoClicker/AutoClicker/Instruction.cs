@@ -8,7 +8,7 @@ namespace AutoClicker
 {
     public class Instruction : INotifyPropertyChanged
     {
-        Random x = new Random(0);
+        Random random = new Random();
 
         #region Raw Properties
         private long _delay;
@@ -27,8 +27,8 @@ namespace AutoClicker
         private InstructionType _type;
         private MovementType _movement;
         private double _speed = 1;
-        private int _randomRadius;
-        private long _randomDelay;
+        private int _randomRadius = 5;
+        private long _randomDelay = 5;
         internal static readonly int MAX_UNCERTAINTY = 20;
         #endregion
 
@@ -46,7 +46,7 @@ namespace AutoClicker
 
         public void Run()
         {
-            int r = x.Next();
+            int r = random.Next();
             IsRunning = true;
             int totalRepetitions = Repetitions;
             Repetitions = 1;
@@ -134,7 +134,6 @@ namespace AutoClicker
         public Instruction(ButtonType button, MovementType movement, int x, int y, bool shift, bool ctrl, bool alt) : this(button, movement, x, y, 0L, 1, shift, ctrl, alt) { }
         public Instruction(ButtonType button, MovementType movement, int x, int y, long delay, int repetitions, bool shift, bool ctrl, bool alt) : this(InstructionType.CLICK, delay, repetitions, shift, ctrl, alt)
         {
-            RandomRadius = 5;
             Movement = movement;
             SetMouse(button, x, y);
         }
@@ -145,7 +144,6 @@ namespace AutoClicker
         {
             SetMouse(button, x, y);
 
-            RandomRadius = 5;
             Movement = movement;
             EndX = endX;
             EndY = endY;
@@ -155,7 +153,6 @@ namespace AutoClicker
         public Instruction(int wheelDelta, MovementType movement, int x, int y, bool shift, bool ctrl, bool alt) : this(wheelDelta, movement, x, y, 0L, 1, shift, ctrl, alt) { }
         public Instruction(int wheelDelta, MovementType movement, int x, int y, long delay, int repetitions, bool shift, bool ctrl, bool alt) : this(InstructionType.WHEEL, delay, repetitions, shift, ctrl, alt)
         {
-            RandomRadius = 5;
             Movement = movement;
             WheelDelta = wheelDelta;
             X = x;
@@ -175,7 +172,7 @@ namespace AutoClicker
         private void DoDelay()
         {
             long save = Delay;
-            long totalDelay = Delay + x.Next((int)RandomDelay);
+            long totalDelay = Delay + random.Next((int)RandomDelay);
 
             Delay = 0;
 

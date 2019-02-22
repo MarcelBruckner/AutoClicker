@@ -21,10 +21,15 @@ namespace AutoClicker
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        Random random = new Random();
+
         private const string FILE_FILTER = "AutoClicker Files (*.autocl)|*.autocl";
+        public static readonly System.Windows.Forms.Keys RECORD_HOTKEY = System.Windows.Forms.Keys.F8;
+        public static readonly System.Windows.Forms.Keys PLAY_HOTKEY = System.Windows.Forms.Keys.F7;
+
         private bool _withDelay;
         private bool _infinite = true;
-        private bool _isRunning;
+        private bool _isPlaying;
         private bool _isRecording;
         private int allRepetitions;
         private int _repetitions;
@@ -32,7 +37,6 @@ namespace AutoClicker
 
         public ObservableCollection<Instruction> Instructions { get; private set; } = new ObservableCollection<Instruction>();
         private Recorder recorder;
-        private KeyboardInterupt interupt;
         //private InstructionsParser parser;
 
         public bool IsRecording
@@ -45,40 +49,36 @@ namespace AutoClicker
                 if (_isRecording)
                 {
                     StopAll();
-                    IsRunning = false;
-                    interupt.AddHooks();
+                    IsPlaying = false;
                     recorder.AddHooks();
                 }
                 else
                 {
                     Activate();
-                    interupt.RemoveHooks();
                     recorder.RemoveHooks();
                 }
                 OnPropertyChanged("IsRecording");
             }
         }
-        public bool IsRunning
+        public bool IsPlaying
         {
-            get => _isRunning;
+            get => _isPlaying;
             set
             {
-                _isRunning = value;
+                _isPlaying = value;
                 RecordButton.IsEnabled = !value;
                 InstructionsDataGrid.IsEnabled = !value;
-                if (_isRunning)
+                if (_isPlaying)
                 {
                     IsRecording = false;
-                    interupt.AddHooks();
                     OnPlay();
                 }
                 else
                 {
-                    interupt.RemoveHooks();
                     StopAll();
                     Activate();
                 }
-                OnPropertyChanged("IsRunning");
+                OnPropertyChanged("IsPlaying");
             }
         }
         public bool Infinite
@@ -129,9 +129,10 @@ namespace AutoClicker
         public MainWindow()
         {
             InitializeComponent();
+            new HotkeyControl(PLAY_HOTKEY, OnPlayHotkey);
+            new HotkeyControl(RECORD_HOTKEY, OnRecorderHotkey);
             recorder = new Recorder(this);
-            interupt = new KeyboardInterupt(OnKeyboardInterupt);
-            server = new TCPServer();
+            //server = new TCPServer();
             InstructionsDataGrid.ItemsSource = Instructions;
 
             //Instructions.Add(new Instruction(InstructionType.CLICK));
@@ -153,13 +154,25 @@ namespace AutoClicker
         }
 
         #region Buttons
-        public void OnKeyboardInterupt()
+
+        public void OnRecorderHotkey()
         {
+            if (IsPlaying)
+            {
+                return;
+            }
             StopAll();
-            IsRecording = false;
-            IsRunning = false;
-            interupt.RemoveHooks();
-            recorder.RemoveHooks();
+            IsRecording = !IsRecording;
+        }
+
+        public void OnPlayHotkey()
+        {
+            if (IsRecording)
+            {
+                return;
+            }
+            StopAll();
+            IsPlaying = !IsPlaying;
         }
 
         private void OnPlay()
@@ -177,7 +190,7 @@ namespace AutoClicker
                 {
                     for (int j = 0; j < Instructions.Count; j++)
                     {
-                        if (!IsRunning)
+                        if (!IsPlaying)
                         {
                             StopAll();
                             return;
@@ -197,14 +210,14 @@ namespace AutoClicker
                                 }
                             }
 
-                            int loops = Instructions[j].Repetitions;
+                            int loops = Instructions[j].Repetitions + random.Next(Instructions[j].RandomRadius);
                             for (int l = 0; l < loops; l++)
                             {
                                 Instructions[j].Repetitions = l + 1;
 
                                 for (int m = start; m < end; m++)
                                 {
-                                    if (!IsRunning)
+                                    if (!IsPlaying)
                                     {
                                         StopAll();
                                         Instructions[j].Repetitions = loops;
@@ -238,7 +251,7 @@ namespace AutoClicker
                 {
                     Console.WriteLine(args.Error.ToString());  // do your error handling here
                 }
-                IsRunning = false;
+                IsPlaying = false;
                 RepetitionsTextBox.Text = allRepetitions + "";
             };
 

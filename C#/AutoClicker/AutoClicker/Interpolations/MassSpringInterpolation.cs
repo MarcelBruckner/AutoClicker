@@ -23,7 +23,7 @@ namespace AutoClicker
         private void Initialize()
         {
             Vector direction = End - Cursor;
-            Vector midpoint = Cursor + direction * random.NextDouble();
+            //Vector midpoint = Cursor + direction * random.NextDouble();
 
             Points.Add(new MassPoint(End, new Vector(0, 0), -1, 0, Speed));
             //Points.Add(new MassPoint(midpoint, RandomNormal(End, Cursor, 50), random.NextDouble() * 2 + 1, DAMPING / 2));// random.NextDouble() * 0.8 + 0.6));

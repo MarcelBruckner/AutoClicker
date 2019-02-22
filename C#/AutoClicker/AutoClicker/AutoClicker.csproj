@@ -92,7 +92,7 @@
     <Compile Include="Interpolations\JumpInterpolation.cs" />
     <Compile Include="Interpolations\MassSpringInterpolation.cs" />
     <Compile Include="Interpolations\SinusInterpolation.cs" />
-    <Compile Include="KeyboardInterupt.cs" />
+    <Compile Include="HotkeyControl.cs" />
     <Compile Include="InputSimulator.cs" />
     <Compile Include="TCPServer.cs" />
     <Compile Include="Recorder.cs" />

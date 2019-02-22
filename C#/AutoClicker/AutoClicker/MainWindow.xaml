@@ -89,7 +89,7 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel Orientation="Horizontal" Grid.Column="0" VerticalAlignment="Center">
-                <ToggleButton x:Name="PlayButton" BorderThickness="0" Background="Transparent" IsChecked="{Binding ElementName=mainWindow, Path=IsRunning, Mode=TwoWay}" Padding="2" Margin="5 0" Width="35" Height="35">
+                <ToggleButton x:Name="PlayButton" BorderThickness="0" Background="Transparent" IsChecked="{Binding ElementName=mainWindow, Path=IsPlaying, Mode=TwoWay}" Padding="2" Margin="5 0" Width="35" Height="35">
                     <Image Source="Images/play.png" RenderOptions.BitmapScalingMode="HighQuality">
                         <Image.ToolTip>
                             <ToolTip>
@@ -598,6 +598,18 @@
                                                         <core:Boolean>False</core:Boolean>
                                                     </Condition.Value>
                                                 </Condition>
+                                                <Condition>
+                                                    <Condition.Binding>
+                                                        <Binding Path="Type" Converter="{StaticResource ComboBoxConverter}" >
+                                                            <Binding.ConverterParameter>
+                                                                <autoclicker:InstructionType>WHEEL</autoclicker:InstructionType>
+                                                            </Binding.ConverterParameter>
+                                                        </Binding>
+                                                    </Condition.Binding>
+                                                    <Condition.Value>
+                                                        <core:Boolean>False</core:Boolean>
+                                                    </Condition.Value>
+                                                </Condition>
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="Background" Value="Transparent" />
                                             <Setter Property="Foreground" Value="Transparent" />
@@ -809,6 +821,18 @@
                                                 <Binding Path="Type" Converter="{StaticResource TextBoxConverter}" >
                                                     <Binding.ConverterParameter>
                                                         <autoclicker:InstructionType>DRAG</autoclicker:InstructionType>
+                                                    </Binding.ConverterParameter>
+                                                </Binding>
+                                            </Condition.Binding>
+                                            <Condition.Value>
+                                                <core:Boolean>False</core:Boolean>
+                                            </Condition.Value>
+                                        </Condition>
+                                        <Condition>
+                                            <Condition.Binding>
+                                                <Binding Path="Type" Converter="{StaticResource TextBoxConverter}" >
+                                                    <Binding.ConverterParameter>
+                                                        <autoclicker:InstructionType>LOOP</autoclicker:InstructionType>
                                                     </Binding.ConverterParameter>
                                                 </Binding>
                                             </Condition.Binding>

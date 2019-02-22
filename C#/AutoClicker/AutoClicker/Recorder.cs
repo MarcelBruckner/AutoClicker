@@ -70,7 +70,7 @@ namespace AutoClicker
         {
             Keys key = e.KeyCode;
 
-            if (key == Keys.F7)
+            if(key == MainWindow.RECORD_HOTKEY || key == MainWindow.PLAY_HOTKEY)
             {
                 return;
             }
