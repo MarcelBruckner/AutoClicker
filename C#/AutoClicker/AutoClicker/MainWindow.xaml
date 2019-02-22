@@ -280,6 +280,94 @@
                         </Style>
                     </DataGridTextColumn.CellStyle>
                 </DataGridTextColumn>
+                <DataGridTextColumn Header="Addon" x:Name="AddonColumn"  Binding="{Binding RandomDelay}" Width="*" MinWidth="50">
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="InstructionsDataGrid_PreviewMouseLeftButtonDown"/>
+                            <Style.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition>
+                                            <Condition.Binding>
+                                                <Binding Path="Type" Converter="{StaticResource TextBoxConverter}" >
+                                                    <Binding.ConverterParameter>
+                                                        <autoclicker:InstructionType>CLICK</autoclicker:InstructionType>
+                                                    </Binding.ConverterParameter>
+                                                </Binding>
+                                            </Condition.Binding>
+                                            <Condition.Value>
+                                                <core:Boolean>False</core:Boolean>
+                                            </Condition.Value>
+                                        </Condition>
+                                        <Condition>
+                                            <Condition.Binding>
+                                                <Binding Path="Type" Converter="{StaticResource TextBoxConverter}" >
+                                                    <Binding.ConverterParameter>
+                                                        <autoclicker:InstructionType>WHEEL</autoclicker:InstructionType>
+                                                    </Binding.ConverterParameter>
+                                                </Binding>
+                                            </Condition.Binding>
+                                            <Condition.Value>
+                                                <core:Boolean>False</core:Boolean>
+                                            </Condition.Value>
+                                        </Condition>
+                                        <Condition>
+                                            <Condition.Binding>
+                                                <Binding Path="Type" Converter="{StaticResource TextBoxConverter}" >
+                                                    <Binding.ConverterParameter>
+                                                        <autoclicker:InstructionType>DELAY</autoclicker:InstructionType>
+                                                    </Binding.ConverterParameter>
+                                                </Binding>
+                                            </Condition.Binding>
+                                            <Condition.Value>
+                                                <core:Boolean>False</core:Boolean>
+                                            </Condition.Value>
+                                        </Condition>
+                                        <Condition>
+                                            <Condition.Binding>
+                                                <Binding Path="Type" Converter="{StaticResource TextBoxConverter}" >
+                                                    <Binding.ConverterParameter>
+                                                        <autoclicker:InstructionType>DRAG</autoclicker:InstructionType>
+                                                    </Binding.ConverterParameter>
+                                                </Binding>
+                                            </Condition.Binding>
+                                            <Condition.Value>
+                                                <core:Boolean>False</core:Boolean>
+                                            </Condition.Value>
+                                        </Condition>
+                                        <Condition>
+                                            <Condition.Binding>
+                                                <Binding Path="Type" Converter="{StaticResource TextBoxConverter}" >
+                                                    <Binding.ConverterParameter>
+                                                        <autoclicker:InstructionType>KEYBOARD</autoclicker:InstructionType>
+                                                    </Binding.ConverterParameter>
+                                                </Binding>
+                                            </Condition.Binding>
+                                            <Condition.Value>
+                                                <core:Boolean>False</core:Boolean>
+                                            </Condition.Value>
+                                        </Condition>
+                                        <Condition>
+                                            <Condition.Binding>
+                                                <Binding Path="Type" Converter="{StaticResource TextBoxConverter}" >
+                                                    <Binding.ConverterParameter>
+                                                        <autoclicker:InstructionType>END_LOOP</autoclicker:InstructionType>
+                                                    </Binding.ConverterParameter>
+                                                </Binding>
+                                            </Condition.Binding>
+                                            <Condition.Value>
+                                                <core:Boolean>False</core:Boolean>
+                                            </Condition.Value>
+                                        </Condition>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Setter Property="Foreground" Value="Transparent" />
+                                    <Setter Property="IsEnabled" Value="False" />
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
                 <DataGridTextColumn Header="#" x:Name="ClickCountColumn"  Binding="{Binding Repetitions}" Width="1*">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
