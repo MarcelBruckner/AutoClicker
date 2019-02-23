@@ -189,7 +189,7 @@ namespace AutoClicker
             {
                 if (instruction.Type == InstructionType.WHEEL)
                 {
-                    current.WheelDelta += instruction.WheelDelta;
+                    current.Wheel += instruction.Wheel;
                 }
                 else
                 {

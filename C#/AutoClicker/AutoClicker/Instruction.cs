@@ -27,13 +27,29 @@ namespace AutoClicker
         private InstructionType _type;
         private MovementType _movement;
         private double _speed = 1;
-        private int _randomRadius = 5;
         private long _randomDelay = 5;
+        private int _randomRepetitions;
+        private double _randomSpeed;
+        private int _randomX;
+        private int _randomY;
+        private int _randomEndY;
+        private int _randomEndX;
+        private int _randomWheelDelta;
+        private bool _isButtonEnabled;
+        private bool _isMovementEnabled;
+        private bool _isDelayEnabled;
+        private bool _isRepetitionsEnabled;
+        private bool _isSpeedEnabled;
+        private bool _isPositionEnabled;
+        private bool _isDragEnabled;
+        private bool _isWheelEnabled;
+        private bool _isKeyEnabled;
         internal static readonly int MAX_UNCERTAINTY = 20;
         #endregion
 
         private const int delayStep = 500;
 
+        #region Properties
         public bool IsRunning
         {
             get => _isRunning;
@@ -62,27 +78,38 @@ namespace AutoClicker
 
         public InstructionType Type { get => _type; set { _type = value; OnPropertyChanged("Type"); } }
 
+        public ButtonType Button { get => _button; set { _button = value; OnPropertyChanged("Button"); } }
+
+        public MovementType Movement { get => _movement; set { _movement = value; OnPropertyChanged("Movement"); } }
+
         public long Delay { get => _delay; set { _delay = value; OnPropertyChanged("Delay"); } }
         public long RandomDelay { get => _randomDelay; set { _randomDelay = value; OnPropertyChanged("RandomDelay"); } }
+
         public int Repetitions { get => _repetitions; set { _repetitions = value; OnPropertyChanged("Repetitions"); } }
+        public int RandomRepetitions { get => _randomRepetitions; set { _randomRepetitions = value; OnPropertyChanged("RandomRepetitions"); } }
+        
         public double Speed { get => _speed; set { _speed = value; OnPropertyChanged("Speed"); } }
+        public double RandomSpeed { get => _randomSpeed; set { _randomSpeed = value; OnPropertyChanged("RandomSpeed"); } }
+
+        public int X { get => _x; set { _x = value; OnPropertyChanged("X"); } }
+        public int RandomX { get => _randomX; set { _randomX = value; OnPropertyChanged("RandomX"); } }
+        public int Y { get => _y; set { _y = value; OnPropertyChanged("Y"); } }
+        public int RandomY { get => _randomY; set { _randomY = value; OnPropertyChanged("RandomY"); } }
+
+        public int EndX { get => _endX; set { _endX = value; OnPropertyChanged("EndX"); } }
+        public int RandomEndX { get => _randomEndX; set { _randomEndX = value; OnPropertyChanged("RandomEndX"); } }
+        public int EndY { get => _endY; set { _endY = value; OnPropertyChanged("EndY"); } }
+        public int RandomEndY { get => _randomEndY; set { _randomEndY = value; OnPropertyChanged("RandomEndY"); } }
+        
+        public int Wheel { get => _wheelDelta; set { _wheelDelta = value; OnPropertyChanged("WheelDelta"); } }
+        public int RandomWheel { get => _randomWheelDelta; set { _randomWheelDelta = value; OnPropertyChanged("WheelDelta"); } }
 
         public bool Shift { get => _shift; set { _shift = value; OnPropertyChanged("Shift"); } }
         public bool Ctrl { get => _ctrl; set { _ctrl = value; OnPropertyChanged("Ctrl"); } }
         public bool Alt { get => _alt; set { _alt = value; OnPropertyChanged("Alt"); } }
 
         public VirtualKeyCode Key { get => _key; set { _key = value; OnPropertyChanged("Key"); } }
-
-        public ButtonType Button { get => _button; set { _button = value; OnPropertyChanged("Button"); } }
-        public MovementType Movement { get => _movement; set { _movement = value; OnPropertyChanged("Movement"); } }
-        public int RandomRadius { get => _randomRadius; set { _randomRadius = value; OnPropertyChanged("RandomRadius"); } }
-        public int X { get => _x; set { _x = value; OnPropertyChanged("X"); } }
-        public int Y { get => _y; set { _y = value; OnPropertyChanged("Y"); } }
-
-        public int EndX { get => _endX; set { _endX = value; OnPropertyChanged("EndX"); } }
-        public int EndY { get => _endY; set { _endY = value; OnPropertyChanged("EndY"); } }
-
-        public int WheelDelta { get => _wheelDelta; set { _wheelDelta = value; OnPropertyChanged("WheelDelta"); } }
+        #endregion
 
         #region Constructors
         public Instruction() : this(InstructionType.DELAY, 0, 1, false, false, false) { }
@@ -100,7 +127,7 @@ namespace AutoClicker
             Alt = other.Alt;
             Button = other.Button;
             Key = other.Key;
-            WheelDelta = other.WheelDelta;
+            Wheel = other.Wheel;
             Type = other.Type;
         }
 
@@ -154,7 +181,7 @@ namespace AutoClicker
         public Instruction(int wheelDelta, MovementType movement, int x, int y, long delay, int repetitions, bool shift, bool ctrl, bool alt) : this(InstructionType.WHEEL, delay, repetitions, shift, ctrl, alt)
         {
             Movement = movement;
-            WheelDelta = wheelDelta;
+            Wheel = wheelDelta;
             X = x;
             Y = y;
         }
@@ -192,16 +219,16 @@ namespace AutoClicker
             switch (Type)
             {
                 case InstructionType.CLICK:
-                    InputSimulator.MouseClick(Movement, Button, X, Y, RandomRadius, Speed, GetHotkeys());
+                    InputSimulator.MouseClick(Movement, Button, X, Y, 4, Speed, GetHotkeys());
                     break;
                 case InstructionType.DRAG:
-                    InputSimulator.MouseDrag(Movement, Button, X, Y, EndX, EndY, RandomRadius, Speed, GetHotkeys());
+                    InputSimulator.MouseDrag(Movement, Button, X, Y, EndX, EndY, 4, Speed, GetHotkeys());
                     break;
                 case InstructionType.KEYBOARD:
                     InputSimulator.KeyPress(Key, GetHotkeys());
                     break;
                 case InstructionType.WHEEL:
-                    InputSimulator.MouseWheel(Movement, X, Y, WheelDelta, RandomRadius, Speed, GetHotkeys());
+                    InputSimulator.MouseWheel(Movement, X, Y, Wheel, 4, Speed, GetHotkeys());
                     break;
                 case InstructionType.DELAY:
                 case InstructionType.LOOP:
@@ -226,7 +253,7 @@ namespace AutoClicker
             switch (Type)
             {
                 case InstructionType.WHEEL:
-                    standards &= ClickSame(other) && Math.Sign(WheelDelta) == Math.Sign(other.WheelDelta);
+                    standards &= ClickSame(other) && Math.Sign(Wheel) == Math.Sign(other.Wheel);
                     break;
                 case InstructionType.CLICK:
                     standards &= ClickSame(other);
@@ -290,6 +317,39 @@ namespace AutoClicker
             Button = button;
             X = x;
             Y = y;
+        }
+
+        private void SetEnabledFields(InstructionType type)
+        {
+            switch (type)
+            {
+                case InstructionType.CLICK:
+
+                    break;
+
+                case InstructionType.DELAY:
+
+                    break;
+
+                case InstructionType.DRAG:
+
+                    break;
+
+                case InstructionType.END_LOOP:
+
+                    break;
+
+                case InstructionType.KEYBOARD:
+
+
+                case InstructionType.LOOP:
+
+                    break;
+
+                case InstructionType.WHEEL:
+
+                    break;
+            }
         }
     }
 }

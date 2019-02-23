@@ -12,7 +12,7 @@ namespace AutoClicker
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return Equals(value, parameter);
+            return Equals(value.ToString().ToLower(), parameter.ToString().ToLower());
         }
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
