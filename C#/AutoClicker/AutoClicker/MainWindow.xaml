@@ -11,17 +11,19 @@
         Title="Auto Clicker" Height="500" Width="1100" Background="White">
 
     <Window.Resources>
-        <!--<Style TargetType="DataGridColumnHeader">
+        <Style TargetType="DataGridColumnHeader">
             <Setter Property="HorizontalContentAlignment" Value="Center" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
-        </Style>-->
+        </Style>
         <Style TargetType="{x:Type TextBlock}">
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
-        <Style TargetType="{x:Type TextBox}">
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="VerticalAlignment" Value="Center" />
+        <Style x:Key="TextBoxStyle" TargetType="{x:Type TextBox}">
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
         </Style>
         <Style TargetType="DataGridCell">
             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -192,7 +194,7 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTextColumn Header="Delay" x:Name="DelayColumn"  Binding="{Binding Delay}" Width="*" MinWidth="50">
+                <!--<DataGridTextColumn Header="Delay" x:Name="DelayColumn"  Binding="{Binding Delay}" Width="*" MinWidth="50">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <EventSetter Event="PreviewMouseLeftButtonDown" Handler="InstructionsDataGrid_PreviewMouseLeftButtonDown"/>
@@ -279,8 +281,8 @@
                             </Style.Triggers>
                         </Style>
                     </DataGridTextColumn.CellStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="Addon" x:Name="AddonColumn"  Binding="{Binding RandomDelay}" Width="*" MinWidth="50">
+                </DataGridTextColumn>-->
+                <!--<DataGridTextColumn Header="Addon" x:Name="AddonColumn"  Binding="{Binding RandomDelay}" Width="*" MinWidth="50">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <EventSetter Event="PreviewMouseLeftButtonDown" Handler="InstructionsDataGrid_PreviewMouseLeftButtonDown"/>
@@ -367,8 +369,147 @@
                             </Style.Triggers>
                         </Style>
                     </DataGridTextColumn.CellStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="#" x:Name="ClickCountColumn"  Binding="{Binding Repetitions}" Width="1*">
+                </DataGridTextColumn>-->
+                <DataGridTemplateColumn Header="Delay" x:Name="DelayColumn"  Width="*" MinWidth="75">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Text="{Binding Path=Delay, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="0" Style="{StaticResource TextBoxStyle}"/>
+                                <TextBox Text="{Binding Path=Delay, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="1" />
+                            </Grid>
+                            <DataTemplate.Resources>
+                                <Style TargetType="TextBox">
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition>
+                                                    <Condition.Binding>
+                                                        <Binding Path="Type" Converter="{StaticResource ComboBoxConverter}" >
+                                                            <Binding.ConverterParameter>
+                                                                <autoclicker:InstructionType>CLICK</autoclicker:InstructionType>
+                                                            </Binding.ConverterParameter>
+                                                        </Binding>
+                                                    </Condition.Binding>
+                                                    <Condition.Value>
+                                                        <core:Boolean>False</core:Boolean>
+                                                    </Condition.Value>
+                                                </Condition>
+                                                <Condition>
+                                                    <Condition.Binding>
+                                                        <Binding Path="Type" Converter="{StaticResource ComboBoxConverter}" >
+                                                            <Binding.ConverterParameter>
+                                                                <autoclicker:InstructionType>DRAG</autoclicker:InstructionType>
+                                                            </Binding.ConverterParameter>
+                                                        </Binding>
+                                                    </Condition.Binding>
+                                                    <Condition.Value>
+                                                        <core:Boolean>False</core:Boolean>
+                                                    </Condition.Value>
+                                                </Condition>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Background" Value="Transparent" />
+                                            <Setter Property="Foreground" Value="Transparent" />
+                                            <Setter Property="IsEnabled" Value="False" />
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataTemplate.Resources>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    
+                    <!--<DataGridTemplateColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="InstructionsDataGrid_PreviewMouseLeftButtonDown"/>
+                            <Style.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition>
+                                            <Condition.Binding>
+                                                <Binding Path="Type" Converter="{StaticResource TextBoxConverter}" >
+                                                    <Binding.ConverterParameter>
+                                                        <autoclicker:InstructionType>CLICK</autoclicker:InstructionType>
+                                                    </Binding.ConverterParameter>
+                                                </Binding>
+                                            </Condition.Binding>
+                                            <Condition.Value>
+                                                <core:Boolean>False</core:Boolean>
+                                            </Condition.Value>
+                                        </Condition>
+                                        <Condition>
+                                            <Condition.Binding>
+                                                <Binding Path="Type" Converter="{StaticResource TextBoxConverter}" >
+                                                    <Binding.ConverterParameter>
+                                                        <autoclicker:InstructionType>WHEEL</autoclicker:InstructionType>
+                                                    </Binding.ConverterParameter>
+                                                </Binding>
+                                            </Condition.Binding>
+                                            <Condition.Value>
+                                                <core:Boolean>False</core:Boolean>
+                                            </Condition.Value>
+                                        </Condition>
+                                        <Condition>
+                                            <Condition.Binding>
+                                                <Binding Path="Type" Converter="{StaticResource TextBoxConverter}" >
+                                                    <Binding.ConverterParameter>
+                                                        <autoclicker:InstructionType>DELAY</autoclicker:InstructionType>
+                                                    </Binding.ConverterParameter>
+                                                </Binding>
+                                            </Condition.Binding>
+                                            <Condition.Value>
+                                                <core:Boolean>False</core:Boolean>
+                                            </Condition.Value>
+                                        </Condition>
+                                        <Condition>
+                                            <Condition.Binding>
+                                                <Binding Path="Type" Converter="{StaticResource TextBoxConverter}" >
+                                                    <Binding.ConverterParameter>
+                                                        <autoclicker:InstructionType>DRAG</autoclicker:InstructionType>
+                                                    </Binding.ConverterParameter>
+                                                </Binding>
+                                            </Condition.Binding>
+                                            <Condition.Value>
+                                                <core:Boolean>False</core:Boolean>
+                                            </Condition.Value>
+                                        </Condition>
+                                        <Condition>
+                                            <Condition.Binding>
+                                                <Binding Path="Type" Converter="{StaticResource TextBoxConverter}" >
+                                                    <Binding.ConverterParameter>
+                                                        <autoclicker:InstructionType>KEYBOARD</autoclicker:InstructionType>
+                                                    </Binding.ConverterParameter>
+                                                </Binding>
+                                            </Condition.Binding>
+                                            <Condition.Value>
+                                                <core:Boolean>False</core:Boolean>
+                                            </Condition.Value>
+                                        </Condition>
+                                        <Condition>
+                                            <Condition.Binding>
+                                                <Binding Path="Type" Converter="{StaticResource TextBoxConverter}" >
+                                                    <Binding.ConverterParameter>
+                                                        <autoclicker:InstructionType>END_LOOP</autoclicker:InstructionType>
+                                                    </Binding.ConverterParameter>
+                                                </Binding>
+                                            </Condition.Binding>
+                                            <Condition.Value>
+                                                <core:Boolean>False</core:Boolean>
+                                            </Condition.Value>
+                                        </Condition>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Setter Property="Foreground" Value="Transparent" />
+                                    <Setter Property="IsEnabled" Value="False" />
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTemplateColumn.CellStyle>-->
+                </DataGridTemplateColumn>
+                
+                <!--<DataGridTextColumn Header="#" x:Name="ClickCountColumn"  Binding="{Binding Repetitions}" Width="1*">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <EventSetter Event="PreviewMouseLeftButtonDown" Handler="InstructionsDataGrid_PreviewMouseLeftButtonDown"/>
@@ -455,8 +596,23 @@
                             </Style.Triggers>
                         </Style>
                     </DataGridTextColumn.CellStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="Speed" x:Name="SpeedColumn"  Binding="{Binding Speed}" Width="*" MinWidth="50">
+                </DataGridTextColumn>-->
+                <DataGridTemplateColumn Header="#" x:Name="ClickCountColumn"  Width="*" MinWidth="50">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Text="{Binding Path=Repetitions, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="0" />
+                                <TextBox Text="{Binding Path=Repetitions, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="1" />
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                
+                <!--<DataGridTextColumn Header="Speed" x:Name="SpeedColumn"  Binding="{Binding Speed}" Width="*" MinWidth="50">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <EventSetter Event="PreviewMouseLeftButtonDown" Handler="InstructionsDataGrid_PreviewMouseLeftButtonDown"/>
@@ -519,7 +675,21 @@
                             </Style.Triggers>
                         </Style>
                     </DataGridTextColumn.CellStyle>
-                </DataGridTextColumn>
+                </DataGridTextColumn>-->
+                <DataGridTemplateColumn Header="Speed" x:Name="SpeedColumn"  Width="*" MinWidth="50">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Text="{Binding Path=Speed, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="0" />
+                                <TextBox Text="{Binding Path=Speed, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="1" />
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
 
                 <DataGridTemplateColumn Header="Button" x:Name="ButtonColumn" Width="*" MinWidth="80">
                     <DataGridTemplateColumn.CellTemplate>
@@ -622,7 +792,7 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
              
-                <DataGridTextColumn Header="X" x:Name="XColumn" TextBlock.TextAlignment="Center" Binding="{Binding X}" Width="*" MinWidth="50">
+                <!--<DataGridTextColumn Header="X" x:Name="XColumn" TextBlock.TextAlignment="Center" Binding="{Binding X}" Width="*" MinWidth="50">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="HorizontalContentAlignment" Value="Center"/>
@@ -726,8 +896,27 @@
                             </Style.Triggers>
                         </Style>
                     </DataGridTextColumn.CellStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="End X" x:Name="DragXColumn"  Binding="{Binding EndX}" Width="*" MinWidth="50">
+                </DataGridTextColumn>-->
+                <DataGridTemplateColumn Header="Position" x:Name="PositionColumn"  Width="*" MinWidth="150">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Text="{Binding Path=X, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="0" />
+                                <TextBox Text="{Binding Path=RandomRadius, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="1" />
+                                <TextBox Text="{Binding Path=Y, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="2" />
+                                <TextBox Text="{Binding Path=RandomRadius, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="3" />
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                
+                <!--<DataGridTextColumn Header="End X" x:Name="DragXColumn"  Binding="{Binding EndX}" Width="*" MinWidth="50">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <EventSetter Event="PreviewMouseLeftButtonDown" Handler="InstructionsDataGrid_PreviewMouseLeftButtonDown"/>
@@ -783,7 +972,6 @@
                         </Style>
                     </DataGridTextColumn.CellStyle>
                 </DataGridTextColumn>
-
                 <DataGridTextColumn Header="Radius" x:Name="RandomRadiusColumn" TextBlock.TextAlignment="Center" Binding="{Binding RandomRadius}" Width="*" MinWidth="50">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
@@ -848,8 +1036,28 @@
                             </Style.Triggers>
                         </Style>
                     </DataGridTextColumn.CellStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="Wheel" x:Name="WheelColumn"  Binding="{Binding WheelDelta}" Width="*" MinWidth="50">
+                </DataGridTextColumn>-->
+
+
+                <DataGridTemplateColumn Header="Drag" x:Name="DragColumn"  Width="*" MinWidth="150">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Text="{Binding Path=EndX, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="0" />
+                                <TextBox Text="{Binding Path=RandomRadius, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="1"/>
+                                <TextBox Text="{Binding Path=EndY, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="2" />
+                                <TextBox Text="{Binding Path=RandomRadius, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="3" />
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <!--<DataGridTextColumn Header="Wheel" x:Name="WheelColumn"  Binding="{Binding WheelDelta}" Width="*" MinWidth="50">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <EventSetter Event="PreviewMouseLeftButtonDown" Handler="InstructionsDataGrid_PreviewMouseLeftButtonDown"/>
@@ -876,7 +1084,21 @@
                             </Style.Triggers>
                         </Style>
                     </DataGridTextColumn.CellStyle>
-                </DataGridTextColumn>
+                </DataGridTextColumn>-->
+                <DataGridTemplateColumn Header="Wheel" x:Name="WheelColumn"  Width="*" MinWidth="75">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Text="{Binding Path=WheelDelta, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="0" />
+                                <TextBox Text="{Binding Path=WheelDelta, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="1" />
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
 
                 <DataGridTemplateColumn Header="Shift" x:Name="ShiftColumn" MinWidth="35" MaxWidth="35">
                     <DataGridTemplateColumn.CellTemplate>

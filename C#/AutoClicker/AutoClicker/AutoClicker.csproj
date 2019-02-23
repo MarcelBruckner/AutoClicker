@@ -78,7 +78,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="CheckBoxColumnConverter.cs" />
     <Compile Include="TickCounter.cs" />
     <Compile Include="Converters\ComboBoxConverter.cs" />
     <Compile Include="Converters\ValueToEqualsParameterConverter.cs" />
