@@ -31,7 +31,7 @@
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
-        <Style TargetType="{x:Type TextBox}">
+        <Style x:Name="TextBoxStyle" TargetType="{x:Type TextBox}">
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
             <Setter Property="VerticalAlignment" Value="Stretch" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
@@ -211,24 +211,31 @@
                 <DataGridTemplateColumn Header="Type" x:Name="TypeColumn" Width="*"  MinWidth="100" TextElement.FontStretch="Expanded">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ComboBox SelectedValue="{Binding Path=Type, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={StaticResource Types}}" MinWidth="100" IsEnabled="True" Foreground="Black"/>
+                            <ComboBox SelectedValue="{Binding Path=Type, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={StaticResource Types}}" MinWidth="100"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Header="Delay" x:Name="DelayColumn"  Width="*" MinWidth="75">
+                <DataGridTemplateColumn Header="Delay" x:Name="DelayColumn"  Width="*" MinWidth="90">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Grid>
                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="4*"/>
                                     <ColumnDefinition Width="3*"/>
-                                    <ColumnDefinition Width="2*"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBox Text="{Binding Path=Delay, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="0" />
                                 <TextBox Text="{Binding Path=RandomDelay, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="1" />
                             </Grid>
                             <DataTemplate.Resources>
                                 <Style TargetType="TextBox">
+                                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                    <Setter Property="VerticalAlignment" Value="Stretch" />
+                                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+
+                                    <Setter Property="Foreground" Value="Black" />
+                                    <Setter Property="IsEnabled" Value="True" />
                                     <Style.Triggers>
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
@@ -287,6 +294,13 @@
                             </Grid>
                             <DataTemplate.Resources>
                                 <Style TargetType="TextBox">
+                                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                    <Setter Property="VerticalAlignment" Value="Stretch" />
+                                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+
+                                    <Setter Property="Foreground" Value="Black" />
+                                    <Setter Property="IsEnabled" Value="True" />
                                     <Style.Triggers>
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
@@ -344,6 +358,13 @@
                             </Grid>
                             <DataTemplate.Resources>
                                 <Style TargetType="TextBox">
+                                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                    <Setter Property="VerticalAlignment" Value="Stretch" />
+                                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+
+                                    <Setter Property="Foreground" Value="Black" />
+                                    <Setter Property="IsEnabled" Value="True" />
                                     <Style.Triggers>
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
@@ -442,15 +463,15 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
              
-                <DataGridTemplateColumn Header="Position" x:Name="PositionColumn"  Width="*" MinWidth="150">
+                <DataGridTemplateColumn Header="Position" x:Name="PositionColumn"  Width="*" MinWidth="120">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Grid>
                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*"/>
                                     <ColumnDefinition Width="2*"/>
-                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="3*"/>
                                     <ColumnDefinition Width="2*"/>
-                                    <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBox Text="{Binding Path=X, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="0" />
                                 <TextBox Text="{Binding Path=RandomX, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="1" />
@@ -459,6 +480,13 @@
                             </Grid>
                             <DataTemplate.Resources>
                                 <Style TargetType="TextBox">
+                                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                    <Setter Property="VerticalAlignment" Value="Stretch" />
+                                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+
+                                    <Setter Property="Foreground" Value="Black" />
+                                    <Setter Property="IsEnabled" Value="True" />
                                     <Style.Triggers>
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
@@ -482,16 +510,16 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                
-                <DataGridTemplateColumn Header="Drag" x:Name="DragColumn"  Width="*" MinWidth="150">
+
+                <DataGridTemplateColumn Header="Drag" x:Name="DragColumn"  Width="*" MinWidth="120">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Grid>
                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*"/>
                                     <ColumnDefinition Width="2*"/>
-                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="3*"/>
                                     <ColumnDefinition Width="2*"/>
-                                    <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBox Text="{Binding Path=EndX, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="0" />
                                 <TextBox Text="{Binding Path=RandomEndX, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="1"/>
@@ -500,6 +528,13 @@
                             </Grid>
                             <DataTemplate.Resources>
                                 <Style TargetType="TextBox">
+                                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                    <Setter Property="VerticalAlignment" Value="Stretch" />
+                                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+
+                                    <Setter Property="Foreground" Value="Black" />
+                                    <Setter Property="IsEnabled" Value="True" />
                                     <Style.Triggers>
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
@@ -532,6 +567,13 @@
                             </Grid>
                             <DataTemplate.Resources>
                                 <Style TargetType="TextBox">
+                                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                    <Setter Property="VerticalAlignment" Value="Stretch" />
+                                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+
+                                    <Setter Property="Foreground" Value="Black" />
+                                    <Setter Property="IsEnabled" Value="True" />
                                     <Style.Triggers>
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
