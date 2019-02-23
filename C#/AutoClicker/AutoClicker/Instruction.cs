@@ -35,15 +35,6 @@ namespace AutoClicker
         private int _randomEndY;
         private int _randomEndX;
         private int _randomWheelDelta;
-        private bool _isButtonEnabled;
-        private bool _isMovementEnabled;
-        private bool _isDelayEnabled;
-        private bool _isRepetitionsEnabled;
-        private bool _isSpeedEnabled;
-        private bool _isPositionEnabled;
-        private bool _isDragEnabled;
-        private bool _isWheelEnabled;
-        private bool _isKeyEnabled;
         internal static readonly int MAX_UNCERTAINTY = 20;
         #endregion
 
@@ -219,16 +210,16 @@ namespace AutoClicker
             switch (Type)
             {
                 case InstructionType.CLICK:
-                    InputSimulator.MouseClick(Movement, Button, X, Y, 4, Speed, GetHotkeys());
+                    InputSimulator.MouseClick(Movement, Button, X + random.Next(RandomX), Y + random.Next(RandomY), Speed + random.NextDouble() * RandomSpeed, GetHotkeys());
                     break;
                 case InstructionType.DRAG:
-                    InputSimulator.MouseDrag(Movement, Button, X, Y, EndX, EndY, 4, Speed, GetHotkeys());
+                    InputSimulator.MouseDrag(Movement, Button, X + random.Next(RandomX), Y + random.Next(RandomY), EndX + random.Next(RandomEndX), EndY + random.Next(RandomEndY), Speed + random.NextDouble() * RandomSpeed, GetHotkeys());
                     break;
                 case InstructionType.KEYBOARD:
                     InputSimulator.KeyPress(Key, GetHotkeys());
                     break;
                 case InstructionType.WHEEL:
-                    InputSimulator.MouseWheel(Movement, X, Y, Wheel, 4, Speed, GetHotkeys());
+                    InputSimulator.MouseWheel(Movement, X + random.Next(RandomX), Y + random.Next(RandomY), Wheel + random.Next(RandomWheel), Speed + random.NextDouble() * RandomSpeed, GetHotkeys());
                     break;
                 case InstructionType.DELAY:
                 case InstructionType.LOOP:
@@ -236,6 +227,7 @@ namespace AutoClicker
                     break;
             }
         }
+
 
         public override bool Equals(object obj)
         {
@@ -317,39 +309,6 @@ namespace AutoClicker
             Button = button;
             X = x;
             Y = y;
-        }
-
-        private void SetEnabledFields(InstructionType type)
-        {
-            switch (type)
-            {
-                case InstructionType.CLICK:
-
-                    break;
-
-                case InstructionType.DELAY:
-
-                    break;
-
-                case InstructionType.DRAG:
-
-                    break;
-
-                case InstructionType.END_LOOP:
-
-                    break;
-
-                case InstructionType.KEYBOARD:
-
-
-                case InstructionType.LOOP:
-
-                    break;
-
-                case InstructionType.WHEEL:
-
-                    break;
-            }
         }
     }
 }

@@ -99,20 +99,20 @@ namespace AutoClicker
         }
         #endregion
 
-        public static void MouseDrag(MovementType move, ButtonType button, int x, int y, int endX, int endY, int radius, double speed, params VirtualKeyCode[] hotkeys)
+        public static void MouseDrag(MovementType move, ButtonType button, int x, int y, int endX, int endY, double speed, params VirtualKeyCode[] hotkeys)
         {
-            MouseDrag(move, (int)button, x, y, endX, endY, radius, speed, hotkeys);
+            MouseDrag(move, (int)button, x, y, endX, endY, speed, hotkeys);
         }
-        public static void MouseDrag(MovementType move, int button, int x, int y, int endX, int endY, int radius, double speed, params VirtualKeyCode[] hotkeys)
+        public static void MouseDrag(MovementType move, int button, int x, int y, int endX, int endY, double speed, params VirtualKeyCode[] hotkeys)
         {
-            MouseDown(move, button, x, y, radius, speed, hotkeys);
-            MouseUp(move, button, endX, endY, radius, speed, hotkeys);
+            MouseDown(move, button, x, y, speed, hotkeys);
+            MouseUp(move, button, endX, endY, speed, hotkeys);
         }
 
-        public static void MouseDown(MovementType move, int button, int x, int y, int radius, double speed, params VirtualKeyCode[] hotkeys)
+        public static void MouseDown(MovementType move, int button, int x, int y, double speed, params VirtualKeyCode[] hotkeys)
         {
             KeyDown(hotkeys);
-            MoveMouse(move, x,y, radius, speed);
+            MoveMouse(move, x, y, speed);
 
             INPUT mouseDownInput = new INPUT
             {
@@ -137,9 +137,9 @@ namespace AutoClicker
             SendInput(1, ref mouseDownInput, Marshal.SizeOf(new INPUT()));
         }
 
-        public static void MouseUp(MovementType move, int button, int x, int y, int radius, double speed, params VirtualKeyCode[] hotkeys)
+        public static void MouseUp(MovementType move, int button, int x, int y, double speed, params VirtualKeyCode[] hotkeys)
         {
-            MoveMouse(move, x,y, radius, speed);
+            MoveMouse(move, x, y, speed);
 
             INPUT mouseDownInput = new INPUT
             {
@@ -164,31 +164,31 @@ namespace AutoClicker
             SendInput(1, ref mouseDownInput, Marshal.SizeOf(new INPUT()));
             KeyUp(hotkeys);
         }
-        
-        public static void MouseClick(MovementType move, ButtonType button, int x, int y, int radius, double speed,  params VirtualKeyCode[] hotkeys)
+
+        public static void MouseClick(MovementType move, ButtonType button, int x, int y, double speed, params VirtualKeyCode[] hotkeys)
         {
-            MouseClick(move, (int)button, x, y, radius, speed, hotkeys);
+            MouseClick(move, (int)button, x, y, speed, hotkeys);
         }
-        public static void MouseClick(MovementType move, int button, int x, int y, int radius, double speed,  params VirtualKeyCode[] hotkeys)
+        public static void MouseClick(MovementType move, int button, int x, int y, double speed, params VirtualKeyCode[] hotkeys)
         {
-            MouseDown(move, button, x, y, radius, speed, hotkeys);
-            MouseUp(move, button, x, y, radius, speed, hotkeys);
+            MouseDown(move, button, x, y, speed, hotkeys);
+            MouseUp(move, button, x, y, speed, hotkeys);
         }
 
-        public static void MoveMouse(MovementType move, Point end, int radius, double speed)
+        public static void MoveMouse(MovementType move, Point end, double speed)
         {
             ICursorInterpolation interpolation;
 
             switch (move)
             {
                 case MovementType.SINUS:
-                    interpolation = new SinusInterpolation(end, speed, radius);
+                    interpolation = new SinusInterpolation(end, speed);
                     break;
                 case MovementType.SPRING:
-                    interpolation = new MassSpringInterpolation(end, speed, radius);
+                    interpolation = new MassSpringInterpolation(end, speed);
                     break;
                 default:
-                    interpolation = new JumpInterpolation(end, speed, radius);
+                    interpolation = new JumpInterpolation(end, speed);
                     break;
             }
 
@@ -196,9 +196,9 @@ namespace AutoClicker
             interpolation.Interpolate();
         }
 
-        public static void MoveMouse(MovementType move, int x, int y, int radius, double speed)
+        public static void MoveMouse(MovementType move, int x, int y, double speed)
         {
-            MoveMouse(move, new Point(x, y), radius, speed);
+            MoveMouse(move, new Point(x, y), speed);
         }
 
         public static void KeyDown(params VirtualKeyCode[] keys)
@@ -255,9 +255,9 @@ namespace AutoClicker
             KeyUp(hotkeys);
         }
 
-        public static void MouseWheel(MovementType move, int x, int y, int radius, int delta, double speed, params VirtualKeyCode[] hotkeys)
+        public static void MouseWheel(MovementType move, int x, int y, int delta, double speed, params VirtualKeyCode[] hotkeys)
         {
-            MoveMouse(move, x, y, radius, speed);
+            MoveMouse(move, x, y, speed);
             KeyDown(hotkeys);
             INPUT mouseDownInput = new INPUT
             {

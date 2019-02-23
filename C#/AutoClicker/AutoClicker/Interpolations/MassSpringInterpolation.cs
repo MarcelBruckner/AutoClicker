@@ -14,7 +14,7 @@ namespace AutoClicker
         protected List<Spring> springs = new List<Spring>();
 
 
-        public MassSpringInterpolation(System.Drawing.Point end, double speed = 1, int targetRadius = 5) : base(end, speed, targetRadius)
+        public MassSpringInterpolation(System.Drawing.Point end, double speed = 1) : base(end, speed)
         {
             Speed = speed;
             Initialize();
@@ -29,7 +29,7 @@ namespace AutoClicker
             //Points.Add(new MassPoint(midpoint, RandomNormal(End, Cursor, 50), random.NextDouble() * 2 + 1, DAMPING / 2));// random.NextDouble() * 0.8 + 0.6));
             Points.Add(new MassPoint(Cursor, RandomVector(50), random.NextDouble() * 2 + 1, DAMPING, Speed));
 
-            springs.Add(new Spring(this, 0, 1, STIFFNESS, TargetRadius));
+            springs.Add(new Spring(this, 0, 1, STIFFNESS));
             //springs.Add(new Spring(this, 1, 2, STIFFNESS, TargetRadius));
         }
 
@@ -67,15 +67,14 @@ namespace AutoClicker
             public double Stiffness { get; private set; }
             public double InitialLength { get; private set; }
             private MassSpringInterpolation outer;
-            public int TargetRadius { get; private set; }
 
-            public Spring(MassSpringInterpolation outer, int start, int end, double stiffness, int targetRadius)
+            public Spring(MassSpringInterpolation outer, int start, int end, double stiffness)
             {
                 this.outer = outer;
                 Start = start;
                 End = end;
                 Stiffness = stiffness;
-                TargetRadius = targetRadius;
+                InitialLength = outer.Points[Start].Distance(outer.Points[End]);
             }
 
             public void ComputeElasticForce()
@@ -87,14 +86,14 @@ namespace AutoClicker
                 outer.Points[Start].Force += -force;
                 outer.Points[End].Force += force;
 
-                int randomLength = 10 * TargetRadius;
-                if (length < 20 * TargetRadius)
+                int randomLength = 100;
+                if (length < 0.2 * InitialLength)
                 {
-                    randomLength = 5 * TargetRadius;
+                    randomLength = 50;
                 }
-                else if (length < 3 * TargetRadius)
+                else if (length < 50)
                 {
-                    randomLength = TargetRadius / 2;
+                    randomLength = 5;
                 }
                 outer.Points[End].RandomVelocity += RandomNormal(outer.Points[Start].Position, outer.Points[End].Position, randomLength);
                 outer.Points[Start].RandomVelocity += RandomNormal(outer.Points[Start].Position, outer.Points[End].Position, randomLength);

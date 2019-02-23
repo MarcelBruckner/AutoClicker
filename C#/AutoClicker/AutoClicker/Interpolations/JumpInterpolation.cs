@@ -10,7 +10,7 @@ namespace AutoClicker
 {
     public class JumpInterpolation : ICursorInterpolation
     {
-        public JumpInterpolation(System.Drawing.Point end, double speed = 1, int targetRadius = 5) : base(end, speed, targetRadius) { }
+        public JumpInterpolation(System.Drawing.Point end, double speed = 1, int targetRadius = 5) : base(end, speed) { }
 
         public override void Interpolate()
         {
@@ -18,7 +18,7 @@ namespace AutoClicker
             {
                 return;
             }
-            Vector toMove = End + RandomVector(TargetRadius);
+            Vector toMove = End;
             Cursor = toMove;
             Thread.Sleep((int)(20 * Speed));
             Cursor = toMove;

@@ -9,7 +9,7 @@ namespace AutoClicker
     {
         public double step = 50.0;
 
-        public SinusInterpolation(System.Drawing.Point end, double speed = 1, int targetRadius = 5) : base(end, speed, targetRadius) { }
+        public SinusInterpolation(System.Drawing.Point end, double speed = 1) : base(end, speed) { }
 
         public override void Interpolate()
         {
@@ -17,7 +17,7 @@ namespace AutoClicker
             Vector b = End - origin;
 
             double duration = b.Length / 10 * Speed;
-            if (b.Length > TargetRadius)
+            if (b.Length > 1)
             {
                 double angle = -Vector.AngleBetween(new Vector(1, 0), b);
                 double backAngle = ConvertToRadians(-angle);

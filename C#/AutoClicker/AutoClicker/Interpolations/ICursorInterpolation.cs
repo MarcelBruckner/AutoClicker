@@ -14,15 +14,13 @@ namespace AutoClicker
         protected static Random random = new Random();
         public Vector End { get; protected set; }
         public double Dt { get; set; }
-        public int TargetRadius { get; set; }
         public double Speed { get; set; }
 
-        public bool Finished { get => Distance(Cursor, End) < TargetRadius; }
+        public bool Finished { get => Distance(Cursor, End) < 3; }
 
-        protected ICursorInterpolation(System.Drawing.Point end, double speed = 1, int targetRadius = 5)
+        protected ICursorInterpolation(System.Drawing.Point end, double speed = 1)
         {
             End = new Vector(end.X, end.Y);
-            TargetRadius = targetRadius;
             Speed = speed;
         }
 

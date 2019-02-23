@@ -353,8 +353,8 @@
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBox Text="{Binding Path=Speed, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="0" />
-                                <TextBox Text="{Binding Path=RandomSpeed, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="1" />
+                                <TextBox Text="{Binding Path=Speed, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Delay=250}" Grid.Column="0"/>
+                                <TextBox Text="{Binding Path=RandomSpeed, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Delay=250}" Grid.Column="1" />
                             </Grid>
                             <DataTemplate.Resources>
                                 <Style TargetType="TextBox">
@@ -476,7 +476,7 @@
                                 <TextBox Text="{Binding Path=X, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="0" />
                                 <TextBox Text="{Binding Path=RandomX, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="1" />
                                 <TextBox Text="{Binding Path=Y, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="2" />
-                                <TextBox Text="{Binding Path=RandomX, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="3" />
+                                <TextBox Text="{Binding Path=RandomY, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="3" />
                             </Grid>
                             <DataTemplate.Resources>
                                 <Style TargetType="TextBox">
