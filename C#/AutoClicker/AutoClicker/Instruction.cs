@@ -210,24 +210,35 @@ namespace AutoClicker
             switch (Type)
             {
                 case InstructionType.CLICK:
-                    InputSimulator.MouseClick(Movement, Button, X + random.Next(RandomX), Y + random.Next(RandomY), Speed + random.NextDouble() * RandomSpeed, GetHotkeys());
+                    InputSimulator.MouseClick(Movement, Button, Randomize(X, RandomX), Randomize(Y, RandomY), Randomize(Speed, RandomSpeed), GetHotkeys());
                     break;
                 case InstructionType.DRAG:
-                    InputSimulator.MouseDrag(Movement, Button, X + random.Next(RandomX), Y + random.Next(RandomY), EndX + random.Next(RandomEndX), EndY + random.Next(RandomEndY), Speed + random.NextDouble() * RandomSpeed, GetHotkeys());
+                    InputSimulator.MouseDrag(Movement, Button, Randomize(X, RandomX), Randomize(Y, RandomY), Randomize(EndX, RandomEndX), Randomize(EndY, RandomEndY), Randomize(Speed, RandomSpeed), GetHotkeys());
+                    break;
+                case InstructionType.WHEEL:
+                    InputSimulator.MouseWheel(Movement, Randomize(X, RandomX), Randomize(Y, RandomY), Randomize(Wheel, RandomWheel), Randomize(Speed, RandomSpeed), GetHotkeys());
                     break;
                 case InstructionType.KEYBOARD:
                     InputSimulator.KeyPress(Key, GetHotkeys());
-                    break;
-                case InstructionType.WHEEL:
-                    InputSimulator.MouseWheel(Movement, X + random.Next(RandomX), Y + random.Next(RandomY), Wheel + random.Next(RandomWheel), Speed + random.NextDouble() * RandomSpeed, GetHotkeys());
                     break;
                 case InstructionType.DELAY:
                 case InstructionType.LOOP:
                 case InstructionType.END_LOOP:
                     break;
+                default:
+                    throw new ArgumentException("The instruction type " + Type + " is not supported.");
             }
         }
 
+        private int Randomize(int value, int range)
+        {
+            return value + random.Next(-range, range);
+        }
+
+        private double Randomize(double value, double range)
+        {
+            return value + (2 * random.NextDouble() - 1) * range;
+        }
 
         public override bool Equals(object obj)
         {
