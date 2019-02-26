@@ -210,6 +210,7 @@ namespace AutoClicker
                                 }
                             }
 
+                            int save = Instructions[j].Repetitions;
                             int loops = Instructions[j].Repetitions + random.Next(Instructions[j].RandomRepetitions);
                             for (int l = 0; l < loops; l++)
                             {
@@ -228,7 +229,7 @@ namespace AutoClicker
                                     runningInstruction.Run();
                                 }
                             }
-                            Instructions[j].Repetitions = loops;
+                            Instructions[j].Repetitions = save;
                             j = end;
                         }
                         else
