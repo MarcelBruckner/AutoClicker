@@ -135,13 +135,13 @@ namespace AutoClicker
             //server = new TCPServer();
             InstructionsDataGrid.ItemsSource = Instructions;
 
-            //Instructions.Add(new Instruction(InstructionType.CLICK));
-            //Instructions.Add(new Instruction(InstructionType.DRAG));
-            //Instructions.Add(new Instruction(InstructionType.WHEEL));
-            //Instructions.Add(new Instruction(InstructionType.KEYBOARD));
-            //Instructions.Add(new Instruction(InstructionType.LOOP));
-            //Instructions.Add(new Instruction(InstructionType.END_LOOP));
-            //Instructions.Add(new Instruction(InstructionType.DELAY));
+            Instructions.Add(new Instruction(InstructionType.CLICK));
+            Instructions.Add(new Instruction(InstructionType.DRAG));
+            Instructions.Add(new Instruction(InstructionType.WHEEL));
+            Instructions.Add(new Instruction(InstructionType.KEYBOARD));
+            Instructions.Add(new Instruction(InstructionType.LOOP));
+            Instructions.Add(new Instruction(InstructionType.END_LOOP));
+            Instructions.Add(new Instruction(InstructionType.DELAY));
         }
 
         private void StopAll()

@@ -53,9 +53,9 @@ namespace AutoClicker
 
         public void Run()
         {
-            int r = random.Next();
             IsRunning = true;
-            int totalRepetitions = Repetitions;
+            int save = Repetitions;
+            int totalRepetitions = Repetitions + random.Next(RandomRepetitions);
             Repetitions = 1;
             while (IsRunning && Repetitions <= totalRepetitions)
             {
@@ -64,7 +64,7 @@ namespace AutoClicker
                 Repetitions++;
             }
             IsRunning = false;
-            Repetitions = totalRepetitions;
+            Repetitions = save;
         }
 
         public InstructionType Type { get => _type; set { _type = value; OnPropertyChanged("Type"); } }
