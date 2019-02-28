@@ -118,21 +118,21 @@ namespace AutoClicker
 
         private void MouseDown(object sender, MouseEventArgs e)
         {
-            ButtonType button = (ButtonType)GetButton(e.Button);
-            Point p = Cursor.Position;
-            mouseDownPosition = new Instruction(button, window.Movement, p.X, p.Y, isShiftDown, isCtrlDown, isAltDown);
+            ButtonType button = GetButton(e.Button);
+            Point p = Cursor.Point;
+            mouseDownPosition = new Instruction(button, window.GlobalMovement, p.X, p.Y, isShiftDown, isCtrlDown, isAltDown);
         }
 
         private void MouseUp(object sender, MouseEventArgs e)
         {
             ButtonType button = GetButton(e.Button);
-            Point p = Cursor.Position;
-            Instruction end = new Instruction(button, window.Movement, p.X, p.Y, isShiftDown, isCtrlDown, isAltDown);
+            Point p = Cursor.Point;
+            Instruction end = new Instruction(button, window.GlobalMovement, p.X, p.Y, isShiftDown, isCtrlDown, isAltDown);
 
             Instruction start = mouseDownPosition as Instruction;
             if (start != null && start.Button == end.Button && end.Distance(start) > Instruction.MAX_UNCERTAINTY)
             {
-                AddOrIncrement(new Instruction(start.Button, window.Movement, start.X, start.Y, end.X, end.Y, isShiftDown, isCtrlDown, isAltDown));
+                AddOrIncrement(new Instruction(start.Button, window.GlobalMovement, start.X, start.Y, end.X, end.Y, isShiftDown, isCtrlDown, isAltDown));
             }
             else
             {
@@ -142,7 +142,7 @@ namespace AutoClicker
 
         private void MouseWheel(object sender, MouseEventArgs e)
         {
-            Instruction instruction = new Instruction(e.Delta, window.Movement, e.X, e.Y, isShiftDown, isCtrlDown, isAltDown);
+            Instruction instruction = new Instruction(e.Delta, window.GlobalMovement, e.X, e.Y, isShiftDown, isCtrlDown, isAltDown);
             AddOrIncrement(instruction);
         }
 

@@ -86,14 +86,15 @@ namespace AutoClicker
         public int RandomX { get => _randomX; set { _randomX = value; OnPropertyChanged("RandomX"); } }
         public int Y { get => _y; set { _y = value; OnPropertyChanged("Y"); } }
         public int RandomY { get => _randomY; set { _randomY = value; OnPropertyChanged("RandomY"); } }
+        private Vector Randomized { get; set; } = new Vector(-100, -100);
 
         public int EndX { get => _endX; set { _endX = value; OnPropertyChanged("EndX"); } }
         public int RandomEndX { get => _randomEndX; set { _randomEndX = value; OnPropertyChanged("RandomEndX"); } }
         public int EndY { get => _endY; set { _endY = value; OnPropertyChanged("EndY"); } }
         public int RandomEndY { get => _randomEndY; set { _randomEndY = value; OnPropertyChanged("RandomEndY"); } }
         
-        public int Wheel { get => _wheelDelta; set { _wheelDelta = value; OnPropertyChanged("WheelDelta"); } }
-        public int RandomWheel { get => _randomWheelDelta; set { _randomWheelDelta = value; OnPropertyChanged("WheelDelta"); } }
+        public int Wheel { get => _wheelDelta; set { _wheelDelta = value; OnPropertyChanged("Wheel"); } }
+        public int RandomWheel { get => _randomWheelDelta; set { _randomWheelDelta = value; OnPropertyChanged("RandomWheel"); } }
 
         public bool Shift { get => _shift; set { _shift = value; OnPropertyChanged("Shift"); } }
         public bool Ctrl { get => _ctrl; set { _ctrl = value; OnPropertyChanged("Ctrl"); } }
@@ -150,7 +151,7 @@ namespace AutoClicker
 
         // Click constructor
         public Instruction(ButtonType button, MovementType movement, int x, int y, bool shift, bool ctrl, bool alt) : this(button, movement, x, y, 0L, 1, shift, ctrl, alt) { }
-        public Instruction(ButtonType button, MovementType movement, int x, int y, long delay, int repetitions, bool shift, bool ctrl, bool alt) : this(InstructionType.CLICK, delay, repetitions, shift, ctrl, alt)
+        public Instruction(ButtonType button, MovementType movement, int x, int y, long delay, int repetitions, bool shift, bool ctrl, bool alt) : this(InstructionType.M_CLICK, delay, repetitions, shift, ctrl, alt)
         {
             Movement = movement;
             SetMouse(button, x, y);
@@ -207,16 +208,24 @@ namespace AutoClicker
 
         protected virtual void SpecificExecute()
         {
+            if (!AlreadyThere)
+            {
+                Randomized = new Vector(Randomize(X, RandomX), Randomize(Y, RandomY));
+            }
+
             switch (Type)
             {
                 case InstructionType.CLICK:
-                    InputSimulator.MouseClick(Movement, Button, Randomize(X, RandomX), Randomize(Y, RandomY), Randomize(Speed, RandomSpeed), GetHotkeys());
+                    InputSimulator.MouseClick(Button, GetHotkeys());
+                    break;
+                case InstructionType.M_CLICK:
+                    InputSimulator.MouseClick(Movement, Button, Randomized, Randomize(Speed, RandomSpeed), GetHotkeys());
                     break;
                 case InstructionType.DRAG:
-                    InputSimulator.MouseDrag(Movement, Button, Randomize(X, RandomX), Randomize(Y, RandomY), Randomize(EndX, RandomEndX), Randomize(EndY, RandomEndY), Randomize(Speed, RandomSpeed), GetHotkeys());
+                    InputSimulator.MouseDrag(Movement, Button, Randomized, Randomize(EndX, RandomEndX), Randomize(EndY, RandomEndY), Randomize(Speed, RandomSpeed), GetHotkeys());
                     break;
                 case InstructionType.WHEEL:
-                    InputSimulator.MouseWheel(Movement, Randomize(X, RandomX), Randomize(Y, RandomY), Randomize(Wheel, RandomWheel), Randomize(Speed, RandomSpeed), GetHotkeys());
+                    InputSimulator.MouseWheel(Movement, Randomized, Randomize(Wheel, RandomWheel), Randomize(Speed, RandomSpeed), GetHotkeys());
                     break;
                 case InstructionType.KEYBOARD:
                     InputSimulator.KeyPress(Key, GetHotkeys());
@@ -227,6 +236,17 @@ namespace AutoClicker
                     break;
                 default:
                     throw new ArgumentException("The instruction type " + Type + " is not supported.");
+            }
+        }
+
+        private bool AlreadyThere
+        {
+            get
+            {
+                int dx = (int)Math.Abs(Randomized.X - Cursor.Vector.X);
+                int dy = (int)Math.Abs(Randomized.Y - Cursor.Vector.Y);
+
+                return dx < RandomX && dy < RandomY;
             }
         }
 

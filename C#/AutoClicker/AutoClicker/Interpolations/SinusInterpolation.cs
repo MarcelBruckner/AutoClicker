@@ -13,7 +13,7 @@ namespace AutoClicker
 
         public override void Interpolate()
         {
-            Vector origin = Cursor;
+            Vector origin = Cursor.Vector;
             Vector b = End - origin;
 
             double duration = b.Length / 10 * Speed;
@@ -47,12 +47,12 @@ namespace AutoClicker
                         Math.Sin(backAngle) * x * interval + Math.Cos(backAngle) * y);
 
                     current += origin;
-                    Cursor = current;
+                    Cursor.Vector = current;
                     Thread.Sleep((int)(duration / step));
                 }
             }
 
-            Cursor = End;
+            Cursor.Vector = End;
         }
     }
 }

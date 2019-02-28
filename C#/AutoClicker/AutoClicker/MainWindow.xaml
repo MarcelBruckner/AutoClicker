@@ -74,8 +74,13 @@
                 <x:Type Type="autoclicker:MovementType"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
+        <ObjectDataProvider x:Key="HotkeyStates" MethodName="GetValues" ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="autoclicker:HotkeyState"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
     </Window.Resources>
-    
+
     <!--<Border Padding="5 0 5 5">-->
     <DockPanel LastChildFill="True">
 
@@ -91,6 +96,61 @@
             </MenuItem>
             <!--<Separator/>-->
             <MenuItem Header="_Edit">
+                <MenuItem Header="_Delay">
+                    <Grid Width="100">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Minimum" Grid.Column="0"/>
+                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="1" Text="{Binding Path=GlobalDelay, ElementName=mainWindow}"/>
+                    </Grid>
+                    <Grid Width="100">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Random" Grid.Column="0"/>
+                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="10" Text="{Binding Path=GlobalRandomDelay, ElementName=mainWindow}"/>
+                    </Grid>
+                </MenuItem>
+                <MenuItem Header="_Repetitions">
+                    <Grid Width="100">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Minimum" Grid.Column="0"/>
+                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="1" Text="{Binding Path=GlobalRepetitions, ElementName=mainWindow}"/>
+                    </Grid>
+                    <Grid Width="100">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Random" Grid.Column="0"/>
+                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="10" Text="{Binding Path=GlobalRandomRepetitions, ElementName=mainWindow}"/>
+                    </Grid>
+                </MenuItem>
+                <MenuItem Header="_Speed">
+                    <Grid Width="100">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Minimum" Grid.Column="0"/>
+                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="1" Text="{Binding Path=GlobalSpeed, ElementName=mainWindow}"/>
+                    </Grid>
+                    <Grid Width="100">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Random" Grid.Column="0"/>
+                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="10" Text="{Binding Path=GlobalRandomSpeed, ElementName=mainWindow}"/>
+                    </Grid>
+                </MenuItem>
+                <Separator/>
                 <MenuItem Header="Movement Type" ItemsSource="{Binding Source={StaticResource MovementTypes}}">
                     <MenuItem.ItemContainerStyle>
                         <Style TargetType="MenuItem">
@@ -98,8 +158,72 @@
                         </Style>
                     </MenuItem.ItemContainerStyle>
                 </MenuItem>
+                <MenuItem Header="_Position">
+                    <Grid Width="100">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="X Radius" Grid.Column="0"/>
+                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="1" Text="{Binding Path=GlobalRandomX, ElementName=mainWindow}"/>
+                    </Grid>
+                    <Grid Width="100">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Y Radius" Grid.Column="0"/>
+                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="10" Text="{Binding Path=GlobalRandomY, ElementName=mainWindow}"/>
+                    </Grid>
+                </MenuItem>
+                <MenuItem Header="_Drag">
+                    <Grid Width="100">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="X Radius" Grid.Column="0"/>
+                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="1" Text="{Binding Path=GlobalRandomDragX, ElementName=mainWindow}"/>
+                    </Grid>
+                    <Grid Width="100">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Y Radius" Grid.Column="0"/>
+                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="10" Text="{Binding Path=GlobalRandomDragY, ElementName=mainWindow}"/>
+                    </Grid>
+                </MenuItem>
+                <MenuItem Header="_Wheel">
+                    <Grid Width="100">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Minimum" Grid.Column="0"/>
+                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="1" Text="{Binding Path=GlobalWheel, ElementName=mainWindow}"/>
+                    </Grid>
+                    <Grid Width="100">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Random" Grid.Column="0"/>
+                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="10" Text="{Binding Path=GlobalRandomWheel, ElementName=mainWindow}"/>
+                    </Grid>
+                </MenuItem>
                 <Separator/>
-                <MenuItem Header="Clear" Click="Clear_Click"/>
+                <MenuItem Header="_Hotkeys">
+                    <MenuItem Header="Ctrl" ItemsSource="{Binding Source={StaticResource HotkeyStates}}">
+                        <MenuItem.ItemContainerStyle>
+                            <Style TargetType="MenuItem">
+                                <EventSetter Event="Click" Handler="Ctrl_Click" />
+                            </Style>
+                        </MenuItem.ItemContainerStyle>
+                    </MenuItem>
+                </MenuItem>
+                <Separator/>
+                <MenuItem Header="_Clear" Click="Clear_Click"/>
             </MenuItem>
         </Menu>
         <Grid DockPanel.Dock="Top">
@@ -146,7 +270,7 @@
             <TextBlock Foreground="Black" FontSize="16" Grid.Column="1" Text="Auto Clicker" FontWeight="Bold" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
             <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                 <TextBox x:Name="RepetitionsTextBox" IsEnabled="False" TextChanged="RepetitionsTextBox_TextChanged" Text="5" MaxLength="5" VerticalAlignment="Center" Width="40" TextAlignment="Right" Padding="2"/>
+                <TextBox x:Name="RepetitionsTextBox" IsEnabled="False" TextChanged="RepetitionsTextBox_TextChanged" Text="5" MaxLength="5" VerticalAlignment="Center" Width="40" TextAlignment="Right" Padding="2"/>
 
                 <ToggleButton x:Name="InfiniteButton" BorderThickness="0" Background="Transparent" IsChecked="{Binding ElementName=mainWindow, Path=Infinite, Mode=TwoWay}" Padding="2" Margin="5 0" Width="35" Height="35">
                     <Image Source="Images/infinity.png" RenderOptions.BitmapScalingMode="HighQuality">
@@ -160,7 +284,7 @@
                 <!--<CheckBox x:Name="InfiniteCheckBox" IsChecked="{Binding ElementName=mainWindow, Path=Infinite, Mode=TwoWay}" VerticalAlignment="Center" Margin="5 0" Content="Infinite"/>-->
             </StackPanel>
         </Grid>
-        
+
         <DataGrid DockPanel.Dock="Top" x:Name="InstructionsDataGrid" 
                       AutoGenerateColumns="False"
                       CanUserAddRows="false"
@@ -172,11 +296,12 @@
                       Drop="InstructionsDataGrid_Drop"
                       Margin="5"
                       >
-            
+
             <ItemsControl.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="_Mouse">
-                        <MenuItem Header="_Normal" Click="AddClick_Click"/>
+                        <MenuItem Header="_Click" Click="AddClick_Click"/>
+                        <MenuItem Header="_Move and Click" Click="AddMoveAndClickClick_Click"/>
                         <MenuItem Header="_Drag" Click="AddDrag_Click"/>
                         <MenuItem Header="_Wheel" Click="AddWheel_Click"/>
                     </MenuItem>
@@ -246,6 +371,11 @@
                                                 </Condition>
                                                 <Condition Value="False">
                                                     <Condition.Binding>
+                                                        <Binding Path="Type" Converter="{StaticResource ComboBoxConverter}" ConverterParameter="M_CLICK"/>
+                                                    </Condition.Binding>
+                                                </Condition>
+                                                <Condition Value="False">
+                                                    <Condition.Binding>
                                                         <Binding Path="Type" Converter="{StaticResource ComboBoxConverter}" ConverterParameter="DRAG"/>
                                                     </Condition.Binding>
                                                 </Condition>
@@ -278,9 +408,9 @@
                             </DataTemplate.Resources>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
-                    
+
                 </DataGridTemplateColumn>
-                
+
                 <DataGridTemplateColumn Header="#" x:Name="ClickCountColumn"  Width="*" MinWidth="50">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -307,6 +437,11 @@
                                                 <Condition Value="False">
                                                     <Condition.Binding>
                                                         <Binding Path="Type" Converter="{StaticResource ComboBoxConverter}" ConverterParameter="CLICK"/>
+                                                    </Condition.Binding>
+                                                </Condition>
+                                                <Condition Value="False">
+                                                    <Condition.Binding>
+                                                        <Binding Path="Type" Converter="{StaticResource ComboBoxConverter}" ConverterParameter="M_CLICK"/>
                                                     </Condition.Binding>
                                                 </Condition>
                                                 <Condition Value="False">
@@ -344,7 +479,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                
+
                 <DataGridTemplateColumn Header="Speed" x:Name="SpeedColumn"  Width="*" MinWidth="50">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -370,7 +505,7 @@
                                             <MultiDataTrigger.Conditions>
                                                 <Condition Value="False">
                                                     <Condition.Binding>
-                                                        <Binding Path="Type" Converter="{StaticResource ComboBoxConverter}" ConverterParameter="CLICK"/>
+                                                        <Binding Path="Type" Converter="{StaticResource ComboBoxConverter}" ConverterParameter="M_CLICK"/>
                                                     </Condition.Binding>
                                                 </Condition>
                                                 <Condition Value="False">
@@ -415,6 +550,11 @@
                                                 </Condition>
                                                 <Condition Value="False">
                                                     <Condition.Binding>
+                                                        <Binding Path="Type" Converter="{StaticResource ComboBoxConverter}" ConverterParameter="M_CLICK"/>
+                                                    </Condition.Binding>
+                                                </Condition>
+                                                <Condition Value="False">
+                                                    <Condition.Binding>
                                                         <Binding Path="Type" Converter="{StaticResource ComboBoxConverter}" ConverterParameter="DRAG"/>
                                                     </Condition.Binding>
                                                 </Condition>
@@ -428,7 +568,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Move" x:Name="MovementTypeColumn" Width="*" MinWidth="80">
+                <DataGridTemplateColumn Header="Movement" x:Name="MovementTypeColumn" Width="*" MinWidth="80">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ComboBox SelectedValue="{Binding Path=Movement, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={StaticResource MovementTypes}}"/>
@@ -439,7 +579,7 @@
                                             <MultiDataTrigger.Conditions>
                                                 <Condition Value="False">
                                                     <Condition.Binding>
-                                                        <Binding Path="Type" Converter="{StaticResource ComboBoxConverter}" ConverterParameter="CLICK"/>
+                                                        <Binding Path="Type" Converter="{StaticResource ComboBoxConverter}" ConverterParameter="M_CLICK"/>
                                                     </Condition.Binding>
                                                 </Condition>
                                                 <Condition Value="False">
@@ -462,7 +602,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-             
+
                 <DataGridTemplateColumn Header="Position" x:Name="PositionColumn"  Width="*" MinWidth="120">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -492,7 +632,7 @@
                                             <MultiDataTrigger.Conditions>
                                                 <Condition Value="False">
                                                     <Condition.Binding>
-                                                        <Binding Path="Type" Converter="{StaticResource ComboBoxConverter}" ConverterParameter="CLICK"/>
+                                                        <Binding Path="Type" Converter="{StaticResource ComboBoxConverter}" ConverterParameter="M_CLICK"/>
                                                     </Condition.Binding>
                                                 </Condition>
                                                 <Condition Value="False">
@@ -553,7 +693,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                
+
                 <DataGridTemplateColumn Header="Wheel" x:Name="WheelColumn"  Width="*" MinWidth="75">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -609,6 +749,11 @@
                                                 </Condition>
                                                 <Condition Value="False">
                                                     <Condition.Binding>
+                                                        <Binding Path="Type" Converter="{StaticResource ComboBoxConverter}" ConverterParameter="M_CLICK"/>
+                                                    </Condition.Binding>
+                                                </Condition>
+                                                <Condition Value="False">
+                                                    <Condition.Binding>
                                                         <Binding Path="Type" Converter="{StaticResource ComboBoxConverter}" ConverterParameter="DRAG"/>
                                                     </Condition.Binding>
                                                 </Condition>
@@ -649,6 +794,11 @@
                                                 </Condition>
                                                 <Condition Value="False">
                                                     <Condition.Binding>
+                                                        <Binding Path="Type" Converter="{StaticResource ComboBoxConverter}" ConverterParameter="M_CLICK"/>
+                                                    </Condition.Binding>
+                                                </Condition>
+                                                <Condition Value="False">
+                                                    <Condition.Binding>
                                                         <Binding Path="Type" Converter="{StaticResource ComboBoxConverter}" ConverterParameter="DRAG"/>
                                                     </Condition.Binding>
                                                 </Condition>
@@ -685,6 +835,11 @@
                                                 <Condition Value="False">
                                                     <Condition.Binding>
                                                         <Binding Path="Type" Converter="{StaticResource ComboBoxConverter}" ConverterParameter="CLICK"/>
+                                                    </Condition.Binding>
+                                                </Condition>
+                                                <Condition Value="False">
+                                                    <Condition.Binding>
+                                                        <Binding Path="Type" Converter="{StaticResource ComboBoxConverter}" ConverterParameter="M_CLICK"/>
                                                     </Condition.Binding>
                                                 </Condition>
                                                 <Condition Value="False">

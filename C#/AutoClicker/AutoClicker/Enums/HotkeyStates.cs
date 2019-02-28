@@ -6,15 +6,9 @@ using System.Threading.Tasks;
 
 namespace AutoClicker
 {
-    public enum InstructionType
+    public enum HotkeyState
     {
-        CLICK,
-        M_CLICK,
-        DRAG,
-        WHEEL,
-        KEYBOARD,
-        LOOP,
-        END_LOOP,
-        DELAY,
+        ON,
+        OFF
     }
 }

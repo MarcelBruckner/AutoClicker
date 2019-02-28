@@ -15,8 +15,8 @@ namespace AutoClicker
         public Vector End { get; protected set; }
         public double Dt { get; set; }
         public double Speed { get; set; }
-
-        public bool Finished { get => Distance(Cursor, End) < 3; }
+        
+        public bool Finished { get => Cursor.Distance(End) < 3; }
 
         protected ICursorInterpolation(System.Drawing.Point end, double speed = 1)
         {
@@ -26,28 +26,7 @@ namespace AutoClicker
 
         public abstract void Interpolate();
 
-        protected Vector Cursor { get => PointToVector(System.Windows.Forms.Cursor.Position); set => System.Windows.Forms.Cursor.Position = VectorToPoint(value); }
-
         #region Helpers
-        public static double Distance(Vector a, Vector b)
-        {
-            return (a - b).Length;
-        }
-
-        public static double Distance(System.Drawing.Point a, Vector b)
-        {
-            return Distance(PointToVector(a), b);
-        }
-
-        public static Vector PointToVector(System.Drawing.Point p)
-        {
-            return new Vector(p.X, p.Y);
-        }
-
-        public static System.Drawing.Point VectorToPoint(System.Windows.Vector v)
-        {
-            return new System.Drawing.Point((int)v.X, (int)v.Y);
-        }
 
         public static double ConvertToRadians(double angle)
         {

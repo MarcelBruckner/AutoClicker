@@ -17,7 +17,7 @@ namespace AutoClicker.Tests
         [TestMethod()]
         public void SinusMoveTest()
         {
-            Cursor.Position = new Point(100, 100);
+            Cursor.Vector = new Point(100, 100);
             InputSimulator.SinusMove(new Point(101, 101));
         }
     }

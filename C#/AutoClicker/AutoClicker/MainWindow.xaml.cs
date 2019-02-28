@@ -21,6 +21,16 @@ namespace AutoClicker
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        #region Global Attributes
+        int prevRowIndex = -1;
+        private double _globalSpeed = 1;
+        private double _globalRandomSpeed = 0;
+        private int _globalDelay = 50;
+        private int _globalRandomDelay = 5;
+        private int _globalRepetitions = 1;
+        private int _globalRandomRepetitions;
+        #endregion
+
         Random random = new Random();
 
         private const string FILE_FILTER = "AutoClicker Files (*.autocl)|*.autocl";
@@ -33,11 +43,19 @@ namespace AutoClicker
         private bool _isRecording;
         private int allRepetitions;
         private int _repetitions;
-        private MovementType _movement = MovementType.SPRING;
 
         public ObservableCollection<Instruction> Instructions { get; private set; } = new ObservableCollection<Instruction>();
         private Recorder recorder;
-        //private InstructionsParser parser;
+        private Instruction runningInstruction = new Instruction();
+        private int _globalRandomX;
+        private int _globalRandomY;
+        private int _globalRandomDragX;
+        private int _globalRandomDragY;
+        private int _globalWheel;
+        private int _globalRandomWheel;
+        private bool _globalCtrl;
+        private bool _globalShift;
+        private bool _globalAlt;
 
         public bool IsRecording
         {
@@ -71,6 +89,7 @@ namespace AutoClicker
                 if (_isPlaying)
                 {
                     IsRecording = false;
+                    WindowState = WindowState.Minimized;
                     OnPlay();
                 }
                 else
@@ -110,21 +129,245 @@ namespace AutoClicker
                 OnPropertyChanged("Repetitions");
             }
         }
-        public MovementType Movement
+
+        #region Globals
+        public MovementType GlobalMovement { get; set; } = MovementType.SPRING;
+
+        public double GlobalSpeed
         {
-            get => _movement;
+            get => _globalSpeed;
             set
             {
-                _movement = value;
-                foreach (Instruction instruction in Instructions)
+                _globalSpeed = value;
+                if (MessageBoxYes())
                 {
-                    instruction.Movement = value;
+                    foreach (Instruction instruction in Instructions)
+                    {
+                        instruction.Speed = value;
+                    }
                 }
             }
         }
-        private Instruction runningInstruction = new Instruction();
+        public double GlobalRandomSpeed
+        {
+            get => _globalRandomSpeed;
+            set
+            {
+                _globalRandomSpeed = value;
+                if (MessageBoxYes())
+                {
+                    foreach (Instruction instruction in Instructions)
+                    {
+                        instruction.RandomSpeed = value;
+                    }
+                }
+            }
+        }
 
-        private TCPServer server;
+        public int GlobalDelay
+        {
+            get => _globalDelay;
+            set
+            {
+                _globalDelay = value;
+                if (MessageBoxYes())
+                {
+                    foreach (Instruction instruction in Instructions)
+                    {
+                        instruction.Delay = value;
+                    }
+                }
+            }
+        }
+        public int GlobalRandomDelay
+        {
+            get => _globalRandomDelay;
+            set
+            {
+                _globalRandomDelay = value;
+                if (MessageBoxYes())
+                {
+                    foreach (Instruction instruction in Instructions)
+                    {
+                        instruction.RandomDelay = value;
+                    }
+                }
+            }
+        }
+
+        public int GlobalRepetitions
+        {
+            get => _globalRepetitions;
+            set
+            {
+                _globalRepetitions = value;
+                if (MessageBoxYes())
+                {
+                    foreach (Instruction instruction in Instructions)
+                    {
+                        instruction.Repetitions = value;
+                    }
+                }
+            }
+        }
+        public int GlobalRandomRepetitions
+        {
+            get => _globalRandomRepetitions;
+            set
+            {
+                _globalRandomRepetitions = value;
+                if (MessageBoxYes())
+                {
+                    foreach (Instruction instruction in Instructions)
+                    {
+                        instruction.RandomRepetitions = value;
+                    }
+                }
+            }
+        }
+
+        public int GlobalRandomX
+        {
+            get => _globalRandomX;
+            set
+            {
+                _globalRandomX = value;
+                if (MessageBoxYes())
+                {
+                    foreach (Instruction instruction in Instructions)
+                    {
+                        instruction.RandomX = value;
+                    }
+                }
+            }
+        }
+        public int GlobalRandomY
+        {
+            get => _globalRandomY;
+            set
+            {
+                _globalRandomY = value;
+                if (MessageBoxYes())
+                {
+                    foreach (Instruction instruction in Instructions)
+                    {
+                        instruction.RandomY = value;
+                    }
+                }
+            }
+        }
+
+        public int GlobalRandomDragX
+        {
+            get => _globalRandomDragX;
+            set
+            {
+                _globalRandomDragX = value;
+                if (MessageBoxYes())
+                {
+                    foreach (Instruction instruction in Instructions)
+                    {
+                        instruction.RandomEndX = value;
+                    }
+                }
+            }
+        }
+        public int GlobalRandomDragY
+        {
+            get => _globalRandomDragY;
+            set
+            {
+                _globalRandomDragY = value;
+                if (MessageBoxYes())
+                {
+                    foreach (Instruction instruction in Instructions)
+                    {
+                        instruction.RandomEndY = value;
+                    }
+                }
+            }
+        }
+
+        public int GlobalWheel
+        {
+            get => _globalWheel;
+            set
+            {
+                _globalWheel = value;
+                if (MessageBoxYes())
+                {
+                    foreach (Instruction instruction in Instructions)
+                    {
+                        instruction.Wheel = value;
+                    }
+                }
+            }
+        }
+        public int GlobalRandomWheel
+        {
+            get => _globalRandomWheel;
+            set
+            {
+                _globalRandomWheel = value;
+                if (MessageBoxYes())
+                {
+                    foreach (Instruction instruction in Instructions)
+                    {
+                        instruction.RandomWheel = value;
+                    }
+                }
+            }
+        }
+
+        public bool GlobalCtrl
+        {
+            get => _globalCtrl;
+            set
+            {
+                _globalCtrl = value;
+                if (MessageBoxYes())
+                {
+                    foreach (Instruction instruction in Instructions)
+                    {
+                        instruction.Ctrl = value;
+                    }
+                }
+            }
+        }
+        public bool GlobalShift
+        {
+            get => _globalShift;
+            set
+            {
+                _globalShift = value;
+                if (MessageBoxYes())
+                {
+                    foreach (Instruction instruction in Instructions)
+                    {
+                        instruction.Shift = value;
+                    }
+                }
+            }
+        }
+        public bool GlobalAlt
+        {
+            get => _globalAlt;
+            set
+            {
+                _globalAlt = value;
+                if (MessageBoxYes())
+                {
+                    foreach (Instruction instruction in Instructions)
+                    {
+                        instruction.Alt = value;
+                    }
+                }
+            }
+        }
+        #endregion
+
+
+        //private TCPServer server;
 
         public MainWindow()
         {
@@ -135,13 +378,15 @@ namespace AutoClicker
             //server = new TCPServer();
             InstructionsDataGrid.ItemsSource = Instructions;
 
-            Instructions.Add(new Instruction(InstructionType.CLICK));
-            Instructions.Add(new Instruction(InstructionType.DRAG));
-            Instructions.Add(new Instruction(InstructionType.WHEEL));
-            Instructions.Add(new Instruction(InstructionType.KEYBOARD));
-            Instructions.Add(new Instruction(InstructionType.LOOP));
-            Instructions.Add(new Instruction(InstructionType.END_LOOP));
-            Instructions.Add(new Instruction(InstructionType.DELAY));
+            //Instructions.Add(new Instruction(InstructionType.CLICK));
+            //Instructions.Add(new Instruction(InstructionType.M_CLICK));
+            //Instructions.Add(new Instruction(InstructionType.DRAG));
+            //Instructions.Add(new Instruction(InstructionType.WHEEL));
+            //Instructions.Add(new Instruction(InstructionType.KEYBOARD));
+            //Instructions.Add(new Instruction(InstructionType.LOOP));
+            //Instructions.Add(new Instruction(InstructionType.END_LOOP));
+            //Instructions.Add(new Instruction(InstructionType.DELAY));
+
         }
 
         private void StopAll()
@@ -366,6 +611,10 @@ namespace AutoClicker
         #endregion
 
         #region Edit Menu
+        private void AddMoveAndClickClick_Click(object sender, RoutedEventArgs e)
+        {
+            AddInstruction(new Instruction(InstructionType.M_CLICK));
+        }
         private void AddClick_Click(object sender, RoutedEventArgs e)
         {
             AddInstruction(new Instruction(InstructionType.CLICK));
@@ -396,8 +645,36 @@ namespace AutoClicker
         }
         private void MovementType_Click(object sender, RoutedEventArgs e)
         {
+            GlobalMovement = ConvertSender<MovementType>(sender);
+
+            if (MessageBoxYes())
+            {
+                foreach (Instruction instruction in Instructions)
+                {
+                    instruction.Movement = GlobalMovement;
+                }
+            }
+        }
+        private void Speed_Click(object sender, RoutedEventArgs e)
+        {
+            GlobalSpeed = ConvertSender<double>(sender);
+        }
+
+        private void Ctrl_Click(object sender, RoutedEventArgs e)
+        {
+            HotkeyState state = ConvertSender<HotkeyState>(sender);
+            GlobalCtrl = state == HotkeyState.ON;
+        }
+
+        private static T ConvertSender<T>(object sender)
+        {
             MenuItem choice = sender as MenuItem;
-            Movement = (MovementType)choice.DataContext;
+            return (T)choice.DataContext;
+        }
+
+        private bool MessageBoxYes()
+        {
+            return MessageBox.Show(this, "Update all existing instructions?", "Update", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
         }
 
         private void SelectedLineRemove_Click(object sender, RoutedEventArgs e)
@@ -412,7 +689,7 @@ namespace AutoClicker
         {
             Instructions.Clear();
         }
-
+        
         #endregion
 
         #region Instructions 
@@ -470,7 +747,6 @@ namespace AutoClicker
             return curIndex;
         }
 
-        int prevRowIndex = -1;
 
         public event PropertyChangedEventHandler PropertyChanged;
 

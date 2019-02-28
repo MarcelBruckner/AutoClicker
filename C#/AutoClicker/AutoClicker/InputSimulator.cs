@@ -99,6 +99,10 @@ namespace AutoClicker
         }
         #endregion
 
+        public static void MouseDrag(MovementType move, ButtonType button, System.Windows.Vector v, int endX, int endY, double speed, params VirtualKeyCode[] hotkeys)
+        {
+            MouseDrag(move, button, (int)v.X, (int)v.Y, endX, endY, speed, hotkeys);
+        }
         public static void MouseDrag(MovementType move, ButtonType button, int x, int y, int endX, int endY, double speed, params VirtualKeyCode[] hotkeys)
         {
             MouseDrag(move, (int)button, x, y, endX, endY, speed, hotkeys);
@@ -111,9 +115,13 @@ namespace AutoClicker
 
         public static void MouseDown(MovementType move, int button, int x, int y, double speed, params VirtualKeyCode[] hotkeys)
         {
-            KeyDown(hotkeys);
             MoveMouse(move, x, y, speed);
+            MouseDown(button, hotkeys);
+        }
 
+        public static void MouseDown(int button, params VirtualKeyCode[] hotkeys)
+        {
+            KeyDown(hotkeys);
             INPUT mouseDownInput = new INPUT
             {
                 type = SendInputEventType.InputMouse
@@ -137,10 +145,8 @@ namespace AutoClicker
             SendInput(1, ref mouseDownInput, Marshal.SizeOf(new INPUT()));
         }
 
-        public static void MouseUp(MovementType move, int button, int x, int y, double speed, params VirtualKeyCode[] hotkeys)
+        public static void MouseUp(int button, params VirtualKeyCode[] hotkeys)
         {
-            MoveMouse(move, x, y, speed);
-
             INPUT mouseDownInput = new INPUT
             {
                 type = SendInputEventType.InputMouse
@@ -165,6 +171,18 @@ namespace AutoClicker
             KeyUp(hotkeys);
         }
 
+        public static void MouseUp(MovementType move, int button, int x, int y, double speed, params VirtualKeyCode[] hotkeys)
+        {
+
+            MoveMouse(move, x, y, speed);
+
+
+        }
+
+        public static void MouseClick(MovementType move, ButtonType button, System.Windows.Vector v, double speed, params VirtualKeyCode[] hotkeys)
+        {
+            MouseClick(move, button, (int)v.X, (int)v.Y, speed, hotkeys);
+        }
         public static void MouseClick(MovementType move, ButtonType button, int x, int y, double speed, params VirtualKeyCode[] hotkeys)
         {
             MouseClick(move, (int)button, x, y, speed, hotkeys);
@@ -173,6 +191,15 @@ namespace AutoClicker
         {
             MouseDown(move, button, x, y, speed, hotkeys);
             MouseUp(move, button, x, y, speed, hotkeys);
+        }
+        public static void MouseClick(int button, params VirtualKeyCode[] hotkeys)
+        {
+            MouseDown(button, hotkeys);
+            MouseUp(button, hotkeys);
+        }
+        public static void MouseClick(ButtonType button, params VirtualKeyCode[] hotkeys)
+        {
+            MouseClick((int)button, hotkeys);
         }
 
         public static void MoveMouse(MovementType move, Point end, double speed)
@@ -251,10 +278,15 @@ namespace AutoClicker
         {
             KeyDown(hotkeys);
             KeyDown(key);
+            Thread.Sleep(50);
             KeyUp(key);
             KeyUp(hotkeys);
         }
 
+        public static void MouseWheel(MovementType move, System.Windows.Vector v, int delta, double speed, params VirtualKeyCode[] hotkeys)
+        {
+            MouseWheel(move, (int)v.X, (int)v.Y, delta, speed, hotkeys);
+        }
         public static void MouseWheel(MovementType move, int x, int y, int delta, double speed, params VirtualKeyCode[] hotkeys)
         {
             MoveMouse(move, x, y, speed);

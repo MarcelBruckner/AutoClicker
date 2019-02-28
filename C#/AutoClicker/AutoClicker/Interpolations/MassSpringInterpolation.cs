@@ -22,12 +22,12 @@ namespace AutoClicker
 
         private void Initialize()
         {
-            Vector direction = End - Cursor;
+            Vector direction = End - Cursor.Vector;
             //Vector midpoint = Cursor + direction * random.NextDouble();
 
             Points.Add(new MassPoint(End, new Vector(0, 0), -1, 0, Speed));
             //Points.Add(new MassPoint(midpoint, RandomNormal(End, Cursor, 50), random.NextDouble() * 2 + 1, DAMPING / 2));// random.NextDouble() * 0.8 + 0.6));
-            Points.Add(new MassPoint(Cursor, RandomVector(50), random.NextDouble() * 2 + 1, DAMPING, Speed));
+            Points.Add(new MassPoint(Cursor.Vector, RandomVector(50), random.NextDouble() * 2 + 1, DAMPING, Speed));
 
             springs.Add(new Spring(this, 0, 1, STIFFNESS));
             //springs.Add(new Spring(this, 1, 2, STIFFNESS, TargetRadius));
@@ -35,7 +35,7 @@ namespace AutoClicker
 
         public override void Interpolate()
         {
-            double length = (End - Cursor).Length;
+            double length = (End - Cursor.Vector).Length;
 
             while (!Finished)
             {
@@ -55,7 +55,7 @@ namespace AutoClicker
                     p.IntegrateVelocity();
                 }
 
-                Cursor = Points[Points.Count - 1].Position;
+                Cursor.Vector = Points[Points.Count - 1].Position;
                 //Thread.Sleep((int)Math.Max(1, DELAY / 50));
             }
         }
