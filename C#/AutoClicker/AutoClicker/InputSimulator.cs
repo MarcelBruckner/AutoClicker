@@ -176,7 +176,7 @@ namespace AutoClicker
 
             MoveMouse(move, x, y, speed);
 
-
+            MouseUp(button, hotkeys);
         }
 
         public static void MouseClick(MovementType move, ButtonType button, System.Windows.Vector v, double speed, params VirtualKeyCode[] hotkeys)

@@ -95,6 +95,7 @@ namespace AutoClicker
                 else
                 {
                     StopAll();
+                    WindowState = WindowState.Normal;
                     Activate();
                 }
                 OnPropertyChanged("IsPlaying");
@@ -813,21 +814,25 @@ namespace AutoClicker
 
         private void DeleteFromContextMenu_Click(object sender, RoutedEventArgs e)
         {
-            //Get the clicked MenuItem
-            var menuItem = (MenuItem)sender;
+            try
+            {
+                //Get the clicked MenuItem
+                var menuItem = (MenuItem)sender;
 
-            //Get the ContextMenu to which the menuItem belongs
-            var contextMenu = (ContextMenu)menuItem.Parent;
+                //Get the ContextMenu to which the menuItem belongs
+                var contextMenu = (ContextMenu)menuItem.Parent;
 
-            //Find the placementTarget
-            var item = (DataGrid)contextMenu.PlacementTarget;
+                //Find the placementTarget
+                var item = (DataGrid)contextMenu.PlacementTarget;
 
-            //Get the underlying item, that you cast to your object that is bound
-            //to the DataGrid (and has subject and state as property)
-            var toDeleteFromBindedList = (Instruction)item.SelectedCells[0].Item;
+                //Get the underlying item, that you cast to your object that is bound
+                //to the DataGrid (and has subject and state as property)
+                var toDeleteFromBindedList = (Instruction)item.SelectedCells[0].Item;
 
-            //Remove the toDeleteFromBindedList object from your ObservableCollection
-            Instructions.Remove(toDeleteFromBindedList);
+                //Remove the toDeleteFromBindedList object from your ObservableCollection
+                Instructions.Remove(toDeleteFromBindedList);
+            }
+            catch { }
         }
 
         private void DuplicateFromContextMenu_Click(object sender, RoutedEventArgs e)
