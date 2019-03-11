@@ -336,7 +336,7 @@
                 <DataGridTemplateColumn Header="Type" x:Name="TypeColumn" Width="*"  MinWidth="100" TextElement.FontStretch="Expanded">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ComboBox SelectedValue="{Binding Path=Type, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={StaticResource Types}}" MinWidth="100"/>
+                            <ComboBox PreviewMouseRightButtonDown="InstructionsDataGrid_PreviewMouseRightButtonDown" PreviewMouseLeftButtonDown="InstructionsDataGrid_PreviewMouseLeftButtonDown" SelectedValue="{Binding Path=Type, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={StaticResource Types}}" MinWidth="100"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -344,13 +344,13 @@
                 <DataGridTemplateColumn Header="Delay" x:Name="DelayColumn"  Width="*" MinWidth="90">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Grid>
+                            <Grid AllowDrop="True" >
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="4*"/>
                                     <ColumnDefinition Width="3*"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBox Text="{Binding Path=Delay, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="0" />
-                                <TextBox Text="{Binding Path=RandomDelay, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="1" />
+                                <TextBox Text="{Binding Path=Delay, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="0"  PreviewMouseLeftButtonDown="InstructionsDataGrid_PreviewMouseLeftButtonDown"  PreviewMouseRightButtonDown="InstructionsDataGrid_PreviewMouseRightButtonDown" />
+                                <TextBox Text="{Binding Path=RandomDelay, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="1" PreviewMouseLeftButtonDown="InstructionsDataGrid_PreviewMouseLeftButtonDown" PreviewMouseRightButtonDown="InstructionsDataGrid_PreviewMouseRightButtonDown" />
                             </Grid>
                             <DataTemplate.Resources>
                                 <Style TargetType="TextBox">
@@ -419,8 +419,8 @@
                                     <ColumnDefinition Width="3*"/>
                                     <ColumnDefinition Width="2*"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBox Text="{Binding Path=Repetitions, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="0" />
-                                <TextBox Text="{Binding Path=RandomRepetitions, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="1" />
+                                <TextBox Text="{Binding Path=Repetitions, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="0" PreviewMouseLeftButtonDown="InstructionsDataGrid_PreviewMouseLeftButtonDown"  PreviewMouseRightButtonDown="InstructionsDataGrid_PreviewMouseRightButtonDown"/>
+                                <TextBox Text="{Binding Path=RandomRepetitions, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="1" PreviewMouseLeftButtonDown="InstructionsDataGrid_PreviewMouseLeftButtonDown"  PreviewMouseRightButtonDown="InstructionsDataGrid_PreviewMouseRightButtonDown"/>
                             </Grid>
                             <DataTemplate.Resources>
                                 <Style TargetType="TextBox">
@@ -488,8 +488,8 @@
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBox Text="{Binding Path=Speed, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Delay=250}" Grid.Column="0"/>
-                                <TextBox Text="{Binding Path=RandomSpeed, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Delay=250}" Grid.Column="1" />
+                                <TextBox Text="{Binding Path=Speed, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Delay=250}" Grid.Column="0" PreviewMouseLeftButtonDown="InstructionsDataGrid_PreviewMouseLeftButtonDown"  PreviewMouseRightButtonDown="InstructionsDataGrid_PreviewMouseRightButtonDown"/>
+                                <TextBox Text="{Binding Path=RandomSpeed, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Delay=250}" Grid.Column="1" PreviewMouseLeftButtonDown="InstructionsDataGrid_PreviewMouseLeftButtonDown"  PreviewMouseRightButtonDown="InstructionsDataGrid_PreviewMouseRightButtonDown"/>
                             </Grid>
                             <DataTemplate.Resources>
                                 <Style TargetType="TextBox">
@@ -537,7 +537,7 @@
                 <DataGridTemplateColumn Header="Button" x:Name="ButtonColumn" Width="*" MinWidth="80">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ComboBox SelectedValue="{Binding Path=Button, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={StaticResource ButtonTypes}}"/>
+                            <ComboBox PreviewMouseLeftButtonDown="InstructionsDataGrid_PreviewMouseLeftButtonDown"  PreviewMouseRightButtonDown="InstructionsDataGrid_PreviewMouseRightButtonDown" SelectedValue="{Binding Path=Button, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={StaticResource ButtonTypes}}"/>
                             <DataTemplate.Resources>
                                 <Style TargetType="ComboBox">
                                     <Style.Triggers>
@@ -571,7 +571,7 @@
                 <DataGridTemplateColumn Header="Movement" x:Name="MovementTypeColumn" Width="*" MinWidth="80">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ComboBox SelectedValue="{Binding Path=Movement, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={StaticResource MovementTypes}}"/>
+                            <ComboBox PreviewMouseLeftButtonDown="InstructionsDataGrid_PreviewMouseLeftButtonDown"  PreviewMouseRightButtonDown="InstructionsDataGrid_PreviewMouseRightButtonDown" SelectedValue="{Binding Path=Movement, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={StaticResource MovementTypes}}"/>
                             <DataTemplate.Resources>
                                 <Style TargetType="ComboBox">
                                     <Style.Triggers>
@@ -613,10 +613,10 @@
                                     <ColumnDefinition Width="3*"/>
                                     <ColumnDefinition Width="2*"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBox Text="{Binding Path=X, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="0" />
-                                <TextBox Text="{Binding Path=RandomX, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="1" />
-                                <TextBox Text="{Binding Path=Y, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="2" />
-                                <TextBox Text="{Binding Path=RandomY, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="3" />
+                                <TextBox Text="{Binding Path=X, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="0"  PreviewMouseLeftButtonDown="InstructionsDataGrid_PreviewMouseLeftButtonDown"  PreviewMouseRightButtonDown="InstructionsDataGrid_PreviewMouseRightButtonDown"/>
+                                <TextBox Text="{Binding Path=RandomX, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="1"  PreviewMouseLeftButtonDown="InstructionsDataGrid_PreviewMouseLeftButtonDown"  PreviewMouseRightButtonDown="InstructionsDataGrid_PreviewMouseRightButtonDown"/>
+                                <TextBox Text="{Binding Path=Y, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="2"  PreviewMouseLeftButtonDown="InstructionsDataGrid_PreviewMouseLeftButtonDown"  PreviewMouseRightButtonDown="InstructionsDataGrid_PreviewMouseRightButtonDown"/>
+                                <TextBox Text="{Binding Path=RandomY, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="3"  PreviewMouseLeftButtonDown="InstructionsDataGrid_PreviewMouseLeftButtonDown"  PreviewMouseRightButtonDown="InstructionsDataGrid_PreviewMouseRightButtonDown"/>
                             </Grid>
                             <DataTemplate.Resources>
                                 <Style TargetType="TextBox">
@@ -661,10 +661,10 @@
                                     <ColumnDefinition Width="3*"/>
                                     <ColumnDefinition Width="2*"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBox Text="{Binding Path=EndX, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="0" />
-                                <TextBox Text="{Binding Path=RandomEndX, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="1"/>
-                                <TextBox Text="{Binding Path=EndY, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="2" />
-                                <TextBox Text="{Binding Path=RandomEndY, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="3" />
+                                <TextBox Text="{Binding Path=EndX, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="0"  PreviewMouseLeftButtonDown="InstructionsDataGrid_PreviewMouseLeftButtonDown"  PreviewMouseRightButtonDown="InstructionsDataGrid_PreviewMouseRightButtonDown"/>
+                                <TextBox Text="{Binding Path=RandomEndX, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="1" PreviewMouseLeftButtonDown="InstructionsDataGrid_PreviewMouseLeftButtonDown"  PreviewMouseRightButtonDown="InstructionsDataGrid_PreviewMouseRightButtonDown"/>
+                                <TextBox Text="{Binding Path=EndY, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="2" PreviewMouseLeftButtonDown="InstructionsDataGrid_PreviewMouseLeftButtonDown"  PreviewMouseRightButtonDown="InstructionsDataGrid_PreviewMouseRightButtonDown" />
+                                <TextBox Text="{Binding Path=RandomEndY, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="3" PreviewMouseLeftButtonDown="InstructionsDataGrid_PreviewMouseLeftButtonDown"  PreviewMouseRightButtonDown="InstructionsDataGrid_PreviewMouseRightButtonDown" />
                             </Grid>
                             <DataTemplate.Resources>
                                 <Style TargetType="TextBox">
@@ -702,8 +702,8 @@
                                     <ColumnDefinition Width="3*"/>
                                     <ColumnDefinition Width="2*"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBox Text="{Binding Path=Wheel, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="0" />
-                                <TextBox Text="{Binding Path=RandomWheel, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="1" />
+                                <TextBox Text="{Binding Path=Wheel, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="0" PreviewMouseLeftButtonDown="InstructionsDataGrid_PreviewMouseLeftButtonDown"  PreviewMouseRightButtonDown="InstructionsDataGrid_PreviewMouseRightButtonDown"/>
+                                <TextBox Text="{Binding Path=RandomWheel, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="1"  PreviewMouseLeftButtonDown="InstructionsDataGrid_PreviewMouseLeftButtonDown"  PreviewMouseRightButtonDown="InstructionsDataGrid_PreviewMouseRightButtonDown"/>
                             </Grid>
                             <DataTemplate.Resources>
                                 <Style TargetType="TextBox">
@@ -736,7 +736,7 @@
                 <DataGridTemplateColumn Header="Shift" x:Name="ShiftColumn" MinWidth="35" MaxWidth="35">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox IsChecked="{Binding Shift}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <CheckBox PreviewMouseLeftButtonDown="InstructionsDataGrid_PreviewMouseLeftButtonDown"  PreviewMouseRightButtonDown="InstructionsDataGrid_PreviewMouseRightButtonDown" IsChecked="{Binding Shift}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                             <DataTemplate.Resources>
                                 <Style TargetType="CheckBox">
                                     <Style.Triggers>
@@ -780,7 +780,7 @@
                 <DataGridTemplateColumn Header="Ctrl" x:Name="CtrlColumn" MinWidth="35" MaxWidth="35">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox IsChecked="{Binding Ctrl}" VerticalAlignment="Center" HorizontalAlignment="Center"                  />
+                            <CheckBox PreviewMouseLeftButtonDown="InstructionsDataGrid_PreviewMouseLeftButtonDown"  PreviewMouseRightButtonDown="InstructionsDataGrid_PreviewMouseRightButtonDown" IsChecked="{Binding Ctrl}" VerticalAlignment="Center" HorizontalAlignment="Center"                  />
 
                             <DataTemplate.Resources>
                                 <Style TargetType="CheckBox">
@@ -825,7 +825,7 @@
                 <DataGridTemplateColumn Header="Alt" x:Name="AltColumn" MinWidth="35" MaxWidth="35">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox IsChecked="{Binding Alt}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <CheckBox PreviewMouseLeftButtonDown="InstructionsDataGrid_PreviewMouseLeftButtonDown"  PreviewMouseRightButtonDown="InstructionsDataGrid_PreviewMouseRightButtonDown" IsChecked="{Binding Alt}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
                             <DataTemplate.Resources>
                                 <Style TargetType="CheckBox">
@@ -871,7 +871,7 @@
                 <DataGridTemplateColumn Header="Key" x:Name="KeyColumn" Width="3*" MinWidth="170">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ComboBox SelectedValue="{Binding Path=Key, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={StaticResource Keys}}" MinWidth="170"/>
+                            <ComboBox PreviewMouseLeftButtonDown="InstructionsDataGrid_PreviewMouseLeftButtonDown"  PreviewMouseRightButtonDown="InstructionsDataGrid_PreviewMouseRightButtonDown" SelectedValue="{Binding Path=Key, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={StaticResource Keys}}" MinWidth="170"/>
                             <DataTemplate.Resources>
                                 <Style TargetType="ComboBox">
                                     <Style.Triggers>

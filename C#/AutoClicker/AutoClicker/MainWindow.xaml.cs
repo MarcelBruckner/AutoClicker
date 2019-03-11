@@ -44,7 +44,17 @@ namespace AutoClicker
         private int allRepetitions;
         private int _repetitions;
 
-        public ObservableCollection<Instruction> Instructions { get; private set; } = new ObservableCollection<Instruction>();
+        public ObservableCollection<Instruction> Instructions { get; private set; } = new ObservableCollection<Instruction>()
+        {
+            new Instruction(InstructionType.CLICK),
+            new Instruction(InstructionType.M_CLICK),
+            new Instruction(InstructionType.DRAG),
+            new Instruction(InstructionType.WHEEL),
+            new Instruction(InstructionType.KEYBOARD),
+            new Instruction(InstructionType.LOOP),
+            new Instruction(InstructionType.END_LOOP),
+            new Instruction(InstructionType.DELAY)
+        };
         private Recorder recorder;
         private Instruction runningInstruction = new Instruction();
         private int _globalRandomX;
@@ -379,14 +389,7 @@ namespace AutoClicker
             //server = new TCPServer();
             InstructionsDataGrid.ItemsSource = Instructions;
 
-            //Instructions.Add(new Instruction(InstructionType.CLICK));
-            //Instructions.Add(new Instruction(InstructionType.M_CLICK));
-            //Instructions.Add(new Instruction(InstructionType.DRAG));
-            //Instructions.Add(new Instruction(InstructionType.WHEEL));
-            //Instructions.Add(new Instruction(InstructionType.KEYBOARD));
-            //Instructions.Add(new Instruction(InstructionType.LOOP));
-            //Instructions.Add(new Instruction(InstructionType.END_LOOP));
-            //Instructions.Add(new Instruction(InstructionType.DELAY));
+            
 
         }
 
@@ -756,17 +759,37 @@ namespace AutoClicker
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        private void InstructionsDataGrid_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private Instruction SelectClicked(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             prevRowIndex = GetDataGridItemCurrentRowIndex(e.GetPosition);
 
+            if (sender is TextBox box)
+            {
+                box.Focus();
+                box.SelectAll();
+            }
+            else if (sender is ComboBox comboBox)
+            {
+                comboBox.Focus();
+            }
+
             if (prevRowIndex < 0)
             {
-                return;
+                return null;
             }
 
             InstructionsDataGrid.SelectedIndex = prevRowIndex;
-            Instruction selected = Instructions[prevRowIndex];
+            return Instructions[prevRowIndex];
+        }
+
+        private void InstructionsDataGrid_PreviewMouseRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Instruction selected = SelectClicked(sender, e);
+        }
+
+        private void InstructionsDataGrid_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Instruction selected = SelectClicked(sender, e);
 
             if (selected == null)
             {
@@ -832,7 +855,9 @@ namespace AutoClicker
                 //Remove the toDeleteFromBindedList object from your ObservableCollection
                 Instructions.Remove(toDeleteFromBindedList);
             }
-            catch { }
+            catch {
+                Console.WriteLine("Error by delete");
+            }
         }
 
         private void DuplicateFromContextMenu_Click(object sender, RoutedEventArgs e)
