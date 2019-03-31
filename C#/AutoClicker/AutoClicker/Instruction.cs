@@ -11,30 +11,30 @@ namespace AutoClicker
         Random random = new Random();
 
         #region Raw Properties
-        private long _delay;
-        private int _repetitions;
-        private bool _shift;
-        private bool _ctrl;
-        private bool _alt;
+        private long _delay = MainWindow.GlobalDelay;
+        private int _repetitions = MainWindow.GlobalRepetitions;
+        private bool _shift = MainWindow.GlobalShift;
+        private bool _ctrl = MainWindow.GlobalCtrl;
+        private bool _alt = MainWindow.GlobalAlt;
         private VirtualKeyCode _key = VirtualKeyCode.NONE;
-        private ButtonType _button;
-        private int _x;
-        private int _y;
-        private int _endX;
-        private int _endY;
+        private ButtonType _button = ButtonType.LEFT;
+        private int _x = 0;
+        private int _y = 0;
+        private int _endX = 0;
+        private int _endY = 0;
         private bool _isRunning = false;
-        private int _wheelDelta;
+        private int _wheelDelta = MainWindow.GlobalWheel;
         private InstructionType _type;
-        private MovementType _movement;
-        private double _speed = 1;
-        private long _randomDelay = 5;
-        private int _randomRepetitions;
-        private double _randomSpeed;
-        private int _randomX;
-        private int _randomY;
-        private int _randomEndY;
-        private int _randomEndX;
-        private int _randomWheelDelta;
+        private MovementType _movement = MainWindow.GlobalMovement;
+        private double _speed = MainWindow.GlobalSpeed;
+        private long _randomDelay = MainWindow.GlobalRandomDelay;
+        private int _randomRepetitions = MainWindow.GlobalRandomRepetitions;
+        private double _randomSpeed = MainWindow.GlobalRandomSpeed;
+        private int _randomX = MainWindow.GlobalRandomX;
+        private int _randomY = MainWindow.GlobalRandomY;
+        private int _randomEndY = MainWindow.GlobalRandomDragX;
+        private int _randomEndX = MainWindow.GlobalRandomDragY;
+        private int _randomWheelDelta = MainWindow.GlobalRandomWheel;
         internal static readonly int MAX_UNCERTAINTY = 20;
         #endregion
 
@@ -104,7 +104,11 @@ namespace AutoClicker
         #endregion
 
         #region Constructors
-        public Instruction() : this(InstructionType.DELAY, 0, 1, false, false, false) { }
+        public Instruction() : this(InstructionType.DELAY) { }
+
+        public Instruction(InstructionType type) {
+            Type = type;
+        }
 
         public Instruction(Instruction other)
         {
@@ -123,67 +127,40 @@ namespace AutoClicker
             Type = other.Type;
         }
 
-        public Instruction(InstructionType type) : this(type, 0, 1, false, false, false) { }
 
-        public Instruction(InstructionType type, long delay, int repetitions, bool shift, bool ctrl, bool alt)
+        public Instruction(InstructionType type, bool shift, bool ctrl, bool alt)
         {
             Shift = shift;
             Ctrl = ctrl;
             Alt = alt;
             Type = type;
-            if (delay < 50)
-            {
-                Delay = 50;
-            }
-            else
-            {
-                Delay = delay;
-            }
-            if (repetitions < 1)
-            {
-                Repetitions = 1;
-            }
-            else
-            {
-                Repetitions = repetitions;
-            }
         }
 
         // Click constructor
-        public Instruction(ButtonType button, MovementType movement, int x, int y, bool shift, bool ctrl, bool alt) : this(button, movement, x, y, 0L, 1, shift, ctrl, alt) { }
-        public Instruction(ButtonType button, MovementType movement, int x, int y, long delay, int repetitions, bool shift, bool ctrl, bool alt) : this(InstructionType.M_CLICK, delay, repetitions, shift, ctrl, alt)
+        public Instruction(ButtonType button, int x, int y, bool isShiftDown, bool isCtrlDown, bool isAltDown) : this(InstructionType.M_CLICK, isShiftDown, isCtrlDown, isAltDown)
         {
-            Movement = movement;
             SetMouse(button, x, y);
         }
 
         // Drag constructor
-        public Instruction(ButtonType button, MovementType movement, int x, int y, int endX, int endY, bool shift, bool ctrl, bool alt) : this(button, movement, x, y, endX, endY, 0L, 1, shift, ctrl, alt) { }
-        public Instruction(ButtonType button, MovementType movement, int x, int y, int endX, int endY, long delay, int repetitions, bool shift, bool ctrl, bool alt) : this(InstructionType.DRAG, delay, repetitions, shift, ctrl, alt)
+        public Instruction(ButtonType button, int x, int y, int endX, int endY, bool shift, bool ctrl, bool alt) : this(InstructionType.DRAG, shift, ctrl, alt)
         {
             SetMouse(button, x, y);
 
-            Movement = movement;
             EndX = endX;
             EndY = endY;
         }
 
         // Wheel constructor
-        public Instruction(int wheelDelta, MovementType movement, int x, int y, bool shift, bool ctrl, bool alt) : this(wheelDelta, movement, x, y, 0L, 1, shift, ctrl, alt) { }
-        public Instruction(int wheelDelta, MovementType movement, int x, int y, long delay, int repetitions, bool shift, bool ctrl, bool alt) : this(InstructionType.WHEEL, delay, repetitions, shift, ctrl, alt)
+        public Instruction(int wheelDelta, int x, int y, bool shift, bool ctrl, bool alt) : this(InstructionType.WHEEL, shift, ctrl, alt)
         {
-            Movement = movement;
             Wheel = wheelDelta;
             X = x;
             Y = y;
         }
 
         // Keyboard constructor
-        public Instruction(VirtualKeyCode key, bool shift, bool ctrl, bool alt) : this(InstructionType.KEYBOARD, 0, 1, shift, ctrl, alt) { }
-        public Instruction(VirtualKeyCode key, int delay, int repetitions, bool shift, bool ctrl, bool alt) : this(InstructionType.KEYBOARD, delay, repetitions, shift, ctrl, alt)
-        {
-            Key = key;
-        }
+        public Instruction(VirtualKeyCode key, bool shift, bool ctrl, bool alt) : this(InstructionType.KEYBOARD, shift, ctrl, alt) { }
 
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion

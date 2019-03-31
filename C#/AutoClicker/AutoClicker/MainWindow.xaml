@@ -214,10 +214,24 @@
                 </MenuItem>
                 <Separator/>
                 <MenuItem Header="_Hotkeys">
+                    <MenuItem Header="Shift" ItemsSource="{Binding Source={StaticResource HotkeyStates}}">
+                        <MenuItem.ItemContainerStyle>
+                            <Style TargetType="MenuItem">
+                                <EventSetter Event="Click" Handler="Shift_Click" />
+                            </Style>
+                        </MenuItem.ItemContainerStyle>
+                    </MenuItem>
                     <MenuItem Header="Ctrl" ItemsSource="{Binding Source={StaticResource HotkeyStates}}">
                         <MenuItem.ItemContainerStyle>
                             <Style TargetType="MenuItem">
                                 <EventSetter Event="Click" Handler="Ctrl_Click" />
+                            </Style>
+                        </MenuItem.ItemContainerStyle>
+                    </MenuItem>
+                    <MenuItem Header="Alt" ItemsSource="{Binding Source={StaticResource HotkeyStates}}">
+                        <MenuItem.ItemContainerStyle>
+                            <Style TargetType="MenuItem">
+                                <EventSetter Event="Click" Handler="Alt_Click" />
                             </Style>
                         </MenuItem.ItemContainerStyle>
                     </MenuItem>

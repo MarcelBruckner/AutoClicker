@@ -23,12 +23,22 @@ namespace AutoClicker
     {
         #region Global Attributes
         int prevRowIndex = -1;
-        private double _globalSpeed = 1;
-        private double _globalRandomSpeed = 0;
-        private int _globalDelay = 50;
-        private int _globalRandomDelay = 5;
-        private int _globalRepetitions = 1;
-        private int _globalRandomRepetitions;
+        private static double _globalSpeed = 1;
+        private static double _globalRandomSpeed = 0;
+        private static int _globalDelay = 50;
+        private static int _globalRandomDelay = 5;
+        private static int _globalRepetitions = 1;
+        private static int _globalRandomRepetitions;
+        private static int _globalRandomX;
+        private static int _globalRandomY;
+        private static int _globalRandomDragX;
+        private static int _globalRandomDragY;
+        private static int _globalWheel;
+        private static int _globalRandomWheel;
+        private static bool _globalCtrl;
+        private static bool _globalShift;
+        private static bool _globalAlt;
+        private static MovementType _globalMovement = MovementType.SPRING;
         #endregion
 
         Random random = new Random();
@@ -44,7 +54,7 @@ namespace AutoClicker
         private int allRepetitions;
         private int _repetitions;
 
-        public ObservableCollection<Instruction> Instructions { get; private set; } = new ObservableCollection<Instruction>()
+        public static ObservableCollection<Instruction> Instructions { get; private set; } = new ObservableCollection<Instruction>()
         {
             new Instruction(InstructionType.CLICK),
             new Instruction(InstructionType.M_CLICK),
@@ -55,17 +65,9 @@ namespace AutoClicker
             new Instruction(InstructionType.END_LOOP),
             new Instruction(InstructionType.DELAY)
         };
+
         private Recorder recorder;
         private Instruction runningInstruction = new Instruction();
-        private int _globalRandomX;
-        private int _globalRandomY;
-        private int _globalRandomDragX;
-        private int _globalRandomDragY;
-        private int _globalWheel;
-        private int _globalRandomWheel;
-        private bool _globalCtrl;
-        private bool _globalShift;
-        private bool _globalAlt;
 
         public bool IsRecording
         {
@@ -142,9 +144,21 @@ namespace AutoClicker
         }
 
         #region Globals
-        public MovementType GlobalMovement { get; set; } = MovementType.SPRING;
-
-        public double GlobalSpeed
+        public static MovementType GlobalMovement
+        {
+            get => _globalMovement;
+            set {
+                _globalMovement = value;
+                if (MessageBoxYes())
+                {
+                    foreach (Instruction instruction in Instructions)
+                    {
+                        instruction.Movement = value;
+                    }
+                }
+            }
+        }
+        public static double GlobalSpeed
         {
             get => _globalSpeed;
             set
@@ -159,7 +173,7 @@ namespace AutoClicker
                 }
             }
         }
-        public double GlobalRandomSpeed
+        public static double GlobalRandomSpeed
         {
             get => _globalRandomSpeed;
             set
@@ -174,8 +188,7 @@ namespace AutoClicker
                 }
             }
         }
-
-        public int GlobalDelay
+        public static int GlobalDelay
         {
             get => _globalDelay;
             set
@@ -190,7 +203,7 @@ namespace AutoClicker
                 }
             }
         }
-        public int GlobalRandomDelay
+        public static int GlobalRandomDelay
         {
             get => _globalRandomDelay;
             set
@@ -205,8 +218,7 @@ namespace AutoClicker
                 }
             }
         }
-
-        public int GlobalRepetitions
+        public static int GlobalRepetitions
         {
             get => _globalRepetitions;
             set
@@ -221,7 +233,7 @@ namespace AutoClicker
                 }
             }
         }
-        public int GlobalRandomRepetitions
+        public static int GlobalRandomRepetitions
         {
             get => _globalRandomRepetitions;
             set
@@ -236,8 +248,7 @@ namespace AutoClicker
                 }
             }
         }
-
-        public int GlobalRandomX
+        public static int GlobalRandomX
         {
             get => _globalRandomX;
             set
@@ -252,7 +263,7 @@ namespace AutoClicker
                 }
             }
         }
-        public int GlobalRandomY
+        public static int GlobalRandomY
         {
             get => _globalRandomY;
             set
@@ -267,8 +278,7 @@ namespace AutoClicker
                 }
             }
         }
-
-        public int GlobalRandomDragX
+        public static int GlobalRandomDragX
         {
             get => _globalRandomDragX;
             set
@@ -283,7 +293,7 @@ namespace AutoClicker
                 }
             }
         }
-        public int GlobalRandomDragY
+        public static int GlobalRandomDragY
         {
             get => _globalRandomDragY;
             set
@@ -298,8 +308,7 @@ namespace AutoClicker
                 }
             }
         }
-
-        public int GlobalWheel
+        public static int GlobalWheel
         {
             get => _globalWheel;
             set
@@ -314,7 +323,7 @@ namespace AutoClicker
                 }
             }
         }
-        public int GlobalRandomWheel
+        public static int GlobalRandomWheel
         {
             get => _globalRandomWheel;
             set
@@ -329,8 +338,7 @@ namespace AutoClicker
                 }
             }
         }
-
-        public bool GlobalCtrl
+        public static bool GlobalCtrl
         {
             get => _globalCtrl;
             set
@@ -345,7 +353,7 @@ namespace AutoClicker
                 }
             }
         }
-        public bool GlobalShift
+        public static bool GlobalShift
         {
             get => _globalShift;
             set
@@ -360,7 +368,7 @@ namespace AutoClicker
                 }
             }
         }
-        public bool GlobalAlt
+        public static bool GlobalAlt
         {
             get => _globalAlt;
             set
@@ -389,7 +397,7 @@ namespace AutoClicker
             //server = new TCPServer();
             InstructionsDataGrid.ItemsSource = Instructions;
 
-            
+
 
         }
 
@@ -664,6 +672,16 @@ namespace AutoClicker
             GlobalSpeed = ConvertSender<double>(sender);
         }
 
+        private void Alt_Click(object sender, RoutedEventArgs e)
+        {
+            HotkeyState state = ConvertSender<HotkeyState>(sender);
+            GlobalAlt = state == HotkeyState.ON;
+        }
+        private void Shift_Click(object sender, RoutedEventArgs e)
+        {
+            HotkeyState state = ConvertSender<HotkeyState>(sender);
+            GlobalShift = state == HotkeyState.ON;
+        }
         private void Ctrl_Click(object sender, RoutedEventArgs e)
         {
             HotkeyState state = ConvertSender<HotkeyState>(sender);
@@ -676,9 +694,9 @@ namespace AutoClicker
             return (T)choice.DataContext;
         }
 
-        private bool MessageBoxYes()
+        private static bool MessageBoxYes()
         {
-            return MessageBox.Show(this, "Update all existing instructions?", "Update", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
+            return MessageBox.Show("Update all existing instructions?", "Update", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
         }
 
         private void SelectedLineRemove_Click(object sender, RoutedEventArgs e)
@@ -693,7 +711,7 @@ namespace AutoClicker
         {
             Instructions.Clear();
         }
-        
+
         #endregion
 
         #region Instructions 
@@ -771,6 +789,11 @@ namespace AutoClicker
             else if (sender is ComboBox comboBox)
             {
                 comboBox.Focus();
+            }
+            else if (sender is CheckBox checkBox)
+            {
+                checkBox.Focus();
+                checkBox.IsChecked = !checkBox.IsChecked;
             }
 
             if (prevRowIndex < 0)
@@ -855,7 +878,8 @@ namespace AutoClicker
                 //Remove the toDeleteFromBindedList object from your ObservableCollection
                 Instructions.Remove(toDeleteFromBindedList);
             }
-            catch {
+            catch
+            {
                 Console.WriteLine("Error by delete");
             }
         }
@@ -883,28 +907,11 @@ namespace AutoClicker
         #endregion
 
         #region Cells
-        private void ShiftColumnCell_Click(object sender, RoutedEventArgs e)
-        {
-            Instruction i = GetInstructionFromCell(sender);
-            i.Shift ^= true;
-        }
-
-        private void CtrlColumnCell_Click(object sender, RoutedEventArgs e)
-        {
-            GetInstructionFromCell(sender).Ctrl ^= true;
-        }
-
-        private void AltColumnCell_Click(object sender, RoutedEventArgs e)
-        {
-            GetInstructionFromCell(sender).Alt ^= true;
-        }
-
         private Instruction GetInstructionFromCell(object sender)
         {
             DataGridCell cell = sender as DataGridCell;
             return cell.DataContext as Instruction;
         }
         #endregion
-
     }
 }
