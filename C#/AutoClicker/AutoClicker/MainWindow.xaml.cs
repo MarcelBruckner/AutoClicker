@@ -56,14 +56,6 @@ namespace AutoClicker
 
         public static ObservableCollection<Instruction> Instructions { get; private set; } = new ObservableCollection<Instruction>()
         {
-            new Instruction(InstructionType.CLICK),
-            new Instruction(InstructionType.M_CLICK),
-            new Instruction(InstructionType.DRAG),
-            new Instruction(InstructionType.WHEEL),
-            new Instruction(InstructionType.KEYBOARD),
-            new Instruction(InstructionType.LOOP),
-            new Instruction(InstructionType.END_LOOP),
-            new Instruction(InstructionType.DELAY)
         };
 
         private Recorder recorder;
@@ -396,9 +388,6 @@ namespace AutoClicker
             recorder = new Recorder(this);
             //server = new TCPServer();
             InstructionsDataGrid.ItemsSource = Instructions;
-
-
-
         }
 
         private void StopAll()
@@ -727,11 +716,6 @@ namespace AutoClicker
             InstructionsDataGrid.SelectedIndex = row;
         }
 
-        public void UpdateDelay(int line, int delay)
-        {
-            Instructions[line].Delay = delay;
-        }
-
         public delegate Point GetDragDropPosition(IInputElement element);
 
         private bool IsMouseOnTargetRow(Visual target, GetDragDropPosition pos)
@@ -875,8 +859,11 @@ namespace AutoClicker
                 //to the DataGrid (and has subject and state as property)
                 var toDeleteFromBindedList = (Instruction)item.SelectedCells[0].Item;
 
+                toDeleteFromBindedList.IsRunning = true;
+                Console.WriteLine(toDeleteFromBindedList.Type);
+
                 //Remove the toDeleteFromBindedList object from your ObservableCollection
-                Instructions.Remove(toDeleteFromBindedList);
+                //Instructions.Remove(toDeleteFromBindedList);
             }
             catch
             {

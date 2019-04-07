@@ -126,8 +126,7 @@ namespace AutoClicker
             Wheel = other.Wheel;
             Type = other.Type;
         }
-
-
+        
         public Instruction(InstructionType type, bool shift, bool ctrl, bool alt)
         {
             Shift = shift;
@@ -160,7 +159,9 @@ namespace AutoClicker
         }
 
         // Keyboard constructor
-        public Instruction(VirtualKeyCode key, bool shift, bool ctrl, bool alt) : this(InstructionType.KEYBOARD, shift, ctrl, alt) { }
+        public Instruction(VirtualKeyCode key, bool shift, bool ctrl, bool alt) : this(InstructionType.KEYBOARD, shift, ctrl, alt) {
+            Key = key;
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion
