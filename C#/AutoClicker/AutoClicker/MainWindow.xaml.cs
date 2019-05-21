@@ -56,6 +56,24 @@ namespace AutoClicker
 
         public static ObservableCollection<Instruction> Instructions { get; private set; } = new ObservableCollection<Instruction>()
         {
+            new Instruction(),
+            new Instruction(),
+            new Instruction(),
+            new Instruction(),
+            new Instruction(),
+            new Instruction(),
+            new Instruction(),
+            new Instruction(),
+            new Instruction(),
+            new Instruction(),
+            new Instruction(),
+            new Instruction(),
+            new Instruction(),
+            new Instruction(),
+            new Instruction(),
+            new Instruction(),
+            new Instruction(),
+            new Instruction()
         };
 
         private Recorder recorder;
@@ -859,11 +877,11 @@ namespace AutoClicker
                 //to the DataGrid (and has subject and state as property)
                 var toDeleteFromBindedList = (Instruction)item.SelectedCells[0].Item;
 
-                toDeleteFromBindedList.IsRunning = true;
+                //toDeleteFromBindedList.IsRunning = true;
                 Console.WriteLine(toDeleteFromBindedList.Type);
 
                 //Remove the toDeleteFromBindedList object from your ObservableCollection
-                //Instructions.Remove(toDeleteFromBindedList);
+                Instructions.Remove(toDeleteFromBindedList);
             }
             catch
             {
