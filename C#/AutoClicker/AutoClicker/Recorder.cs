@@ -28,8 +28,8 @@ namespace AutoClicker
         public bool WithDelay { get; set; }
 
         //private int current = -1;
-        private Instruction current = null;
-        private Instruction mouseDownPosition;
+        private Instructions.Instruction current = null;
+        private Instructions.Instruction mouseDownPosition;
 
         #region Init Deinit
         public Recorder(MainWindow window)
@@ -81,8 +81,9 @@ namespace AutoClicker
                 return;
             }
 
-            Instruction instruction = new Instruction((VirtualKeyCode)(int)key, isShiftDown, isCtrlDown, isAltDown);
-            AddOrIncrement(instruction);
+            //TODO Keyboard
+            //Instructions.KeyBoard instruction = new Instruction((VirtualKeyCode)(int)key, isShiftDown, isCtrlDown, isAltDown);
+            //AddOrIncrement(instruction);
         }
 
         private void KeyUp(object sender, KeyEventArgs e)
@@ -120,19 +121,20 @@ namespace AutoClicker
         {
             ButtonType button = GetButton(e.Button);
             Point p = Cursor.Point;
-            mouseDownPosition = new Instruction(button, p.X, p.Y, isShiftDown, isCtrlDown, isAltDown);
+            mouseDownPosition = new Instructions.Click(button, p.X, p.Y, MainWindow.GlobalShift, MainWindow.GlobalCtrl, MainWindow.GlobalAlt);// isShiftDown, isCtrlDown, isAltDown);
         }
 
         private void MouseUp(object sender, MouseEventArgs e)
         {
             ButtonType button = GetButton(e.Button);
             Point p = Cursor.Point;
-            Instruction end = new Instruction(button, p.X, p.Y, isShiftDown, isCtrlDown, isAltDown);
+            Instructions.Click end = new Instructions.Click(button, p.X, p.Y, MainWindow.GlobalShift, MainWindow.GlobalCtrl, MainWindow.GlobalAlt);//, isShiftDown, isCtrlDown, isAltDown);
 
-            Instruction start = mouseDownPosition as Instruction;
-            if (start != null && start.Button == end.Button && end.Distance(start) > Instruction.MAX_UNCERTAINTY)
+            Instructions.Click start = mouseDownPosition as Instructions.Click;
+            if (start != null && start.Button == end.Button && end.Distance(start) > Instructions.Instruction.MAX_UNCERTAINTY)
             {
-                AddOrIncrement(new Instruction(start.Button, start.X, start.Y, end.X, end.Y, isShiftDown, isCtrlDown, isAltDown));
+                //TODO Drag ad or increment
+                //AddOrIncrement(new Instructions.Drag(start.Button, start.X, start.Y, end.X, end.Y, isShiftDown, isCtrlDown, isAltDown));
             }
             else
             {
@@ -142,8 +144,9 @@ namespace AutoClicker
 
         private void MouseWheel(object sender, MouseEventArgs e)
         {
-            Instruction instruction = new Instruction(e.Delta, e.X, e.Y, isShiftDown, isCtrlDown, isAltDown);
-            AddOrIncrement(instruction);
+            // TODO Wheel
+            //Instruction instruction = new Instruction(e.Delta, e.X, e.Y, isShiftDown, isCtrlDown, isAltDown);
+            //AddOrIncrement(instruction);
         }
 
         private ButtonType GetButton(MouseButtons button)
@@ -174,7 +177,7 @@ namespace AutoClicker
             return (int)delta.TotalMilliseconds;
         }
 
-        private bool AddOrIncrement(Instruction instruction)
+        private bool AddOrIncrement(Instructions.Instruction instruction)
         {
             int delay = GetDelay();
 
@@ -187,11 +190,12 @@ namespace AutoClicker
 
             if (instruction.Equals(current) && delay < REPETITION_MAX_DELAY)
             {
-                if (instruction.Type == InstructionType.WHEEL)
-                {
-                    current.Wheel += instruction.Wheel;
-                }
-                else
+                // TODO Wheel increment
+                //if (instruction.Type == InstructionType.WHEEL)
+                //{
+                //    current.Wheel += instruction.Wheel;
+                //}
+                //else
                 {
                     current.Repetitions++;
                 }

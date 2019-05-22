@@ -54,27 +54,7 @@ namespace AutoClicker
         private int allRepetitions;
         private int _repetitions;
 
-        public static ObservableCollection<Instruction> Instructions { get; private set; } = new ObservableCollection<Instruction>()
-        {
-            new Instruction(),
-            new Instruction(),
-            new Instruction(),
-            new Instruction(),
-            new Instruction(),
-            new Instruction(),
-            new Instruction(),
-            new Instruction(),
-            new Instruction(),
-            new Instruction(),
-            new Instruction(),
-            new Instruction(),
-            new Instruction(),
-            new Instruction(),
-            new Instruction(),
-            new Instruction(),
-            new Instruction(),
-            new Instruction()
-        };
+        private FlowDocument Document { get; set; }
 
         private Recorder recorder;
         private Instruction runningInstruction = new Instruction();
@@ -107,7 +87,7 @@ namespace AutoClicker
             {
                 _isPlaying = value;
                 RecordButton.IsEnabled = !value;
-                InstructionsDataGrid.IsEnabled = !value;
+                //InstructionsDataGrid.IsEnabled = !value;
                 if (_isPlaying)
                 {
                     IsRecording = false;
@@ -161,10 +141,10 @@ namespace AutoClicker
                 _globalMovement = value;
                 if (MessageBoxYes())
                 {
-                    foreach (Instruction instruction in Instructions)
-                    {
-                        instruction.Movement = value;
-                    }
+                    //foreach (Instruction instruction in Instructions)
+                    //{
+                    //    instruction.Movement = value;
+                    //}
                 }
             }
         }
@@ -176,10 +156,10 @@ namespace AutoClicker
                 _globalSpeed = value;
                 if (MessageBoxYes())
                 {
-                    foreach (Instruction instruction in Instructions)
-                    {
-                        instruction.Speed = value;
-                    }
+                    //foreach (Instruction instruction in Instructions)
+                    //{
+                    //    instruction.Speed = value;
+                    //}
                 }
             }
         }
@@ -191,10 +171,10 @@ namespace AutoClicker
                 _globalRandomSpeed = value;
                 if (MessageBoxYes())
                 {
-                    foreach (Instruction instruction in Instructions)
-                    {
-                        instruction.RandomSpeed = value;
-                    }
+                    //foreach (Instruction instruction in Instructions)
+                    //{
+                    //    instruction.RandomSpeed = value;
+                    //}
                 }
             }
         }
@@ -206,10 +186,10 @@ namespace AutoClicker
                 _globalDelay = value;
                 if (MessageBoxYes())
                 {
-                    foreach (Instruction instruction in Instructions)
-                    {
-                        instruction.Delay = value;
-                    }
+                    //foreach (Instruction instruction in Instructions)
+                    //{
+                    //    instruction.Delay = value;
+                    //}
                 }
             }
         }
@@ -221,10 +201,10 @@ namespace AutoClicker
                 _globalRandomDelay = value;
                 if (MessageBoxYes())
                 {
-                    foreach (Instruction instruction in Instructions)
-                    {
-                        instruction.RandomDelay = value;
-                    }
+                    //foreach (Instruction instruction in Instructions)
+                    //{
+                    //    instruction.RandomDelay = value;
+                    //}
                 }
             }
         }
@@ -236,10 +216,10 @@ namespace AutoClicker
                 _globalRepetitions = value;
                 if (MessageBoxYes())
                 {
-                    foreach (Instruction instruction in Instructions)
-                    {
-                        instruction.Repetitions = value;
-                    }
+                    //foreach (Instruction instruction in Instructions)
+                    //{
+                    //    instruction.Repetitions = value;
+                    //}
                 }
             }
         }
@@ -251,10 +231,10 @@ namespace AutoClicker
                 _globalRandomRepetitions = value;
                 if (MessageBoxYes())
                 {
-                    foreach (Instruction instruction in Instructions)
-                    {
-                        instruction.RandomRepetitions = value;
-                    }
+                    //foreach (Instruction instruction in Instructions)
+                    //{
+                    //    instruction.RandomRepetitions = value;
+                    //}
                 }
             }
         }
@@ -266,10 +246,10 @@ namespace AutoClicker
                 _globalRandomX = value;
                 if (MessageBoxYes())
                 {
-                    foreach (Instruction instruction in Instructions)
-                    {
-                        instruction.RandomX = value;
-                    }
+                    //foreach (Instruction instruction in Instructions)
+                    //{
+                    //    instruction.RandomX = value;
+                    //}
                 }
             }
         }
@@ -281,10 +261,10 @@ namespace AutoClicker
                 _globalRandomY = value;
                 if (MessageBoxYes())
                 {
-                    foreach (Instruction instruction in Instructions)
-                    {
-                        instruction.RandomY = value;
-                    }
+                    //foreach (Instruction instruction in Instructions)
+                    //{
+                    //    instruction.RandomY = value;
+                    //}
                 }
             }
         }
@@ -296,10 +276,10 @@ namespace AutoClicker
                 _globalRandomDragX = value;
                 if (MessageBoxYes())
                 {
-                    foreach (Instruction instruction in Instructions)
-                    {
-                        instruction.RandomEndX = value;
-                    }
+                    //foreach (Instruction instruction in Instructions)
+                    //{
+                    //    instruction.RandomEndX = value;
+                    //}
                 }
             }
         }
@@ -311,10 +291,10 @@ namespace AutoClicker
                 _globalRandomDragY = value;
                 if (MessageBoxYes())
                 {
-                    foreach (Instruction instruction in Instructions)
-                    {
-                        instruction.RandomEndY = value;
-                    }
+                    //foreach (Instruction instruction in Instructions)
+                    //{
+                    //    instruction.RandomEndY = value;
+                    //}
                 }
             }
         }
@@ -326,10 +306,10 @@ namespace AutoClicker
                 _globalWheel = value;
                 if (MessageBoxYes())
                 {
-                    foreach (Instruction instruction in Instructions)
-                    {
-                        instruction.Wheel = value;
-                    }
+                    //foreach (Instruction instruction in Instructions)
+                    //{
+                    //    instruction.Wheel = value;
+                    //}
                 }
             }
         }
@@ -341,10 +321,10 @@ namespace AutoClicker
                 _globalRandomWheel = value;
                 if (MessageBoxYes())
                 {
-                    foreach (Instruction instruction in Instructions)
-                    {
-                        instruction.RandomWheel = value;
-                    }
+                    //foreach (Instruction instruction in Instructions)
+                    //{
+                    //    instruction.RandomWheel = value;
+                    //}
                 }
             }
         }
@@ -356,10 +336,10 @@ namespace AutoClicker
                 _globalCtrl = value;
                 if (MessageBoxYes())
                 {
-                    foreach (Instruction instruction in Instructions)
-                    {
-                        instruction.Ctrl = value;
-                    }
+                    //foreach (Instruction instruction in Instructions)
+                    //{
+                    //    instruction.Ctrl = value;
+                    //}
                 }
             }
         }
@@ -371,10 +351,10 @@ namespace AutoClicker
                 _globalShift = value;
                 if (MessageBoxYes())
                 {
-                    foreach (Instruction instruction in Instructions)
-                    {
-                        instruction.Shift = value;
-                    }
+                    //foreach (Instruction instruction in Instructions)
+                    //{
+                    //    instruction.Shift = value;
+                    //}
                 }
             }
         }
@@ -386,10 +366,10 @@ namespace AutoClicker
                 _globalAlt = value;
                 if (MessageBoxYes())
                 {
-                    foreach (Instruction instruction in Instructions)
-                    {
-                        instruction.Alt = value;
-                    }
+                    //foreach (Instruction instruction in Instructions)
+                    //{
+                    //    instruction.Alt = value;
+                    //}
                 }
             }
         }
@@ -404,17 +384,15 @@ namespace AutoClicker
             new HotkeyControl(PLAY_HOTKEY, OnPlayHotkey);
             new HotkeyControl(RECORD_HOTKEY, OnRecorderHotkey);
             recorder = new Recorder(this);
-            //server = new TCPServer();
-            InstructionsDataGrid.ItemsSource = Instructions;
         }
 
         private void StopAll()
         {
             runningInstruction.IsRunning = false;
-            foreach (Instruction instruction in Instructions)
-            {
-                instruction.IsRunning = false;
-            }
+            //foreach (Instruction instruction in Instructions)
+            //{
+            //    instruction.IsRunning = false;
+            //}
         }
 
         #region Buttons
@@ -452,56 +430,56 @@ namespace AutoClicker
             {
                 for (int i = 0; Infinite || i < allRepetitions; i++)
                 {
-                    for (int j = 0; j < Instructions.Count; j++)
-                    {
-                        if (!IsPlaying)
-                        {
-                            StopAll();
-                            return;
-                        }
+                    //for (int j = 0; j < Instructions.Count; j++)
+                    //{
+                    //    if (!IsPlaying)
+                    //    {
+                    //        StopAll();
+                    //        return;
+                    //    }
 
-                        runningInstruction = Instructions[j];
-                        if (runningInstruction.Type == InstructionType.LOOP)
-                        {
-                            int start = j + 1;
-                            int end = Instructions.Count;
-                            for (int l = start; l < Instructions.Count; l++)
-                            {
-                                if (Instructions[l].Type == InstructionType.END_LOOP)
-                                {
-                                    end = l;
-                                    break;
-                                }
-                            }
+                    //    runningInstruction = Instructions[j];
+                    //    if (runningInstruction.Type == InstructionType.LOOP)
+                    //    {
+                    //        int start = j + 1;
+                    //        int end = Instructions.Count;
+                    //        for (int l = start; l < Instructions.Count; l++)
+                    //        {
+                    //            if (Instructions[l].Type == InstructionType.END_LOOP)
+                    //            {
+                    //                end = l;
+                    //                break;
+                    //            }
+                    //        }
 
-                            int save = Instructions[j].Repetitions;
-                            int loops = Instructions[j].Repetitions + random.Next(Instructions[j].RandomRepetitions);
-                            for (int l = 0; l < loops; l++)
-                            {
-                                Instructions[j].Repetitions = l + 1;
+                    //        int save = Instructions[j].Repetitions;
+                    //        int loops = Instructions[j].Repetitions + random.Next(Instructions[j].RandomRepetitions);
+                    //        for (int l = 0; l < loops; l++)
+                    //        {
+                    //            Instructions[j].Repetitions = l + 1;
 
-                                for (int m = start; m < end; m++)
-                                {
-                                    if (!IsPlaying)
-                                    {
-                                        StopAll();
-                                        Instructions[j].Repetitions = loops;
-                                        return;
-                                    }
-                                    bw.ReportProgress((i + 1) / 101, new[] { i + 1, m });
-                                    runningInstruction = Instructions[m];
-                                    runningInstruction.Run();
-                                }
-                            }
-                            Instructions[j].Repetitions = save;
-                            j = end;
-                        }
-                        else
-                        {
-                            bw.ReportProgress((i + 1) / 101, new[] { i + 1, j });
-                            runningInstruction.Run();
-                        }
-                    }
+                    //            for (int m = start; m < end; m++)
+                    //            {
+                    //                if (!IsPlaying)
+                    //                {
+                    //                    StopAll();
+                    //                    Instructions[j].Repetitions = loops;
+                    //                    return;
+                    //                }
+                    //                bw.ReportProgress((i + 1) / 101, new[] { i + 1, m });
+                    //                runningInstruction = Instructions[m];
+                    //                runningInstruction.Run();
+                    //            }
+                    //        }
+                    //        Instructions[j].Repetitions = save;
+                    //        j = end;
+                    //    }
+                    //    else
+                    //    {
+                    //        bw.ReportProgress((i + 1) / 101, new[] { i + 1, j });
+                    //        runningInstruction.Run();
+                    //    }
+                    //}
                 }
             };
 
@@ -582,12 +560,12 @@ namespace AutoClicker
                         StopAll();
                         string script = File.ReadAllText(dialog.FileName);
                         List<Instruction> read = JsonConvert.DeserializeObject<List<Instruction>>(script);
-                        Instructions.Clear();
-                        read.ForEach(instruction =>
-                        {
-                            instruction.IsRunning = false;
-                            Instructions.Add(instruction);
-                        });
+                        //Instructions.Clear();
+                        //read.ForEach(instruction =>
+                        //{
+                        //    instruction.IsRunning = false;
+                        //    Instructions.Add(instruction);
+                        //});
                         break;
                     }
                     catch
@@ -613,8 +591,8 @@ namespace AutoClicker
                 try
                 {
                     StopAll();
-                    string json = JsonConvert.SerializeObject(Instructions);
-                    File.WriteAllText(dialog.FileName, json);
+                    //string json = JsonConvert.SerializeObject(Instructions);
+                    //File.WriteAllText(dialog.FileName, json);
                 }
                 catch
                 {
@@ -630,48 +608,44 @@ namespace AutoClicker
         #endregion
 
         #region Edit Menu
-        private void AddMoveAndClickClick_Click(object sender, RoutedEventArgs e)
-        {
-            AddInstruction(new Instruction(InstructionType.M_CLICK));
-        }
         private void AddClick_Click(object sender, RoutedEventArgs e)
         {
-            AddInstruction(new Instruction(InstructionType.CLICK));
+            AddInstruction(new Instructions.Click(0, 0, 0, GlobalShift, GlobalCtrl, GlobalAlt));
         }
-        private void AddKeyboard_Click(object sender, RoutedEventArgs e)
-        {
-            AddInstruction(new Instruction(InstructionType.KEYBOARD));
-        }
-        private void AddDelay_Click(object sender, RoutedEventArgs e)
-        {
-            AddInstruction(new Instruction(InstructionType.DELAY));
-        }
-        private void AddLoop_Click(object sender, RoutedEventArgs e)
-        {
-            AddInstruction(new Instruction(InstructionType.LOOP));
-        }
-        private void AddEndLoop_Click(object sender, RoutedEventArgs e)
-        {
-            AddInstruction(new Instruction(InstructionType.END_LOOP));
-        }
-        private void AddDrag_Click(object sender, RoutedEventArgs e)
-        {
-            AddInstruction(new Instruction(InstructionType.DRAG));
-        }
-        private void AddWheel_Click(object sender, RoutedEventArgs e)
-        {
-            AddInstruction(new Instruction(InstructionType.WHEEL));
-        }
+        //private void AddKeyboard_Click(object sender, RoutedEventArgs e)
+        //{
+        //    AddInstruction(new Instruction(InstructionType.KEYBOARD));
+        //}
+        //private void AddDelay_Click(object sender, RoutedEventArgs e)
+        //{
+        //    AddInstruction(new Instruction(InstructionType.DELAY));
+        //}
+        //private void AddLoop_Click(object sender, RoutedEventArgs e)
+        //{
+        //    AddInstruction(new Instruction(InstructionType.LOOP));
+        //}
+        //private void AddEndLoop_Click(object sender, RoutedEventArgs e)
+        //{
+        //    AddInstruction(new Instruction(InstructionType.END_LOOP));
+        //}
+        //private void AddDrag_Click(object sender, RoutedEventArgs e)
+        //{
+        //    AddInstruction(new Instruction(InstructionType.DRAG));
+        //}
+        //private void AddWheel_Click(object sender, RoutedEventArgs e)
+        //{
+        //    AddInstruction(new Instruction(InstructionType.WHEEL));
+        //}
         private void MovementType_Click(object sender, RoutedEventArgs e)
         {
             GlobalMovement = ConvertSender<MovementType>(sender);
 
             if (MessageBoxYes())
             {
-                foreach (Instruction instruction in Instructions)
-                {
-                    instruction.Movement = GlobalMovement;
-                }
+                //foreach (Instruction instruction in Instructions)
+                //{
+                //    instruction.Movement = GlobalMovement;
+                //}
             }
         }
         private void Speed_Click(object sender, RoutedEventArgs e)
@@ -706,217 +680,26 @@ namespace AutoClicker
             return MessageBox.Show("Update all existing instructions?", "Update", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
         }
 
-        private void SelectedLineRemove_Click(object sender, RoutedEventArgs e)
-        {
-            int row = InstructionsDataGrid.SelectedIndex;
-            if (row >= 0)
-            {
-                Instructions.RemoveAt(row);
-            }
-        }
         private void Clear_Click(object sender, RoutedEventArgs e)
         {
-            Instructions.Clear();
+            Document.Blocks.Clear();
         }
 
         #endregion
 
-        #region Instructions 
-        public void AddInstruction(Instruction instruction)
+        #region InstructionsTextBox
+        public void AddInstruction(Instructions.Instruction instruction)
         {
-            int row = InstructionsDataGrid.SelectedIndex + 1;
-            if (row <= 0 || row > Instructions.Count)
-            {
-                row = Instructions.Count;
-            }
-            Instructions.Insert(row, instruction);
-            InstructionsDataGrid.ScrollIntoView(instruction);
-            InstructionsDataGrid.SelectedIndex = row;
+            InstructionsTextBox.Document.Blocks.Add(
+                new Paragraph(new Run(instruction.ToString()))
+                );
         }
-
-        public delegate Point GetDragDropPosition(IInputElement element);
-
-        private bool IsMouseOnTargetRow(Visual target, GetDragDropPosition pos)
-        {
-            try
-            {
-                Rect posBounds = VisualTreeHelper.GetDescendantBounds(target);
-                Point mousePos = pos((IInputElement)target);
-                return posBounds.Contains(mousePos);
-            }
-            catch { return false; }
-        }
-
-        private DataGridRow GetDataGridRowFromIndex(int index)
-        {
-            if (InstructionsDataGrid.ItemContainerGenerator.Status != System.Windows.Controls.Primitives.GeneratorStatus.ContainersGenerated)
-            {
-                return null;
-            }
-            return InstructionsDataGrid.ItemContainerGenerator.ContainerFromIndex(index) as DataGridRow;
-        }
-
-        private int GetDataGridItemCurrentRowIndex(GetDragDropPosition pos)
-        {
-            int curIndex = -1;
-            for (int i = 0; i < Instructions.Count; i++)
-            {
-                DataGridRow row = GetDataGridRowFromIndex(i);
-                if (IsMouseOnTargetRow(row, pos))
-                {
-                    curIndex = i;
-                    break;
-                }
-            }
-            return curIndex;
-        }
-
+        #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;
-
         protected void OnPropertyChanged(string name)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
-
-        private Instruction SelectClicked(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            prevRowIndex = GetDataGridItemCurrentRowIndex(e.GetPosition);
-
-            if (sender is TextBox box)
-            {
-                box.Focus();
-                box.SelectAll();
-            }
-            else if (sender is ComboBox comboBox)
-            {
-                comboBox.Focus();
-            }
-            else if (sender is CheckBox checkBox)
-            {
-                checkBox.Focus();
-                checkBox.IsChecked = !checkBox.IsChecked;
-            }
-
-            if (prevRowIndex < 0)
-            {
-                return null;
-            }
-
-            InstructionsDataGrid.SelectedIndex = prevRowIndex;
-            return Instructions[prevRowIndex];
-        }
-
-        private void InstructionsDataGrid_PreviewMouseRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            Instruction selected = SelectClicked(sender, e);
-        }
-
-        private void InstructionsDataGrid_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            Instruction selected = SelectClicked(sender, e);
-
-            if (selected == null)
-            {
-                return;
-            }
-
-            DragDropEffects dragDropEffects = DragDropEffects.Move;
-            try
-            {
-                if (DragDrop.DoDragDrop(InstructionsDataGrid, selected, dragDropEffects) != DragDropEffects.None)
-                {
-                    InstructionsDataGrid.SelectedItem = selected;
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error in preview left mouse: " + ex.Message);
-            }
-        }
-
-        private void InstructionsDataGrid_Drop(object sender, DragEventArgs e)
-        {
-            if (prevRowIndex < 0)
-            {
-                return;
-            }
-
-            int index = GetDataGridItemCurrentRowIndex(e.GetPosition);
-
-            if (index == prevRowIndex)
-            {
-                return;
-            }
-            Instruction toMove = Instructions[prevRowIndex];
-            Instructions.RemoveAt(prevRowIndex);
-            if (index >= 0)
-            {
-                Instructions.Insert(index, toMove);
-            }
-            else
-            {
-                Instructions.Add(toMove);
-            }
-        }
-
-        private void DeleteFromContextMenu_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                //Get the clicked MenuItem
-                var menuItem = (MenuItem)sender;
-
-                //Get the ContextMenu to which the menuItem belongs
-                var contextMenu = (ContextMenu)menuItem.Parent;
-
-                //Find the placementTarget
-                var item = (DataGrid)contextMenu.PlacementTarget;
-
-                //Get the underlying item, that you cast to your object that is bound
-                //to the DataGrid (and has subject and state as property)
-                var toDeleteFromBindedList = (Instruction)item.SelectedCells[0].Item;
-
-                //toDeleteFromBindedList.IsRunning = true;
-                Console.WriteLine(toDeleteFromBindedList.Type);
-
-                //Remove the toDeleteFromBindedList object from your ObservableCollection
-                Instructions.Remove(toDeleteFromBindedList);
-            }
-            catch
-            {
-                Console.WriteLine("Error by delete");
-            }
-        }
-
-        private void DuplicateFromContextMenu_Click(object sender, RoutedEventArgs e)
-        {
-            //Get the clicked MenuItem
-            var menuItem = (MenuItem)sender;
-
-            //Get the ContextMenu to which the menuItem belongs
-            var contextMenu = (ContextMenu)menuItem.Parent;
-
-            //Find the placementTarget
-            var item = (DataGrid)contextMenu.PlacementTarget;
-
-            //Get the underlying item, that you cast to your object that is bound
-            //to the DataGrid (and has subject and state as property)
-            var toDuplicate = (Instruction)item.SelectedCells[0].Item;
-
-            //Remove the toDeleteFromBindedList object from your ObservableCollection
-            Instructions.Insert(Instructions.IndexOf(toDuplicate), new Instruction(toDuplicate));
-        }
-
-
-        #endregion
-
-        #region Cells
-        private Instruction GetInstructionFromCell(object sender)
-        {
-            DataGridCell cell = sender as DataGridCell;
-            return cell.DataContext as Instruction;
-        }
-        #endregion
     }
 }
