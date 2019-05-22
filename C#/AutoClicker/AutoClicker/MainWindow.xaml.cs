@@ -610,7 +610,7 @@ namespace AutoClicker
         #region Add Menu
         private void AddMenu_Click(object sender, RoutedEventArgs e)
         {
-            AddInstruction(new Instructions.Click(0, 0));
+            AddInstruction(new Instructions.Click());
         }
         //private void AddKeyboard_Click(object sender, RoutedEventArgs e)
         //{
@@ -702,7 +702,10 @@ namespace AutoClicker
                 e.Key == System.Windows.Input.Key.Space)
             {
                 instructions = parser.Parse(StringManager.RichTextBoxToString(InstructionsTextBox));
-                Console.WriteLine(instructions.Count());
+                foreach(Instructions.Instruction instruction in instructions)
+                {
+                    Console.WriteLine(instruction);
+                }
             }
         }
         

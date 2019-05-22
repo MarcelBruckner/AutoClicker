@@ -195,14 +195,14 @@ namespace AutoClicker
                 //}
                 //else
                 {
-                    current.Repetitions++;
+                    current.Repetitions.Value++;
                 }
             }
             else
             {
                 if (WithDelay)
                 {
-                    current.Delay = delay;
+                    current.Delay.Value = delay;
                 }
                 window.AddInstruction(instruction);
                 current = instruction;

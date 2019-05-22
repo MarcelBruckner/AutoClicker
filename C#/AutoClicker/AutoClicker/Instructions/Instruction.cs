@@ -8,21 +8,16 @@ using System.Threading.Tasks;
 
 namespace AutoClicker.Instructions
 {
-    public abstract class Instruction
+    public class Instruction
     {
         internal Random random = new Random();
         internal static readonly int MAX_UNCERTAINTY = 20;
         private const int delayStep = 500;
 
         #region Properties
-        public int? Delay { get; set; }
-        public int? RandomDelay { get; set; }
-
-        public int? Repetitions { get; set; } 
-        public int? RandomRepetitions { get; set; } 
-
-        public double? Speed { get; set; } 
-        public double? RandomSpeed { get; set; }
+        public IntTuple Delay { get; set; }
+        public IntTuple Repetitions { get; set; }
+        public DoubleTuple Speed { get; set; }
 
         public bool Shift { get; set; } 
         public bool Ctrl { get; set; } 
@@ -31,19 +26,12 @@ namespace AutoClicker.Instructions
         public bool IsRunning { get; set; } = false;
         #endregion
         
-        protected Instruction(int? delay = null, int? randomDelay = null, 
-            int? repetitions = null, int? randomRepetitions = null, 
-            double? speed = null, double? randomSpeed = null,
+        public Instruction(IntTuple delay = null, IntTuple repetitions = null, DoubleTuple speed = null, 
             bool shift = false, bool ctrl = false, bool alt = false) 
         {
             Delay = delay;
-            RandomDelay = randomDelay;
-
             Repetitions = repetitions;
-            RandomRepetitions = randomRepetitions;
-
             Speed = speed;
-            RandomSpeed = randomSpeed;
 
             Shift = shift;
             Ctrl = ctrl;
@@ -53,37 +41,43 @@ namespace AutoClicker.Instructions
         public void Run()
         {
             IsRunning = true;
-            int save = Repetitions ?? MainWindow.GlobalRepetitions;
-            int totalRepetitions = Repetitions ?? MainWindow.GlobalRepetitions + random.Next(RandomRepetitions ?? MainWindow.GlobalRandomRepetitions);
-            Repetitions = 1;
-            while (IsRunning && Repetitions <= totalRepetitions)
+            IntTuple repetitions = Repetitions ?? new IntTuple(MainWindow.GlobalRandomRepetitions);
+
+            int save = repetitions.Value;
+            int totalRepetitions = repetitions.Value + random.Next(repetitions.Random ?? MainWindow.GlobalRandomRepetitions);
+            repetitions.Value = 1;
+            while (IsRunning && repetitions.Value <= totalRepetitions)
             {
                 SpecificExecute();
                 DoDelay();
-                Repetitions++;
+                Repetitions.Value++;
             }
             IsRunning = false;
-            Repetitions = save;
+            repetitions.Value = save;
         }
 
-        internal abstract void SpecificExecute();
+        internal virtual void SpecificExecute()
+        {
+            // EMPTY for override
+        }
 
         private void DoDelay()
         {
-            int save = Delay ?? MainWindow.GlobalDelay;
-            int totalDelay = Delay ?? MainWindow.GlobalDelay + random.Next(RandomDelay ?? MainWindow.GlobalRandomDelay);
+            IntTuple delay = Delay ?? new IntTuple(MainWindow.GlobalDelay);
 
-            Delay = 0;
+            int save = delay.Value;
+            int totalDelay = delay.Value + random.Next(delay.Random ?? MainWindow.GlobalRandomDelay);
 
-            while (IsRunning && Delay < totalDelay)
+            delay.Value = 0;
+
+            while (IsRunning && delay.Value < totalDelay)
             {
-                int toDelay = Math.Min(totalDelay, Math.Min(delayStep, totalDelay - Delay ?? MainWindow.GlobalDelay));
-                Delay += toDelay;
+                int toDelay = Math.Min(totalDelay, Math.Min(delayStep, totalDelay - delay.Value));
+                delay.Value += toDelay;
                 Thread.Sleep(toDelay);
             }
 
-            Delay = totalDelay;
-            Delay = save;
+            delay.Value = save;
         }
 
         protected VirtualKeyCode[] GetHotkeys()
@@ -124,12 +118,9 @@ namespace AutoClicker.Instructions
         public override int GetHashCode()
         {
             var hashCode = -2077448662;
-            hashCode = hashCode * -1521134295 + Delay.GetHashCode();
-            hashCode = hashCode * -1521134295 + RandomDelay.GetHashCode();
-            hashCode = hashCode * -1521134295 + Repetitions.GetHashCode();
-            hashCode = hashCode * -1521134295 + RandomRepetitions.GetHashCode();
-            hashCode = hashCode * -1521134295 + Speed.GetHashCode();
-            hashCode = hashCode * -1521134295 + RandomSpeed.GetHashCode();
+            hashCode = hashCode * -1521134295 + (Delay ?? new IntTuple(MainWindow.GlobalDelay)).GetHashCode();
+            hashCode = hashCode * -1521134295 + (Repetitions ?? new IntTuple(MainWindow.GlobalRepetitions)).GetHashCode();
+            hashCode = hashCode * -1521134295 + (Speed ?? new DoubleTuple(MainWindow.GlobalSpeed)).GetHashCode();
             hashCode = hashCode * -1521134295 + Shift.GetHashCode();
             hashCode = hashCode * -1521134295 + Ctrl.GetHashCode();
             hashCode = hashCode * -1521134295 + Alt.GetHashCode();
@@ -140,9 +131,9 @@ namespace AutoClicker.Instructions
         {
             StringBuilder builder = new StringBuilder("\t");
 
-            Append(builder, "delay", Delay, RandomDelay);
-            Append(builder, "repetitions", Repetitions, RandomRepetitions);
-            Append(builder, "speed", Speed, RandomSpeed);
+            Append(builder, "delay", Delay);
+            Append(builder, "repetitions", Repetitions);
+            Append(builder, "speed", Speed);
 
             if (Shift != MainWindow.GlobalShift)
             {
@@ -159,7 +150,25 @@ namespace AutoClicker.Instructions
             return builder.ToString();
         }
 
-        internal void Append(StringBuilder builder, string key, object value, object delta = null)
+        protected void Append(StringBuilder builder, string key, IntTuple tuple)
+        {
+            if(tuple == null)
+            {
+                return;
+            }
+            Append(builder, key, tuple.ToString());
+        }
+
+        protected void Append(StringBuilder builder, string key, DoubleTuple tuple)
+        {
+            if (tuple == null)
+            {
+                return;
+            }
+            Append(builder, key, tuple.ToString());
+        }
+
+        internal void Append(StringBuilder builder, string key, object value)
         {
             if (value == null)
             {
@@ -169,13 +178,6 @@ namespace AutoClicker.Instructions
             builder.Append(key);
             builder.Append("=");
             builder.Append(value);
-
-            if (delta == null)
-            {
-                return;
-            }
-            builder.Append("/");
-            builder.Append(delta);
         }
     }
 }
