@@ -21,9 +21,9 @@ namespace AutoClicker
 
         private DateTime lastActionTime = DateTime.Now;
 
-        private bool isAltDown = false;
-        private bool isCtrlDown = false;
-        private bool isShiftDown = false;
+        private bool? isAltDown;
+        private bool? isCtrlDown;
+        private bool? isShiftDown;
 
         public bool WithDelay { get; set; }
 
@@ -75,7 +75,7 @@ namespace AutoClicker
                 return;
             }
 
-            bool hotkeyChanged = SetHotkeys(key + "", true);
+            bool hotkeyChanged = SetHotkeys(key, true);
             if (hotkeyChanged)
             {
                 return;
@@ -88,24 +88,22 @@ namespace AutoClicker
 
         private void KeyUp(object sender, KeyEventArgs e)
         {
-            string key = e.KeyCode.ToString();
-            bool hotkeyChanged = SetHotkeys(key, false);
+            bool hotkeyChanged = SetHotkeys(e.KeyCode, false);
         }
 
-        private bool SetHotkeys(string _key, bool direction)
+        private bool SetHotkeys(Keys key, bool direction)
         {
-            string key = _key.ToLower();
-            if (key.Contains("menu"))
+            if (key == Keys.Alt)
             {
                 isAltDown = direction;
                 return true;
             }
-            else if (key.Contains("shift"))
+            else if (key == Keys.Shift)
             {
                 isShiftDown = direction;
                 return true;
             }
-            else if (key.Contains("control"))
+            else if (key == Keys.Control)
             {
                 isCtrlDown = direction;
                 return true;
@@ -121,14 +119,14 @@ namespace AutoClicker
         {
             ButtonType button = GetButton(e.Button);
             Point p = Cursor.Point;
-            mouseDownPosition = new Instructions.Click(button, p.X, p.Y, MainWindow.GlobalShift, MainWindow.GlobalCtrl, MainWindow.GlobalAlt);// isShiftDown, isCtrlDown, isAltDown);
+            mouseDownPosition = new Instructions.Click(p.X, p.Y, button: button);
         }
 
         private void MouseUp(object sender, MouseEventArgs e)
         {
             ButtonType button = GetButton(e.Button);
             Point p = Cursor.Point;
-            Instructions.Click end = new Instructions.Click(button, p.X, p.Y, MainWindow.GlobalShift, MainWindow.GlobalCtrl, MainWindow.GlobalAlt);//, isShiftDown, isCtrlDown, isAltDown);
+            Instructions.Click end = new Instructions.Click(p.X, p.Y, button: button);
 
             Instructions.Click start = mouseDownPosition as Instructions.Click;
             if (start != null && start.Button == end.Button && end.Distance(start) > Instructions.Instruction.MAX_UNCERTAINTY)

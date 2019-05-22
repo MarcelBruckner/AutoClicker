@@ -9,47 +9,46 @@ namespace AutoClicker.Instructions
 {
     public class Click : Instruction
     {
-        #region Raw Properties
-        private int _x = 0;
-        private int _y = 0;
-        private MovementType _movement = MainWindow.GlobalMovement;
-        private int _randomX = MainWindow.GlobalRandomX;
-        private int _randomY = MainWindow.GlobalRandomY;
-        private ButtonType _button = ButtonType.LEFT;
-        #endregion
-
         #region Properties
-        public ButtonType Button { get => _button; set { _button = value; OnPropertyChanged("Button"); } }
-        public MovementType Movement { get => _movement; set { _movement = value; OnPropertyChanged("Movement"); } }
+        public ButtonType? Button { get; set; }
+        public MovementType? Movement { get; set; }
 
-        public int X { get => _x; set { _x = value; OnPropertyChanged("X"); } }
-        public int RandomX { get => _randomX; set { _randomX = value; OnPropertyChanged("RandomX"); } }
-        public int Y { get => _y; set { _y = value; OnPropertyChanged("Y"); } }
-        public int RandomY { get => _randomY; set { _randomY = value; OnPropertyChanged("RandomY"); } }
+        public int X { get; set; } = 0;
+        public int? RandomX { get; set; } 
+        public int Y { get; set; } = 0;
+        public int? RandomY { get; set; }
 
         private Vector Randomized { get; set; } = new Vector(-100, -100);
         #endregion
 
         #region Constructors
-        public Click(ButtonType button, int x, int y, bool shift, bool ctrl, bool alt) : base(shift, ctrl, alt) {
+        public Click() : base() { }
 
-            SetMouse(button, x, y);
-        }
-
-        protected Click(ButtonType button, int x, int y, long delay, long randomDelay, int repetitions, int randomRepetitions, double speed, double randomSpeed, bool shift, bool ctrl, bool alt) : base(
-            delay, randomDelay, repetitions, randomRepetitions, speed, randomSpeed, shift, ctrl, alt)
+        public Click(int x, int y, int? randomX = null, int? randomY = null, ButtonType? button = null, MovementType? movement = null,
+            int? delay = null, int? randomDelay = null,
+            int? repetitions = null, int? randomRepetitions = null,
+            double? speed = null, double? randomSpeed = null,
+            bool shift = false, bool ctrl = false, bool alt = false
+            ) : base(delay, randomDelay, repetitions, randomRepetitions, speed, randomSpeed, shift, ctrl, alt)
         {
-            SetMouse(button, x, y);
+            X = x;
+            Y = y;
+            RandomX = randomX;
+            RandomY = randomY;
+
+            Button = button;
+            Movement = movement;
         }
+ 
         #endregion
 
         internal override void SpecificExecute()
         {
             if (!AlreadyThere)
             {
-                Randomized = new Vector(Randomize(X, RandomX), Randomize(Y, RandomY));
+                Randomized = new Vector(Randomize(X, RandomX ?? MainWindow.GlobalRandomX), Randomize(Y, RandomY ?? MainWindow.GlobalRandomY));
             }
-            InputSimulator.MouseClick(Button, GetHotkeys());
+            InputSimulator.MouseClick(Button ?? ButtonType.LEFT, GetHotkeys());
         }
 
         public override bool Equals(object obj) => base.Equals(obj) &&
@@ -71,10 +70,11 @@ namespace AutoClicker.Instructions
         public override string ToString()
         {
             StringBuilder builder = new StringBuilder();
-            builder.Append("click:");
-            Append(builder, "x", X);
-            Append(builder, "y", Y);
+            builder.Append("mouse:");
+            Append(builder, "x", X, RandomX);
+            Append(builder, "y", Y, RandomY);
             Append(builder, "button", Button);
+            Append(builder, "move", Movement);
             return builder.ToString() + base.ToString();
         }
 
@@ -95,12 +95,6 @@ namespace AutoClicker.Instructions
 
         public int Distance(Click other) => (int)Math.Sqrt(Math.Pow(X - other.X, 2) + Math.Pow(Y - other.Y, 2));
 
-        private void SetMouse(ButtonType button, int x, int y)
-        {
-            Button = button;
-            X = x;
-            Y = y;
-        }
         #endregion
 
     }

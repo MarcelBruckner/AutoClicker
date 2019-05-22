@@ -1,7 +1,6 @@
 C:\Users\ga58lum\Documents\RS-Bots\C#\AutoClicker\globalhook_src\bin\Debug\GlobalHookDemo.XML
 C:\Users\ga58lum\Documents\RS-Bots\C#\AutoClicker\globalhook_src\bin\Debug\GlobalHookDemo.exe
 C:\Users\ga58lum\Documents\RS-Bots\C#\AutoClicker\globalhook_src\bin\Debug\GlobalHookDemo.pdb
-C:\Users\ga58lum\Documents\RS-Bots\C#\AutoClicker\globalhook_src\obj\Debug\GlobalHookDemo.csprojAssemblyReference.cache
 C:\Users\ga58lum\Documents\RS-Bots\C#\AutoClicker\globalhook_src\obj\Debug\GlobalHookDemo.MainForm.resources
 C:\Users\ga58lum\Documents\RS-Bots\C#\AutoClicker\globalhook_src\obj\Debug\GlobalHookDemo.csproj.GenerateResource.cache
 C:\Users\ga58lum\Documents\RS-Bots\C#\AutoClicker\globalhook_src\obj\Debug\GlobalHookDemo.csproj.CoreCompileInputs.cache

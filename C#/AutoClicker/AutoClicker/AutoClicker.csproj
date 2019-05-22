@@ -78,6 +78,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="InstructionsParser\AutoClickerVisitor.cs" />
     <Compile Include="Cursor.cs" />
     <Compile Include="Enums\HotkeyStates.cs" />
     <Compile Include="Converters\ComboBoxConverter.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="Interpolations\SinusInterpolation.cs" />
     <Compile Include="HotkeyControl.cs" />
     <Compile Include="InputSimulator.cs" />
+    <Compile Include="InstructionsParser\InstructionsParser.cs" />
     <Compile Include="Recorder.cs" />
     <Compile Include="StringManager.cs" />
     <Page Include="MainWindow.xaml">
@@ -130,7 +132,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Antlr4 Include="AutoClicker.g4">
+    <Antlr4 Include="InstructionsParser\AutoClicker.g4">
       <Generator>MSBuild:Compile</Generator>
       <CustomToolNamespace>AutoClicker</CustomToolNamespace>
     </Antlr4>

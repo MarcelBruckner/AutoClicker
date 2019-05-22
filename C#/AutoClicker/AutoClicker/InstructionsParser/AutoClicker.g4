@@ -9,6 +9,8 @@ fragment L          : ('L'|'l') ;
 fragment I          : ('I'|'i') ;
 fragment K          : ('K'|'k') ;
 
+fragment S          : ('S'|'s') ;
+
 fragment B          : ('B'|'b') ;
 fragment U          : ('U'|'u') ;
 fragment T          : ('T'|'t') ;

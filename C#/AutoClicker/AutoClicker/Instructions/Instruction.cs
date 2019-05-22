@@ -8,75 +8,53 @@ using System.Threading.Tasks;
 
 namespace AutoClicker.Instructions
 {
-    public abstract class Instruction : INotifyPropertyChanged
+    public abstract class Instruction
     {
         internal Random random = new Random();
         internal static readonly int MAX_UNCERTAINTY = 20;
         private const int delayStep = 500;
 
-        #region Variables
-        private bool _isRunning = false;
-
-        private long _delay = -1;
-        private int _repetitions = -1;
-        private bool _shift = false;
-        private bool _ctrl = false;
-        private bool _alt = false;
-
-        private double _speed = -1;
-        private long _randomDelay = -1;
-        private int _randomRepetitions = -1;
-        private double _randomSpeed = -1;
-        #endregion
-
         #region Properties
-        public long Delay { get => _delay; set { _delay = value; OnPropertyChanged("Delay"); } }
-        public long RandomDelay { get => _randomDelay; set { _randomDelay = value; OnPropertyChanged("RandomDelay"); } }
+        public int? Delay { get; set; }
+        public int? RandomDelay { get; set; }
 
-        public int Repetitions { get => _repetitions; set { _repetitions = value; OnPropertyChanged("Repetitions"); } }
-        public int RandomRepetitions { get => _randomRepetitions; set { _randomRepetitions = value; OnPropertyChanged("RandomRepetitions"); } }
+        public int? Repetitions { get; set; } 
+        public int? RandomRepetitions { get; set; } 
 
-        public double Speed { get => _speed; set { _speed = value; OnPropertyChanged("Speed"); } }
-        public double RandomSpeed { get => _randomSpeed; set { _randomSpeed = value; OnPropertyChanged("RandomSpeed"); } }
+        public double? Speed { get; set; } 
+        public double? RandomSpeed { get; set; }
 
-        public bool Shift { get => _shift; set { _shift = value; OnPropertyChanged("Shift"); } }
-        public bool Ctrl { get => _ctrl; set { _ctrl = value; OnPropertyChanged("Ctrl"); } }
-        public bool Alt { get => _alt; set { _alt = value; OnPropertyChanged("Alt"); } }
+        public bool Shift { get; set; } 
+        public bool Ctrl { get; set; } 
+        public bool Alt { get; set; } 
 
-        public bool IsRunning
-        {
-            get => _isRunning;
-            set
-            {
-                _isRunning = value;
-                OnPropertyChanged("IsRunning");
-            }
-        }
+        public bool IsRunning { get; set; } = false;
         #endregion
-
-        protected Instruction(bool shift, bool ctrl, bool alt)
+        
+        protected Instruction(int? delay = null, int? randomDelay = null, 
+            int? repetitions = null, int? randomRepetitions = null, 
+            double? speed = null, double? randomSpeed = null,
+            bool shift = false, bool ctrl = false, bool alt = false) 
         {
+            Delay = delay;
+            RandomDelay = randomDelay;
+
+            Repetitions = repetitions;
+            RandomRepetitions = randomRepetitions;
+
+            Speed = speed;
+            RandomSpeed = randomSpeed;
+
             Shift = shift;
             Ctrl = ctrl;
             Alt = alt;
         }
 
-        protected Instruction(long delay, long randomDelay, int repetitions, int randomRepetitions, double speed, double randomSpeed, bool shift, bool ctrl, bool alt) 
-            : this(shift, ctrl, alt)
-        {
-            Delay = delay;
-            RandomDelay = randomDelay;
-            Repetitions = repetitions;
-            RandomRepetitions = randomRepetitions;
-            Speed = speed;
-            RandomSpeed = randomSpeed;
-        }
-
         public void Run()
         {
             IsRunning = true;
-            int save = Repetitions;
-            int totalRepetitions = Repetitions + random.Next(RandomRepetitions);
+            int save = Repetitions ?? MainWindow.GlobalRepetitions;
+            int totalRepetitions = Repetitions ?? MainWindow.GlobalRepetitions + random.Next(RandomRepetitions ?? MainWindow.GlobalRandomRepetitions);
             Repetitions = 1;
             while (IsRunning && Repetitions <= totalRepetitions)
             {
@@ -92,16 +70,16 @@ namespace AutoClicker.Instructions
 
         private void DoDelay()
         {
-            long save = Delay;
-            long totalDelay = Delay + random.Next((int)RandomDelay);
+            int save = Delay ?? MainWindow.GlobalDelay;
+            int totalDelay = Delay ?? MainWindow.GlobalDelay + random.Next(RandomDelay ?? MainWindow.GlobalRandomDelay);
 
             Delay = 0;
 
             while (IsRunning && Delay < totalDelay)
             {
-                long toDelay = Math.Min(totalDelay, Math.Min(delayStep, totalDelay - Delay));
+                int toDelay = Math.Min(totalDelay, Math.Min(delayStep, totalDelay - Delay ?? MainWindow.GlobalDelay));
                 Delay += toDelay;
-                Thread.Sleep((int)toDelay);
+                Thread.Sleep(toDelay);
             }
 
             Delay = totalDelay;
@@ -142,14 +120,7 @@ namespace AutoClicker.Instructions
         {
             return value + random.Next(-range, range);
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(string name)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
-
+        
         public override int GetHashCode()
         {
             var hashCode = -2077448662;
@@ -169,52 +140,42 @@ namespace AutoClicker.Instructions
         {
             StringBuilder builder = new StringBuilder("\t");
 
-            Append(builder, "delay", Delay);
-            Append(builder, "randomDelay", RandomDelay);
+            Append(builder, "delay", Delay, RandomDelay);
+            Append(builder, "repetitions", Repetitions, RandomRepetitions);
+            Append(builder, "speed", Speed, RandomSpeed);
 
-            Append(builder, "repetitions", Repetitions);
-            Append(builder, "randomRepetitions", RandomRepetitions);
-
-            Append(builder, "speed", Speed);
-            Append(builder, "randomSpeed", RandomSpeed);
-
-            Append(builder, "shift", Shift);
-            Append(builder, "ctrl", Ctrl);
-            Append(builder, "alt", Alt);
-
+            if (Shift != MainWindow.GlobalShift)
+            {
+                Append(builder, "shift", Shift);
+            }
+            if (Ctrl != MainWindow.GlobalCtrl)
+            {
+                Append(builder, "ctrl", Ctrl);
+            }
+            if (Alt != MainWindow.GlobalAlt)
+            {
+                Append(builder, "alt", Alt);
+            }
             return builder.ToString();
         }
 
-        private void Append(StringBuilder builder, string key, int value)
+        internal void Append(StringBuilder builder, string key, object value, object delta = null)
         {
-            if (value >= 0)
+            if (value == null)
             {
-                Append(builder, key, (object)value);
+                return;
             }
-        }
-
-        internal void Append(StringBuilder builder, string key, double value)
-        {
-            if (value >= 0)
-            {
-                Append(builder, key, (object)value);
-            }
-        }
-
-        internal void Append(StringBuilder builder, string key, bool value)
-        {
-            if (value)
-            {
-                Append(builder, key, (object)value);
-            }
-        }
-
-        internal void Append(StringBuilder builder, string key, object value)
-        {
             builder.Append("\t");
             builder.Append(key);
             builder.Append("=");
             builder.Append(value);
+
+            if (delta == null)
+            {
+                return;
+            }
+            builder.Append("/");
+            builder.Append(delta);
         }
     }
 }

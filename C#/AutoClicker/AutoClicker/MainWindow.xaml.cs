@@ -13,6 +13,7 @@ using System.Collections.ObjectModel;
 using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
 using System.Linq;
+using AutoClicker.InstructionsParser;
 
 namespace AutoClicker
 {
@@ -54,10 +55,11 @@ namespace AutoClicker
         private int allRepetitions;
         private int _repetitions;
 
-        private FlowDocument Document { get; set; }
-
         private Recorder recorder;
         private Instruction runningInstruction = new Instruction();
+
+        private InstructionsParser.InstructionsParser parser = new InstructionsParser.InstructionsParser();
+        private List<Instructions.Instruction> instructions = new List<Instructions.Instruction>();
 
         public bool IsRecording
         {
@@ -374,13 +376,11 @@ namespace AutoClicker
             }
         }
         #endregion
-
-
-        //private TCPServer server;
-
+                    
         public MainWindow()
         {
             InitializeComponent();
+            InstructionsTextBox.Document.Blocks.Clear();
             new HotkeyControl(PLAY_HOTKEY, OnPlayHotkey);
             new HotkeyControl(RECORD_HOTKEY, OnRecorderHotkey);
             recorder = new Recorder(this);
@@ -607,10 +607,10 @@ namespace AutoClicker
         }
         #endregion
 
-        #region Edit Menu
-        private void AddClick_Click(object sender, RoutedEventArgs e)
+        #region Add Menu
+        private void AddMenu_Click(object sender, RoutedEventArgs e)
         {
-            AddInstruction(new Instructions.Click(0, 0, 0, GlobalShift, GlobalCtrl, GlobalAlt));
+            AddInstruction(new Instructions.Click(0, 0));
         }
         //private void AddKeyboard_Click(object sender, RoutedEventArgs e)
         //{
@@ -682,7 +682,7 @@ namespace AutoClicker
 
         private void Clear_Click(object sender, RoutedEventArgs e)
         {
-            Document.Blocks.Clear();
+            InstructionsTextBox.Document.Blocks.Clear();
         }
 
         #endregion
@@ -693,6 +693,21 @@ namespace AutoClicker
             InstructionsTextBox.Document.Blocks.Add(
                 new Paragraph(new Run(instruction.ToString()))
                 );
+        }
+
+        private void InstructionsTextBox_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Return ||
+                e.Key == System.Windows.Input.Key.Tab ||
+                e.Key == System.Windows.Input.Key.Space)
+            {
+                instructions = parser.Parse(StringManager.RichTextBoxToString(InstructionsTextBox));
+                Console.WriteLine(instructions.Count());
+            }
+        }
+        
+        private void InstructionsTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
         }
         #endregion
 

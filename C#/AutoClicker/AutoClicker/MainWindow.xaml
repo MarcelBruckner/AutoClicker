@@ -201,6 +201,10 @@
                 <Separator/>
                 <MenuItem Header="_Clear" Click="Clear_Click"/>
             </MenuItem>
+
+            <MenuItem Header="_Add">
+                <MenuItem Header="_Click" Click="AddMenu_Click"/>
+            </MenuItem>
         </Menu>
         <Grid DockPanel.Dock="Top">
             <Rectangle Height="0.5" Fill="Black"/>
@@ -264,7 +268,10 @@
                      Margin="10 0 10 10"
                      Padding="5"
                      x:Name="InstructionsTextBox"
-                     >
+                     AcceptsReturn="True"
+                     AcceptsTab="True"
+                     TextChanged="InstructionsTextBox_TextChanged"
+                     PreviewKeyDown="InstructionsTextBox_PreviewKeyDown">
             
             <RichTextBox.Resources>
                 <Style TargetType="{x:Type Paragraph}">
