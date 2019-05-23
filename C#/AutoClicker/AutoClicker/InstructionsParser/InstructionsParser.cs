@@ -9,7 +9,7 @@ namespace AutoClicker.InstructionsParser
 {
     public class InstructionsParser
     {
-        public List<Instructions.Instruction> Parse(string input)
+        public static List<Instructions.Instruction> Parse(string input)
         {
             AntlrInputStream inputStream = new AntlrInputStream(input);
 

@@ -23,23 +23,23 @@ namespace AutoClicker
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         #region Global Attributes
-        int prevRowIndex = -1;
         private static double _globalSpeed = 1;
         private static double _globalRandomSpeed = 0;
         private static int _globalDelay = 50;
         private static int _globalRandomDelay = 5;
         private static int _globalRepetitions = 1;
-        private static int _globalRandomRepetitions;
-        private static int _globalRandomX;
-        private static int _globalRandomY;
-        private static int _globalRandomDragX;
-        private static int _globalRandomDragY;
-        private static int _globalWheel;
-        private static int _globalRandomWheel;
+        private static int _globalRandomRepetitions = 1;
+        private static int _globalRandomX = 0;
+        private static int _globalRandomY = 0;
+        private static int _globalRandomDragX = 0;
+        private static int _globalRandomDragY = 0;
+        private static int _globalWheel = 0;
+        private static int _globalRandomWheel = 0;
         private static bool _globalCtrl;
         private static bool _globalShift;
         private static bool _globalAlt;
         private static MovementType _globalMovement = MovementType.SPRING;
+        private static ButtonType _globalButtonType;
         #endregion
 
         Random random = new Random();
@@ -56,10 +56,8 @@ namespace AutoClicker
         private int _repetitions;
 
         private Recorder recorder;
-        private Instruction runningInstruction = new Instruction();
 
-        private InstructionsParser.InstructionsParser parser = new InstructionsParser.InstructionsParser();
-        private List<Instructions.Instruction> instructions = new List<Instructions.Instruction>();
+        private List<Instructions.Instruction> Instructions => InstructionsParser.InstructionsParser.Parse(StringManager.RichTextBoxToString(InstructionsTextBox));
 
         public bool IsRecording
         {
@@ -79,6 +77,7 @@ namespace AutoClicker
                     Activate();
                     recorder.RemoveHooks();
                 }
+                InstructionsTextBox.IsEnabled = !value;
                 OnPropertyChanged("IsRecording");
             }
         }
@@ -89,19 +88,19 @@ namespace AutoClicker
             {
                 _isPlaying = value;
                 RecordButton.IsEnabled = !value;
-                //InstructionsDataGrid.IsEnabled = !value;
                 if (_isPlaying)
                 {
                     IsRecording = false;
-                    WindowState = WindowState.Minimized;
+                    //WindowState = WindowState.Minimized;
                     OnPlay();
                 }
                 else
                 {
                     StopAll();
-                    WindowState = WindowState.Normal;
+                    //WindowState = WindowState.Normal;
                     Activate();
                 }
+                InstructionsTextBox.IsEnabled = !value;
                 OnPropertyChanged("IsPlaying");
             }
         }
@@ -136,11 +135,27 @@ namespace AutoClicker
         }
 
         #region Globals
-        public static MovementType GlobalMovement
+        public static MovementType GlobalMovementType
         {
             get => _globalMovement;
-            set {
+            set
+            {
                 _globalMovement = value;
+                if (MessageBoxYes())
+                {
+                    //foreach (Instruction instruction in Instructions)
+                    //{
+                    //    instruction.Movement = value;
+                    //}
+                }
+            }
+        }
+        public static ButtonType GlobalButtonType
+        {
+            get => _globalButtonType;
+            set
+            {
+                _globalButtonType = value;
                 if (MessageBoxYes())
                 {
                     //foreach (Instruction instruction in Instructions)
@@ -388,7 +403,7 @@ namespace AutoClicker
 
         private void StopAll()
         {
-            runningInstruction.IsRunning = false;
+            //runningInstruction.IsRunning = false;
             //foreach (Instruction instruction in Instructions)
             //{
             //    instruction.IsRunning = false;
@@ -426,60 +441,64 @@ namespace AutoClicker
                 WorkerReportsProgress = true
             };
 
+            List<Instructions.Instruction> runningInstructions = Instructions;
             bw.DoWork += (sender, args) =>
             {
                 for (int i = 0; Infinite || i < allRepetitions; i++)
                 {
-                    //for (int j = 0; j < Instructions.Count; j++)
-                    //{
-                    //    if (!IsPlaying)
-                    //    {
-                    //        StopAll();
-                    //        return;
-                    //    }
+                    for (int j = 0; j < runningInstructions.Count; j++)
+                    {
+                        if (!IsPlaying)
+                        {
+                            StopAll();
+                            return;
+                        }
 
-                    //    runningInstruction = Instructions[j];
-                    //    if (runningInstruction.Type == InstructionType.LOOP)
-                    //    {
-                    //        int start = j + 1;
-                    //        int end = Instructions.Count;
-                    //        for (int l = start; l < Instructions.Count; l++)
-                    //        {
-                    //            if (Instructions[l].Type == InstructionType.END_LOOP)
-                    //            {
-                    //                end = l;
-                    //                break;
-                    //            }
-                    //        }
+                        bw.ReportProgress((i + 1) / 101, new[] { i + 1, j });
+                        runningInstructions[j].Run();
 
-                    //        int save = Instructions[j].Repetitions;
-                    //        int loops = Instructions[j].Repetitions + random.Next(Instructions[j].RandomRepetitions);
-                    //        for (int l = 0; l < loops; l++)
-                    //        {
-                    //            Instructions[j].Repetitions = l + 1;
+                        //    runningInstruction = Instructions[j];
+                        //    if (runningInstruction.Type == InstructionType.LOOP)
+                        //    {
+                        //        int start = j + 1;
+                        //        int end = Instructions.Count;
+                        //        for (int l = start; l < Instructions.Count; l++)
+                        //        {
+                        //            if (Instructions[l].Type == InstructionType.END_LOOP)
+                        //            {
+                        //                end = l;
+                        //                break;
+                        //            }
+                        //        }
 
-                    //            for (int m = start; m < end; m++)
-                    //            {
-                    //                if (!IsPlaying)
-                    //                {
-                    //                    StopAll();
-                    //                    Instructions[j].Repetitions = loops;
-                    //                    return;
-                    //                }
-                    //                bw.ReportProgress((i + 1) / 101, new[] { i + 1, m });
-                    //                runningInstruction = Instructions[m];
-                    //                runningInstruction.Run();
-                    //            }
-                    //        }
-                    //        Instructions[j].Repetitions = save;
-                    //        j = end;
-                    //    }
-                    //    else
-                    //    {
-                    //        bw.ReportProgress((i + 1) / 101, new[] { i + 1, j });
-                    //        runningInstruction.Run();
-                    //    }
-                    //}
+                        //        int save = Instructions[j].Repetitions;
+                        //        int loops = Instructions[j].Repetitions + random.Next(Instructions[j].RandomRepetitions);
+                        //        for (int l = 0; l < loops; l++)
+                        //        {
+                        //            Instructions[j].Repetitions = l + 1;
+
+                        //            for (int m = start; m < end; m++)
+                        //            {
+                        //                if (!IsPlaying)
+                        //                {
+                        //                    StopAll();
+                        //                    Instructions[j].Repetitions = loops;
+                        //                    return;
+                        //                }
+                        //                bw.ReportProgress((i + 1) / 101, new[] { i + 1, m });
+                        //                runningInstruction = Instructions[m];
+                        //                runningInstruction.Run();
+                        //            }
+                        //        }
+                        //        Instructions[j].Repetitions = save;
+                        //        j = end;
+                        //    }
+                        //    else
+                        //    {
+                        //        bw.ReportProgress((i + 1) / 101, new[] { i + 1, j });
+                        //        runningInstruction.Run();
+                        //    }
+                    }
                 }
             };
 
@@ -610,7 +629,7 @@ namespace AutoClicker
         #region Add Menu
         private void AddMenu_Click(object sender, RoutedEventArgs e)
         {
-            AddInstruction(new Instructions.Click());
+            AddInstruction(new Instructions.Click(0,0));
         }
         //private void AddKeyboard_Click(object sender, RoutedEventArgs e)
         //{
@@ -638,7 +657,7 @@ namespace AutoClicker
         //}
         private void MovementType_Click(object sender, RoutedEventArgs e)
         {
-            GlobalMovement = ConvertSender<MovementType>(sender);
+            GlobalMovementType = ConvertSender<MovementType>(sender);
 
             if (MessageBoxYes())
             {
@@ -701,8 +720,7 @@ namespace AutoClicker
                 e.Key == System.Windows.Input.Key.Tab ||
                 e.Key == System.Windows.Input.Key.Space)
             {
-                instructions = parser.Parse(StringManager.RichTextBoxToString(InstructionsTextBox));
-                foreach(Instructions.Instruction instruction in instructions)
+                foreach(Instructions.Instruction instruction in Instructions)
                 {
                     Console.WriteLine(instruction);
                 }

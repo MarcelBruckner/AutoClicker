@@ -4,3 +4,4 @@ C:\Users\ga58lum\Documents\RS-Bots\C#\AutoClicker\globalhook2_src\GlobalHook\Gma
 C:\Users\ga58lum\Documents\RS-Bots\C#\AutoClicker\globalhook2_src\GlobalHook\Gma.UserActivityMonitor\obj\Debug\Gma.UserActivityMonitor.csproj.CoreCompileInputs.cache
 C:\Users\ga58lum\Documents\RS-Bots\C#\AutoClicker\globalhook2_src\GlobalHook\Gma.UserActivityMonitor\obj\Debug\Gma.UserActivityMonitor.dll
 C:\Users\ga58lum\Documents\RS-Bots\C#\AutoClicker\globalhook2_src\GlobalHook\Gma.UserActivityMonitor\obj\Debug\Gma.UserActivityMonitor.pdb
+C:\Users\ga58lum\Documents\RS-Bots\C#\AutoClicker\globalhook2_src\GlobalHook\Gma.UserActivityMonitor\obj\Debug\Gma.UserActivityMonitor.csprojAssemblyReference.cache

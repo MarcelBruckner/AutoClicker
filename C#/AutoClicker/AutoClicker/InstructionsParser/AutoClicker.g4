@@ -36,7 +36,11 @@ fragment DIGIT      : [0-9] ;
 
 X                   : ('X'|'x') ;
 Y                   : ('Y'|'y') ;
+ENDX				: E N D X;
+ENDY				: E N D Y;
+HOVER				: H O V E R;
 CLICK               : C L I C K;
+DRAG				: D R A G;
 BUTTON              : B U T T O N;
 LEFT                : L E F T;
 RIGHT               : R I G H T;
@@ -45,6 +49,9 @@ MOVEMENT			: M O V E M E N T;
 SINUS				: S I N U S;
 SPRING				: S P R I N G;
 JUMP				: J U M P;
+
+KEYSTROKE			: K E Y S T R O K E;
+KEY					: K E Y;
 
 DELAY				: D E L A Y;
 REPETITIONS			: R E P E T I T I O N S;
@@ -60,10 +67,12 @@ TRUE				: T R U E;
 FALSE				: F A L S E;
 NUMBER				: DIGIT+;
 DECIMAL             : NUMBER ([.,] NUMBER)? ;
-WORD                : (LOWERCASE | UPPERCASE | '_')+ ;
+// WORD                : (LOWERCASE | UPPERCASE | '_')+ ;
+WORD				: (LOWERCASE | UPPERCASE | '_')+;
 WHITESPACE          : [ \t\r\n] -> skip;
 NEWLINE             : ('\r'? '\n' | '\r')+ ;
 TEXT                : ('['|'(') .*? (']'|')');
+
 
 /*
  * Parser Rules
@@ -74,7 +83,7 @@ doubleTuple			: EQ DECIMAL (SLASH DECIMAL)?;
 trueFalse			: EQ (TRUE | FALSE);
 
 instructions        : (instruction? NEWLINE)*;
-instruction         : click ;
+instruction         : click | hover | drag | keystroke;
 
 commons				: (delay | repetitions | speed | shift | ctrl | alt);
 delay				: (DELAY intTuple);
@@ -84,9 +93,16 @@ shift				: (SHIFT trueFalse);
 ctrl				: (CTRL trueFalse);
 alt					: (ALT trueFalse);
 
-/* click: x=3/5 y=5/7 button=left */
-click               : CLICK IS (xPos | yPos | button | movement | commons)*; 
+hover				: HOVER IS (xPos | yPos | movement | commons)*;
+click               : CLICK IS (button | xPos | yPos | movement | commons)*; 
+drag				: DRAG IS (endX | endY | button | xPos | yPos | movement | commons)*;
+
 xPos				: (X intTuple);
 yPos				: (Y intTuple);
+endX				: (ENDX intTuple);
+endY				: (ENDY intTuple);
 button              : (BUTTON EQ (LEFT | RIGHT | MIDDLE));
 movement			: (MOVEMENT EQ (SINUS | SPRING | JUMP));
+
+keystroke			: KEYSTROKE IS (keyInput | commons)*;
+keyInput			: (KEY EQ WORD);

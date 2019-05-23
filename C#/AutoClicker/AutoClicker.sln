@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gma.UserActivityMonitor", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlobalHookDemo", "globalhook_src\GlobalHookDemo.csproj", "{F52AA97E-180A-40ED-8F2B-09080171D6C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoClickerTest", "AutoClickerTest\AutoClickerTest.csproj", "{5C67832B-8C44-41A5-8228-94A9B445AEFB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoClickerTests", "AutoClickerTests\AutoClickerTests.csproj", "{8E3A283F-AC58-4A26-9F55-0FBF1BE44D01}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{F52AA97E-180A-40ED-8F2B-09080171D6C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F52AA97E-180A-40ED-8F2B-09080171D6C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F52AA97E-180A-40ED-8F2B-09080171D6C7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5C67832B-8C44-41A5-8228-94A9B445AEFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5C67832B-8C44-41A5-8228-94A9B445AEFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5C67832B-8C44-41A5-8228-94A9B445AEFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5C67832B-8C44-41A5-8228-94A9B445AEFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E3A283F-AC58-4A26-9F55-0FBF1BE44D01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E3A283F-AC58-4A26-9F55-0FBF1BE44D01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E3A283F-AC58-4A26-9F55-0FBF1BE44D01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E3A283F-AC58-4A26-9F55-0FBF1BE44D01}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

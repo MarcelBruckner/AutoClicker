@@ -9,6 +9,7 @@ using System.Threading;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using AutoClicker.Instructions;
 
 namespace AutoClicker
 {
@@ -21,9 +22,9 @@ namespace AutoClicker
 
         private DateTime lastActionTime = DateTime.Now;
 
-        private bool? isAltDown;
-        private bool? isCtrlDown;
-        private bool? isShiftDown;
+        private bool isAltDown;
+        private bool isCtrlDown;
+        private bool isShiftDown;
 
         public bool WithDelay { get; set; }
 
@@ -82,8 +83,8 @@ namespace AutoClicker
             }
 
             //TODO Keyboard
-            //Instructions.KeyBoard instruction = new Instruction((VirtualKeyCode)(int)key, isShiftDown, isCtrlDown, isAltDown);
-            //AddOrIncrement(instruction);
+            Keystroke instruction = new Keystroke((VirtualKeyCode)(int)key, shift: isShiftDown, ctrl: isCtrlDown, alt: isAltDown);
+            AddOrIncrement(instruction);
         }
 
         private void KeyUp(object sender, KeyEventArgs e)
@@ -91,19 +92,20 @@ namespace AutoClicker
             bool hotkeyChanged = SetHotkeys(e.KeyCode, false);
         }
 
-        private bool SetHotkeys(Keys key, bool direction)
+        private bool SetHotkeys(Keys _key, bool direction)
         {
-            if (key == Keys.Alt)
+            string key = _key.ToString().ToLower();
+            if (key.Contains("menu"))
             {
                 isAltDown = direction;
                 return true;
             }
-            else if (key == Keys.Shift)
+            else if (key.Contains("shift"))
             {
                 isShiftDown = direction;
                 return true;
             }
-            else if (key == Keys.Control)
+            else if (key.Contains("control"))
             {
                 isCtrlDown = direction;
                 return true;
@@ -119,20 +121,20 @@ namespace AutoClicker
         {
             ButtonType button = GetButton(e.Button);
             Point p = Cursor.Point;
-            mouseDownPosition = new Instructions.Click(p.X, p.Y, button: button);
+            mouseDownPosition = new Click(p.X, p.Y, button: button, shift: isShiftDown, ctrl: isCtrlDown, alt: isAltDown);
         }
 
         private void MouseUp(object sender, MouseEventArgs e)
         {
             ButtonType button = GetButton(e.Button);
             Point p = Cursor.Point;
-            Instructions.Click end = new Instructions.Click(p.X, p.Y, button: button);
+            Click end = new Click(p.X, p.Y, button: button, shift: isShiftDown, ctrl: isCtrlDown, alt: isAltDown);
 
-            Instructions.Click start = mouseDownPosition as Instructions.Click;
-            if (start != null && start.Button == end.Button && end.Distance(start) > Instructions.Instruction.MAX_UNCERTAINTY)
+            Click start = mouseDownPosition as Click;
+            if (start != null && start.Button == end.Button && end.Distance(start) > Instructions.Hover.MAX_UNCERTAINTY)
             {
                 //TODO Drag ad or increment
-                //AddOrIncrement(new Instructions.Drag(start.Button, start.X, start.Y, end.X, end.Y, isShiftDown, isCtrlDown, isAltDown));
+                AddOrIncrement(new Drag(start._x, start._y, end._x, end._y, button: button, shift: isShiftDown, ctrl: isCtrlDown, alt: isAltDown));
             }
             else
             {

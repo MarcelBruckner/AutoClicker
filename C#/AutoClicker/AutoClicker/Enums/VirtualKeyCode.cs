@@ -715,6 +715,34 @@ namespace AutoClicker
         //
         // Zusammenfassung:
         //     Clear key
-        OEM_CLEAR = 254
+        OEM_CLEAR = 254    
+    }
+
+    public static class VirtualKeyCodeExtension
+    {
+        public static bool IsUpper( this VirtualKeyCode key, string input)
+        {
+            if (input.Length == 1)
+            {
+                char raw = input[0];
+                return char.IsUpper(raw);
+            }
+            return false;
+        }
+
+        public static VirtualKeyCode FromString(this VirtualKeyCode key, string input)
+        {
+            if (input.Length == 1)
+            {
+                char raw = input[0];
+                raw = ("" + raw).ToUpper()[0];
+                key = (VirtualKeyCode)raw;
+            }
+            else
+            {
+                Enum.TryParse(input, true, out key);
+            }
+            return key;
+        }
     }
 }

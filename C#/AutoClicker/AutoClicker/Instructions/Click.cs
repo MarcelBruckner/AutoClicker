@@ -1,24 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 
 namespace AutoClicker.Instructions
 {
-    public class Click : Instruction
+    public class Click : Hover
     {
-        #region Properties
-        public ButtonType? Button { get; set; }
-        public MovementType? Movement { get; set; }
+        private ButtonType? _button;
 
-        public IntTuple X { get; set; }
-        public IntTuple Y { get; set; }
-
-        private System.Windows.Vector Randomized { get; set; } = new Vector(-100, -100);
-        #endregion
+        public ButtonType Button { get => _button ?? MainWindow.GlobalButtonType; set => _button = value; }
 
         #region Constructors
-        public Click() : base() { }
-
         public Click(int x, int y, ButtonType? button = null, MovementType? movement = null,
             IntTuple delay = null, IntTuple repetitions = null, DoubleTuple speed = null,
             bool shift = false, bool ctrl = false, bool alt = false
@@ -26,60 +19,38 @@ namespace AutoClicker.Instructions
                 delay, repetitions, speed, shift, ctrl, alt)
         { }
 
+        public Click(IntTuple x, IntTuple y, ButtonType? button, MovementType? movement,
+            Instruction instruction 
+            ) : this(x, y, button, movement, instruction._delay, instruction._repetitions, instruction._speed, instruction.Shift, instruction.Ctrl, instruction.Alt)
+        { }
+
         public Click(IntTuple x, IntTuple y, ButtonType? button = null, MovementType? movement = null,
             IntTuple delay = null, IntTuple repetitions = null, DoubleTuple speed = null,
             bool shift = false, bool ctrl = false, bool alt = false
-            ) : base(delay, repetitions, speed, shift, ctrl, alt)
+            ) : base(x, y, movement, delay, repetitions, speed, shift, ctrl, alt)
         {
-            X = x;
-            Y = y;
-
-            Button = button;
-            Movement = movement;
+            _button = button;
         }
-
-        public Click(IntTuple x, IntTuple y, ButtonType? button = null, MovementType? movement = null,
-            Instruction instruction = null
-            ) : this(x, y, button, movement ,instruction.Delay, instruction.Repetitions, instruction.Speed, instruction.Shift, instruction.Ctrl, instruction.Alt)
-        { }
 
         #endregion
 
         internal override void SpecificExecute()
         {
-            if (!AlreadyThere)
-            {
-                Randomized = new System.Windows.Vector(Randomize(X.Value, X.Random ?? MainWindow.GlobalRandomX), Randomize(Y.Value, Y.Random ?? MainWindow.GlobalRandomY));
-            }
-            InputSimulator.MouseClick(Button ?? ButtonType.LEFT, GetHotkeys());
+            base.SpecificExecute();
+            InputSimulator.MouseClick(Movement, Button, Randomized, Randomize(Speed), Hotkeys);
         }
-
-        public override bool Equals(object obj) => base.Equals(obj) &&
-                obj is Instructions.Click other &&
-                ClickSame(other);
         
-        public override int GetHashCode()
+        internal override string GetName()
         {
-            var hashCode = 1512054787;
-            hashCode = hashCode * -1521134295 + Button.GetHashCode();
-            hashCode = hashCode * -1521134295 + Movement.GetHashCode();
-            hashCode = hashCode * -1521134295 + X.GetHashCode();
-            hashCode = hashCode * -1521134295 + Y.GetHashCode();
-            return hashCode;
+            return "click";
         }
 
-        public override string ToString()
+        internal override void AppendSpecifics(StringBuilder builder)
         {
-            StringBuilder builder = new StringBuilder();
-            builder.Append("click:");
-            Append(builder, "x", X);
-            Append(builder, "y", Y);
-            Append(builder, "button", Button);
-            Append(builder, "movement", Movement);
-            return builder.ToString() + base.ToString();
+            base.AppendSpecifics(builder);
+            Append(builder, "button", _button);
         }
 
-        #region Helpers
         private bool AlreadyThere
         {
             get
@@ -96,7 +67,19 @@ namespace AutoClicker.Instructions
 
         public int Distance(Click other) => (int)Math.Sqrt(Math.Pow(X.Value - other.X.Value, 2) + Math.Pow(Y.Value - other.Y.Value, 2));
 
-        #endregion
+        public override bool Equals(object obj)
+        {
+            return obj is Click click &&
+                   base.Equals(obj) &&
+                   EqualityComparer<ButtonType?>.Default.Equals(_button, click._button);
+        }
 
+        public override int GetHashCode()
+        {
+            var hashCode = 112211556;
+            hashCode = hashCode * -1521134295 + base.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<ButtonType?>.Default.GetHashCode(_button);
+            return hashCode;
+        }        
     }
 }

@@ -8,9 +8,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/pause.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/play.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/record.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/stop.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("microsoft.visualstudio.testplatform.mstest.testadapter.dll")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("microsoft.visualstudio.testplatform.mstestadapter.platformservices.interface.dll")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("microsoft.visualstudio.testplatform.mstestadapter.platformservices.dll")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("microsoft.visualstudio.testplatform.mstest.testadapter.resources.dll")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("microsoft.visualstudio.testplatform.mstestadapter.platformservices.resources.dll")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("microsoft.visualstudio.testplatform.testframework.resources.dll")]
 
 

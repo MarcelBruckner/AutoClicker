@@ -6,3 +6,4 @@ C:\Users\ga58lum\Documents\RS-Bots\C#\AutoClicker\globalhook_src\obj\Debug\Globa
 C:\Users\ga58lum\Documents\RS-Bots\C#\AutoClicker\globalhook_src\obj\Debug\GlobalHookDemo.csproj.CoreCompileInputs.cache
 C:\Users\ga58lum\Documents\RS-Bots\C#\AutoClicker\globalhook_src\obj\Debug\GlobalHookDemo.exe
 C:\Users\ga58lum\Documents\RS-Bots\C#\AutoClicker\globalhook_src\obj\Debug\GlobalHookDemo.pdb
+C:\Users\ga58lum\Documents\RS-Bots\C#\AutoClicker\globalhook_src\obj\Debug\GlobalHookDemo.csprojAssemblyReference.cache

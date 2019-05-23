@@ -201,6 +201,11 @@ namespace AutoClicker
         {
             MouseClick((int)button, hotkeys);
         }
+        
+        public static void MoveMouse(MovementType move, System.Windows.Vector end, double speed)
+        {
+            MoveMouse(move, new Point((int)end.X, (int)end.Y), speed);
+        }
 
         public static void MoveMouse(MovementType move, Point end, double speed)
         {
@@ -278,7 +283,7 @@ namespace AutoClicker
         {
             KeyDown(hotkeys);
             KeyDown(key);
-            Thread.Sleep(50);
+            Thread.Sleep(55);
             KeyUp(key);
             KeyUp(hotkeys);
         }

@@ -25,7 +25,7 @@ namespace AutoClicker
         private bool _isRunning = false;
         private int _wheelDelta = MainWindow.GlobalWheel;
         private InstructionType _type;
-        private MovementType _movement = MainWindow.GlobalMovement;
+        private MovementType _movement = MainWindow.GlobalMovementType;
         private double _speed = MainWindow.GlobalSpeed;
         private long _randomDelay = MainWindow.GlobalRandomDelay;
         private int _randomRepetitions = MainWindow.GlobalRandomRepetitions;

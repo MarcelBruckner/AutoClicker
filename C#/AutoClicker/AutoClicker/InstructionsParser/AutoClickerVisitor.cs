@@ -11,46 +11,118 @@ namespace AutoClicker.InstructionsParser
 {
     public class AutoClickerVisitor : AutoClickerBaseVisitor<object>
     {
-        List<Instructions.Instruction> instructions = new List<Instructions.Instruction>();
         public override object VisitInstructions([NotNull] AutoClickerParser.InstructionsContext context)
         {
-            instructions = new List<Instructions.Instruction>();
+            List<Instructions.Instruction> instructions = new List<Instructions.Instruction>();
             foreach (var instruction in context.instruction())
             {
-                Visit(instruction);
+                instructions.Add((Instructions.Instruction) Visit(instruction));
             }
 
             return instructions;
         }
 
-        public override object VisitClick([NotNull] AutoClickerParser.ClickContext context)
+        public override object VisitHover([NotNull] AutoClickerParser.HoverContext context)
         {
             IntTuple x = new IntTuple(0);
             IntTuple y = new IntTuple(0);
-            ButtonType? button = null;
             MovementType? movement = null;
             Instructions.Instruction commons = Commons(context.commons());
-            
+
             if (context.xPos() != null && context.xPos().Count() > 0)
             {
-                x = (IntTuple)(Visit(context.xPos(0)) ?? new IntTuple(0));
+                x = (IntTuple)(Visit(context.xPos(0)) ?? x);
             }
             if (context.yPos() != null && context.yPos().Count() > 0)
             {
-                y = (IntTuple)(Visit(context.yPos(0)) ?? new IntTuple(0));
-            }
-            if (context.button() != null && context.button().Count() > 0)
-            {
-                button = (ButtonType?)Visit(context.button(0));
+                y = (IntTuple)(Visit(context.yPos(0)) ?? y);
             }
             if (context.movement() != null && context.movement().Count() > 0)
             {
                 movement = (MovementType?)Visit(context.movement(0));
             }
 
-            // TODO click creation
-            instructions.Add(new Click(x, y, button, movement, commons));
-            return null;
+            return new Hover(x, y, movement, commons);
+        }
+
+        public override object VisitClick([NotNull] AutoClickerParser.ClickContext context)
+        {
+            IntTuple x = new IntTuple(0);
+            IntTuple y = new IntTuple(0);
+            MovementType? movement = null;
+            Instructions.Instruction commons = Commons(context.commons());
+
+            ButtonType? button = null;
+            if (context.button() != null && context.button().Count() > 0)
+            {
+                button = (ButtonType?)Visit(context.button(0));
+            }
+            if (context.xPos() != null && context.xPos().Count() > 0)
+            {
+                x = (IntTuple)(Visit(context.xPos(0)) ?? x);
+            }
+            if (context.yPos() != null && context.yPos().Count() > 0)
+            {
+                y = (IntTuple)(Visit(context.yPos(0)) ?? y);
+            }
+            if (context.movement() != null && context.movement().Count() > 0)
+            {
+                movement = (MovementType?)Visit(context.movement(0));
+            }
+
+            return new Click(x, y, button, movement, commons);
+        }
+
+        public override object VisitDrag([NotNull] AutoClickerParser.DragContext context)
+        {
+            IntTuple x = new IntTuple(0);
+            IntTuple y = new IntTuple(0);
+            IntTuple endX = new IntTuple(0);
+            IntTuple endY = new IntTuple(0);
+            MovementType? movement = null;
+            Instructions.Instruction commons = Commons(context.commons());
+
+            ButtonType? button = null;
+            if (context.button() != null && context.button().Count() > 0)
+            {
+                button = (ButtonType?)Visit(context.button(0));
+            }
+            if (context.xPos() != null && context.xPos().Count() > 0)
+            {
+                x = (IntTuple)(Visit(context.xPos(0)) ?? x);
+            }
+            if (context.yPos() != null && context.yPos().Count() > 0)
+            {
+                y = (IntTuple)(Visit(context.yPos(0)) ?? y);
+            }
+            if (context.endX() != null && context.endX().Count() > 0)
+            {
+                endX = (IntTuple)(Visit(context.endX(0)) ?? endX);
+            }
+            if (context.endY() != null && context.endY().Count() > 0)
+            {
+                endY = (IntTuple)(Visit(context.endY(0)) ?? endY);
+            }
+            if (context.movement() != null && context.movement().Count() > 0)
+            {
+                movement = (MovementType?)Visit(context.movement(0));
+            }
+
+            return new Drag(x, y, endX, endY, button, movement, commons);
+        }
+
+        public override object VisitKeystroke([NotNull] AutoClickerParser.KeystrokeContext context)
+        {
+            Instructions.Instruction commons = Commons(context.commons());
+
+            VirtualKeyCode key = VirtualKeyCode.NONE;
+            if (context.keyInput() != null && context.keyInput().Count() > 0)
+            {
+                key = (VirtualKeyCode)Visit(context.keyInput(0));
+                
+            }
+
+            return new Keystroke(key, commons);
         }
 
         private Instructions.Instruction Commons(AutoClickerParser.CommonsContext[] contexts)
@@ -156,6 +228,11 @@ namespace AutoClicker.InstructionsParser
                 return true;
             }
             return false;
+        }
+
+        public override object VisitKeyInput([NotNull] AutoClickerParser.KeyInputContext context)
+        {
+            return VirtualKeyCode.NONE.FromString(context.WORD().GetText());
         }
     }
 }

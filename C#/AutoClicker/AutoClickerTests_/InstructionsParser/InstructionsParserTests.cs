@@ -1,13 +1,11 @@
-using Antlr4.Runtime;
-using System.Collections.Generic;
-using AutoClicker;
-using Xunit;
-using AutoClicker.InstructionsParser;
+﻿using System.Collections.Generic;
 using AutoClicker.Instructions;
+using Xunit;
+using Antlr4.Runtime;
 
-namespace AutoClickerTest
+namespace AutoClicker.InstructionsParser.Tests
 {
-    public class AutoClickerParserTest
+    public class InstructionsParserTests
     {
         public AutoClickerParser SetUp(string input)
         {
@@ -23,6 +21,7 @@ namespace AutoClickerTest
         [Fact]
         public void TestClicks()
         {
+            Cursor.Vector = new System.Windows.Vector(0, 0);
             Click click = new Click(
                 new IntTuple(546, 22), new IntTuple(234, 4), ButtonType.MIDDLE, MovementType.SPRING,
                 new IntTuple(789, 43), new IntTuple(34, 342), new DoubleTuple(4.2, 3.9),
@@ -32,7 +31,7 @@ namespace AutoClickerTest
 
             AutoClickerParser.InstructionsContext context = parser.instructions();
             AutoClickerVisitor visitor = new AutoClickerVisitor();
-            Click parsed = (Click)((List <AutoClicker.Instructions.Instruction> )visitor.Visit(context))[0];
+            Click parsed = (Click)((List<AutoClicker.Instructions.Instruction>)visitor.Visit(context))[0];
 
             Assert.Equal(click, parsed);
         }
