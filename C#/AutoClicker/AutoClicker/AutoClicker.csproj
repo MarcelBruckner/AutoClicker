@@ -116,6 +116,7 @@
     <Compile Include="Instructions\DoubleTuple.cs" />
     <Compile Include="Instructions\IntTuple.cs" />
     <Compile Include="Instructions\Keystroke.cs" />
+    <Compile Include="Instructions\Text.cs" />
     <Compile Include="Interpolations\ICursorInterpolation.cs" />
     <Compile Include="Interpolations\JumpInterpolation.cs" />
     <Compile Include="Interpolations\MassSpringInterpolation.cs" />

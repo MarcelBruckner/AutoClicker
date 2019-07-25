@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="Enums\VirtualKeyCodeExtensionTests.cs" />
     <Compile Include="InstructionsParser\InstructionsParserTests.cs" />
+    <Compile Include="Instructions\TextTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
