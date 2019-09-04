@@ -21,20 +21,17 @@ namespace AutoClicker.Instructions
         /// <summary>
         /// The movement type of the mouse
         /// </summary>
-        private MovementType? _movement;
-        public MovementType Movement { get => _movement ?? MainWindow.GlobalMovementType; set => _movement = value; }
+        public MovementType? Movement { get; set; }
 
         /// <summary>
         /// The on screen X position of the desired mouse position
         /// </summary>
-        public IntTuple _x;
-        public IntTuple X { get => new IntTuple(_x.Value, _x.Random ?? MainWindow.GlobalRandomX); set => _x = value; }
+        public IntTuple X { get; set; }
 
         /// <summary>
         /// The on screen Y position of the desired mouse position
         /// </summary>
-        public IntTuple _y;
-        public IntTuple Y { get => new IntTuple(_y.Value, _y.Random ?? MainWindow.GlobalRandomY); set => _y = value; }
+        public IntTuple Y { get; set; }
 
         /// <summary>
         /// The final on screen position after randomization
@@ -56,7 +53,7 @@ namespace AutoClicker.Instructions
         /// <param name="shift">if set to <c>true</c> [shift].</param>
         /// <param name="ctrl">if set to <c>true</c> [control].</param>
         /// <param name="alt">if set to <c>true</c> [alt].</param>
-        public Hover(int x, int y, MovementType? movement = null,
+        public Hover(int x = 0, int y = 0, MovementType? movement = null,
             IntTuple delay = null, IntTuple repetitions = null, DoubleTuple speed = null,
             bool shift = false, bool ctrl = false, bool alt = false
             ) : this(new IntTuple(x), new IntTuple(y), movement,
@@ -83,7 +80,7 @@ namespace AutoClicker.Instructions
             X = x;
             Y = y;
 
-            _movement = movement;
+            Movement = movement;
         }
 
         /// <summary>
@@ -95,7 +92,7 @@ namespace AutoClicker.Instructions
         /// <param name="instruction">The instruction.</param>
         public Hover(IntTuple x, IntTuple y, MovementType? movement = null,
             Instruction instruction = null
-            ) : this(x, y, movement, instruction._delay, instruction._repetitions, instruction._speed, instruction.Shift, instruction.Ctrl, instruction.Alt)
+            ) : this(x, y, movement, instruction.Delay, instruction.Repetitions, instruction.Speed, instruction.Shift, instruction.Ctrl, instruction.Alt)
         { }
 
         #endregion
@@ -117,7 +114,7 @@ namespace AutoClicker.Instructions
         /// </summary>
         internal virtual void MouseSpecificExecute()
         {
-            InputSimulator.MouseMove(Movement, RandomizedPosition, Randomize(Speed));
+            InputSimulator.MouseMove(Movement ?? MainWindow.GlobalMovementType, RandomizedPosition, Randomize(Speed));
         }
 
         /// <summary>
@@ -147,9 +144,9 @@ namespace AutoClicker.Instructions
         /// <param name="builder"></param>
         internal override void AppendSpecifics(StringBuilder builder)
         {
-            Append(builder, "x", _x);
-            Append(builder, "y", _y);
-            Append(builder, "movement", _movement);
+            Append(builder, "x", X);
+            Append(builder, "y", Y);
+            Append(builder, "movement", Movement);
         }
 
         /// <summary>
@@ -163,9 +160,9 @@ namespace AutoClicker.Instructions
         {
             return obj is Hover hover &&
                    base.Equals(obj) &&
-                   EqualityComparer<MovementType?>.Default.Equals(_movement, hover._movement) &&
-                   EqualityComparer<IntTuple>.Default.Equals(_x, hover._x) &&
-                   EqualityComparer<IntTuple>.Default.Equals(_y, hover._y);
+                   EqualityComparer<MovementType?>.Default.Equals(Movement, hover.Movement) &&
+                   EqualityComparer<IntTuple>.Default.Equals(X, hover.X) &&
+                   EqualityComparer<IntTuple>.Default.Equals(Y, hover.Y);
         }
 
         /// <summary>
@@ -178,9 +175,9 @@ namespace AutoClicker.Instructions
         {
             var hashCode = 295077388;
             hashCode = hashCode * -1521134295 + base.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<MovementType?>.Default.GetHashCode(_movement);
-            hashCode = hashCode * -1521134295 + EqualityComparer<IntTuple>.Default.GetHashCode(_x);
-            hashCode = hashCode * -1521134295 + EqualityComparer<IntTuple>.Default.GetHashCode(_y);
+            hashCode = hashCode * -1521134295 + EqualityComparer<MovementType?>.Default.GetHashCode(Movement);
+            hashCode = hashCode * -1521134295 + EqualityComparer<IntTuple>.Default.GetHashCode(X);
+            hashCode = hashCode * -1521134295 + EqualityComparer<IntTuple>.Default.GetHashCode(Y);
             return hashCode;
         }
 

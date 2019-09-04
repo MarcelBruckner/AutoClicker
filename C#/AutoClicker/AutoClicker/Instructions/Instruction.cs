@@ -31,19 +31,25 @@ namespace AutoClicker.Instructions
         /// A tuple for the delay after the execution 
         /// </summary>
         public IntTuple _delay;
-        public IntTuple Delay { get => _delay ?? new IntTuple(MainWindow.GlobalDelay, MainWindow.GlobalRandomDelay); set => _delay = value; }
+        public IntTuple Delay { get => _delay ?? new IntTuple(MainWindow.GlobalDelay); set => _delay = value; }
 
         /// <summary>
         /// A tuple for the repetitions for how often the instruction will be executed
         /// </summary>
         public IntTuple _repetitions;
-        public IntTuple Repetitions { get => _repetitions ?? new IntTuple(MainWindow.GlobalRepetitions, MainWindow.GlobalRandomRepetitions); set => _repetitions = value; }
+        public IntTuple Repetitions { get
+            {
+                IntTuple reps = _repetitions ?? new IntTuple(MainWindow.GlobalRepetitions);
+                _repetitions = reps;
+                return _repetitions;
+            }
+            set => _repetitions = value; }
 
         /// <summary>
         /// A tuple for the speed of the execution
         /// </summary>
         public DoubleTuple _speed;
-        public DoubleTuple Speed { get => _speed ?? new DoubleTuple(MainWindow.GlobalSpeed, MainWindow.GlobalRandomSpeed); set => _speed = value; }
+        public DoubleTuple Speed { get => _speed ?? new DoubleTuple(MainWindow.GlobalSpeed); set => _speed = value; }
 
         /// <summary>
         /// Is the shift key pressed during execution
@@ -285,7 +291,7 @@ namespace AutoClicker.Instructions
         /// <param name="builder"></param>
         /// <param name="key"></param>
         /// <param name="tuple"></param>
-        protected void Append(StringBuilder builder, string key, DoubleTuple tuple)
+        protected void Append(StringBuilder builder, string key, DoubleTuple tuple, double globalDefaultValue = 0)
         {
             if (tuple == null)
             {

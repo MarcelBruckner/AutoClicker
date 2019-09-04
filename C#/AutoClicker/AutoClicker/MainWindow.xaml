@@ -204,8 +204,15 @@
             </MenuItem>
 
             <MenuItem Header="_Add">
-                <MenuItem Header="_Click" Click="AddMenu_Click"/>
-            </MenuItem>
+				<MenuItem Header="_Hover" Click="AddMenu_Hover"/>
+				<MenuItem Header="_Click" Click="AddMenu_Click"/>
+				<MenuItem Header="_Drag" Click="AddMenu_Drag"/>
+				<MenuItem Header="_Wheel" Click="AddMenu_Wheel"/>
+				<Separator/>
+				<MenuItem Header="_Keystroke" Click="AddMenu_Keystroke"/>
+				<MenuItem Header="_Text" Click="AddMenu_Text"/>
+				<!--<MenuItem Header="_" Click="AddMenu"/>-->
+			</MenuItem>
         </Menu>
         <Grid DockPanel.Dock="Top">
             <Rectangle Height="0.5" Fill="Black"/>

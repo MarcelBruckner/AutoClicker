@@ -32,7 +32,7 @@ namespace AutoClicker.Instructions
         /// <param name="speed">The speed.</param>
         /// <param name="ctrl">if set to <c>true</c> [control].</param>
         /// <param name="alt">if set to <c>true</c> [alt].</param>
-        public Text(string input, IntTuple delay = null, IntTuple repetitions = null, DoubleTuple speed = null,
+        public Text(string input="", IntTuple delay = null, IntTuple repetitions = null, DoubleTuple speed = null,
             bool ctrl = false, bool alt = false
             ) : base(delay, repetitions, speed, false, ctrl, alt)
         {
@@ -45,7 +45,7 @@ namespace AutoClicker.Instructions
         /// <param name="input">The input.</param>
         /// <param name="instruction">The instruction.</param>
         public Text(string input, AutoClicker.Instructions.Instruction instruction = null
-            ) : this(input, instruction._delay, instruction._repetitions, instruction._speed, instruction.Ctrl, instruction.Alt)
+            ) : this(input, instruction.Delay, instruction.Repetitions, instruction.Speed, instruction.Ctrl, instruction.Alt)
         { }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace AutoClicker.Instructions
         /// <param name="builder"></param>
         internal override void AppendSpecifics(StringBuilder builder)
         {
-            Append(builder, "input", Input);
+            Append(builder, "input", "\"" + Input + "\"");
         }
     }
 }

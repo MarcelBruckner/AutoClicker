@@ -17,6 +17,11 @@ namespace AutoClicker.Instructions
             Random = delta;
         }
 
+        public void Inc(int i = 1)
+        {
+            Value += i;
+        }
+
         public override bool Equals(object obj)
         {
             return obj is IntTuple tuple &&

@@ -23,6 +23,7 @@ namespace AutoClicker
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        #region Menu
         #region Global Menu Attributes        
 
         /// <summary>
@@ -53,7 +54,7 @@ namespace AutoClicker
         /// <summary>
         /// The global random repetitions
         /// </summary>
-        private static int _globalRandomRepetitions = 1;
+        private static int _globalRandomRepetitions = 0;
 
         /// <summary>
         /// The global random x
@@ -487,11 +488,13 @@ namespace AutoClicker
             }
         }
         #endregion
+        #endregion
 
+        #region Constants
         /// <summary>
         /// The random number generator
         /// </summary>
-        private static Random random = new Random();
+        private static readonly Random random = new Random();
 
         /// <summary>
         /// The file filter
@@ -501,14 +504,16 @@ namespace AutoClicker
         /// <summary>
         /// The record hotkey
         /// </summary>
-        public static readonly System.Windows.Forms.Keys RECORD_HOTKEY = System.Windows.Forms.Keys.F8;
+        public const System.Windows.Forms.Keys RECORD_HOTKEY = System.Windows.Forms.Keys.F8;
 
         /// <summary>
         /// The play hotkey
         /// </summary>
-        public static readonly System.Windows.Forms.Keys PLAY_HOTKEY = System.Windows.Forms.Keys.F7;
+        public const System.Windows.Forms.Keys PLAY_HOTKEY = System.Windows.Forms.Keys.F7;
+        #endregion
 
-
+        #region Run
+        #region Run Attributes
         /// <summary>
         /// The with delay
         /// </summary>
@@ -538,20 +543,9 @@ namespace AutoClicker
         /// The repetitions
         /// </summary>
         private int _repetitions;
+        #endregion
 
-        /// <summary>
-        /// The recorder
-        /// </summary>
-        private Recorder recorder;
-
-        /// <summary>
-        /// Gets the instructions.
-        /// </summary>
-        /// <value>
-        /// The instructions.
-        /// </value>
-        private List<Instructions.Instruction> Instructions => InstructionsParser.InstructionsParser.Parse(StringManager.ConvertRichTextBoxToString(InstructionsTextBox));
-
+        #region Run Properties
         /// <summary>
         /// Gets or sets a value indicating whether this instance is recording.
         /// </summary>
@@ -629,23 +623,6 @@ namespace AutoClicker
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this instance is recording with delay.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is recording with delay; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsRecordingWithDelay
-        {
-            get => _withDelay;
-            set
-            {
-                _withDelay = value;
-                recorder.WithDelay = value;
-                OnPropertyChanged("WithDelay");
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the repetitions.
         /// </summary>
         /// <value>
@@ -660,6 +637,41 @@ namespace AutoClicker
                 OnPropertyChanged("Repetitions");
             }
         }
+        #endregion
+        #endregion
+
+        #region Record
+        /// <summary>
+        /// The recorder
+        /// </summary>
+        private Recorder recorder;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is recording with delay.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is recording with delay; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsRecordingWithDelay
+        {
+            get => _withDelay;
+            set
+            {
+                _withDelay = value;
+                recorder.IsRecordingWithDelay = value;
+                OnPropertyChanged("WithDelay");
+            }
+        }
+        #endregion
+
+        /// <summary>
+        /// Gets the instructions.
+        /// </summary>
+        /// <value>
+        /// The instructions.
+        /// </value>
+        private List<Instructions.Instruction> Instructions => InstructionsParser.InstructionsParser.Parse(StringManager.ConvertRichTextBoxToString(InstructionsTextBox));
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindow"/> class.
@@ -673,7 +685,8 @@ namespace AutoClicker
             recorder = new Recorder(this);
         }
 
-        private void StopAll()
+        private void StopAll() 
+
         {
             //runningInstruction.IsRunning = false;
             //foreach (Instruction instruction in Instructions)
@@ -932,34 +945,35 @@ namespace AutoClicker
         #endregion
 
         #region Add Menu
+
+        private void AddMenu_Hover(object sender, RoutedEventArgs e)
+        {
+            AddInstruction(new Instructions.Hover());
+        }
+
         private void AddMenu_Click(object sender, RoutedEventArgs e)
         {
-            AddInstruction(new Instructions.Click(0,0));
+            AddInstruction(new Instructions.Click());
         }
-        //private void AddKeyboard_Click(object sender, RoutedEventArgs e)
-        //{
-        //    AddInstruction(new Instruction(InstructionType.KEYBOARD));
-        //}
-        //private void AddDelay_Click(object sender, RoutedEventArgs e)
-        //{
-        //    AddInstruction(new Instruction(InstructionType.DELAY));
-        //}
-        //private void AddLoop_Click(object sender, RoutedEventArgs e)
-        //{
-        //    AddInstruction(new Instruction(InstructionType.LOOP));
-        //}
-        //private void AddEndLoop_Click(object sender, RoutedEventArgs e)
-        //{
-        //    AddInstruction(new Instruction(InstructionType.END_LOOP));
-        //}
-        //private void AddDrag_Click(object sender, RoutedEventArgs e)
-        //{
-        //    AddInstruction(new Instruction(InstructionType.DRAG));
-        //}
-        //private void AddWheel_Click(object sender, RoutedEventArgs e)
-        //{
-        //    AddInstruction(new Instruction(InstructionType.WHEEL));
-        //}
+        private void AddMenu_Drag(object sender, RoutedEventArgs e)
+        {
+            AddInstruction(new Instructions.Drag());
+        }
+        private void AddMenu_Wheel(object sender, RoutedEventArgs e)
+        {
+            //AddInstruction(new Instructions.Wheel());
+        }
+        private void AddMenu_Keystroke(object sender, RoutedEventArgs e)
+        {
+            AddInstruction(new Instructions.Keystroke());
+        }
+        private void AddMenu_Text(object sender, RoutedEventArgs e)
+        {
+            AddInstruction(new Instructions.Text());
+        }
+
+        #endregion
+
         private void MovementType_Click(object sender, RoutedEventArgs e)
         {
             GlobalMovementType = ConvertSender<MovementType>(sender);
@@ -1009,14 +1023,27 @@ namespace AutoClicker
             InstructionsTextBox.Document.Blocks.Clear();
         }
 
-        #endregion
 
-        #region InstructionsTextBox
-        public void AddInstruction(Instructions.Instruction instruction)
+        #region InstructionsTextBox        
+        /// <summary>
+        /// Adds the instruction.
+        /// </summary>
+        /// <param name="instruction">The instruction.</param>
+        /// <returns></returns>
+        public Run AddInstruction(Instructions.Instruction instruction, Run toReplaceRun=null)
         {
-            InstructionsTextBox.Document.Blocks.Add(
-                new Paragraph(new Run(instruction.ToString()))
-                );
+            if(toReplaceRun is null)
+            {
+                Run newRun = new Run(instruction.ToString());
+                Block block = new Paragraph(newRun);
+                InstructionsTextBox.Document.Blocks.Add(block);
+                return newRun;
+            }
+            else
+            {
+                toReplaceRun.Text = instruction.ToString();
+                return toReplaceRun;
+            }
         }
 
         private void InstructionsTextBox_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
@@ -1041,6 +1068,16 @@ namespace AutoClicker
         protected void OnPropertyChanged(string name)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

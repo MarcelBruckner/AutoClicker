@@ -34,7 +34,7 @@ namespace AutoClicker.Instructions
         /// <param name="shift">if set to <c>true</c> [shift].</param>
         /// <param name="ctrl">if set to <c>true</c> [control].</param>
         /// <param name="alt">if set to <c>true</c> [alt].</param>
-        public Click(int x, int y, ButtonType? button = null, MovementType? movement = null,
+        public Click(int x=0, int y=0, ButtonType? button = null, MovementType? movement = null,
             IntTuple delay = null, IntTuple repetitions = null, DoubleTuple speed = null,
             bool shift = false, bool ctrl = false, bool alt = false
             ) : this(new IntTuple(x), new IntTuple(y), button, movement,
@@ -51,7 +51,7 @@ namespace AutoClicker.Instructions
         /// <param name="instruction">The instruction.</param>
         public Click(IntTuple x, IntTuple y, ButtonType? button, MovementType? movement,
             Instruction instruction 
-            ) : this(x, y, button, movement, instruction._delay, instruction._repetitions, instruction._speed, instruction.Shift, instruction.Ctrl, instruction.Alt)
+            ) : this(x, y, button, movement, instruction.Delay, instruction.Repetitions, instruction.Speed, instruction.Shift, instruction.Ctrl, instruction.Alt)
         { }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace AutoClicker.Instructions
         /// </summary>
         internal override void MouseSpecificExecute()
         {
-            InputSimulator.MouseClick(Movement, Button, RandomizedPosition, Randomize(Speed), Hotkeys);
+            InputSimulator.MouseClick(Movement ?? MainWindow.GlobalMovementType, Button, RandomizedPosition, Randomize(Speed), Hotkeys);
         }
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace AutoClicker.Instructions
         {
             return obj is Click click &&
                    base.Equals(obj) &&
-                   EqualityComparer<ButtonType?>.Default.Equals(_button, click._button);
+                   IsSameClick(click);
         }
 
         /// <summary>

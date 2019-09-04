@@ -14,61 +14,127 @@ using Enums;
 
 namespace AutoClicker
 {
+    /// <summary>
+    /// Recorder for the autoclicker insteructions
+    /// </summary>
+    /// <seealso cref="AutoClicker.IKeyboardListener" />
     class Recorder : IKeyboardListener
     {
+        /// <summary>
+        /// The repetition maximum delay
+        /// </summary>
         private const int REPETITION_MAX_DELAY = 200;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is recording.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is recording; otherwise, <c>false</c>.
+        /// </value>
         public bool IsRecording { get; set; }
 
+        /// <summary>
+        /// The window
+        /// </summary>
         private MainWindow window;
 
+        /// <summary>
+        /// The last action time
+        /// </summary>
         private DateTime lastActionTime = DateTime.Now;
 
+        /// <summary>
+        /// The is alt down
+        /// </summary>
         private bool isAltDown;
+
+        /// <summary>
+        /// The is control down
+        /// </summary>
         private bool isCtrlDown;
+
+        /// <summary>
+        /// The is shift down
+        /// </summary>
         private bool isShiftDown;
 
-        public bool WithDelay { get; set; }
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is recording with delay.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is recording with delay; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsRecordingWithDelay { get; set; }
 
         //private int current = -1;
-        private Instructions.Instruction current = null;
+        
+        /// <summary>
+        /// The current instruction
+        /// </summary>
+        private Instructions.Instruction currentInstruction = null;
+
+        /// <summary>
+        /// The current run
+        /// </summary>
+        private Run currentRun = null;
+
+        /// <summary>
+        /// The mouse down position
+        /// </summary>
         private Instructions.Instruction mouseDownPosition;
 
-        #region Init Deinit
+        #region Init Deinit        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Recorder"/> class.
+        /// </summary>
+        /// <param name="window">The window.</param>
         public Recorder(MainWindow window)
         {
             this.window = window;
         }
 
+        /// <summary>
+        /// Adds the hooks.
+        /// </summary>
         public void AddHooks()
         {
             //instructions.(false);
-            HookManager.KeyDown += KeyDown;
-            HookManager.KeyUp += KeyUp;
+            HookManager.KeyDown += OnKeyDown;
+            HookManager.KeyUp += OnKeyUp;
 
-            HookManager.MouseDown += MouseDown;
-            HookManager.MouseUp += MouseUp;
+            HookManager.MouseDown += OnMouseDown;
+            HookManager.MouseUp += OnMouseUp;
 
-            HookManager.MouseWheel += MouseWheel;
+            HookManager.MouseWheel += OnMouseWheel;
 
             IsRecording = true;
         }
 
+        /// <summary>
+        /// Removes the hooks.
+        /// </summary>
         public void RemoveHooks()
         {
-            HookManager.KeyDown -= KeyDown;
-            HookManager.KeyUp -= KeyUp;
+            HookManager.KeyDown -= OnKeyDown;
+            HookManager.KeyUp -= OnKeyUp;
 
-            HookManager.MouseDown -= MouseDown;
-            HookManager.MouseUp -= MouseUp;
+            HookManager.MouseDown -= OnMouseDown;
+            HookManager.MouseUp -= OnMouseUp;
 
-            HookManager.MouseWheel -= MouseWheel;
+            HookManager.MouseWheel -= OnMouseWheel;
 
             IsRecording = false;
         }
         #endregion
 
         #region Key Events
-        private void KeyDown(object sender, KeyEventArgs e)
+
+        /// <summary>
+        /// Called when key down.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="KeyEventArgs"/> instance containing the event data.</param>
+        private void OnKeyDown(object sender, KeyEventArgs e)
         {
             Keys key = e.KeyCode;
 
@@ -88,11 +154,22 @@ namespace AutoClicker
             AddOrIncrement(instruction);
         }
 
-        private void KeyUp(object sender, KeyEventArgs e)
+        /// <summary>
+        /// Called when key up.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="KeyEventArgs"/> instance containing the event data.</param>
+        private void OnKeyUp(object sender, KeyEventArgs e)
         {
             bool hotkeyChanged = SetHotkeys(e.KeyCode, false);
         }
 
+        /// <summary>
+        /// Sets the hotkeys.
+        /// </summary>
+        /// <param name="_key">The key.</param>
+        /// <param name="direction">if set to <c>true</c> [direction].</param>
+        /// <returns></returns>
         private bool SetHotkeys(Keys _key, bool direction)
         {
             string key = _key.ToString().ToLower();
@@ -118,24 +195,33 @@ namespace AutoClicker
 
         #region Mouse Events
 
-        private void MouseDown(object sender, MouseEventArgs e)
+        /// <summary>
+        /// Called when mouse down.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="MouseEventArgs"/> instance containing the event data.</param>
+        private void OnMouseDown(object sender, MouseEventArgs e)
         {
             ButtonType button = GetButton(e.Button);
             Point p = Cursor.Point;
             mouseDownPosition = new Click(p.X, p.Y, button: button, shift: isShiftDown, ctrl: isCtrlDown, alt: isAltDown);
         }
 
-        private void MouseUp(object sender, MouseEventArgs e)
+        /// <summary>
+        /// Called when mouse up.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="MouseEventArgs"/> instance containing the event data.</param>
+        private void OnMouseUp(object sender, MouseEventArgs e)
         {
             ButtonType button = GetButton(e.Button);
             Point p = Cursor.Point;
             Click end = new Click(p.X, p.Y, button: button, shift: isShiftDown, ctrl: isCtrlDown, alt: isAltDown);
 
             Click start = mouseDownPosition as Click;
-            if (start != null && start.Button == end.Button && end.Distance(start) > Instructions.Hover.MAX_UNCERTAINTY)
+            if (start != null && start.Button == end.Button && end.Distance(start) > Hover.MAX_UNCERTAINTY)
             {
-                //TODO Drag ad or increment
-                AddOrIncrement(new Drag(start._x, start._y, end._x, end._y, button: button, shift: isShiftDown, ctrl: isCtrlDown, alt: isAltDown));
+                AddOrIncrement(new Drag(start.X, start.Y, end.X, end.Y, button: button, shift: isShiftDown, ctrl: isCtrlDown, alt: isAltDown));
             }
             else
             {
@@ -143,13 +229,23 @@ namespace AutoClicker
             }
         }
 
-        private void MouseWheel(object sender, MouseEventArgs e)
+        /// <summary>
+        /// Called when mouse wheel.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="MouseEventArgs"/> instance containing the event data.</param>
+        private void OnMouseWheel(object sender, MouseEventArgs e)
         {
             // TODO Wheel
             //Instruction instruction = new Instruction(e.Delta, e.X, e.Y, isShiftDown, isCtrlDown, isAltDown);
             //AddOrIncrement(instruction);
         }
 
+        /// <summary>
+        /// Gets the button.
+        /// </summary>
+        /// <param name="button">The button.</param>
+        /// <returns></returns>
         private ButtonType GetButton(MouseButtons button)
         {
             ButtonType _button;
@@ -169,7 +265,11 @@ namespace AutoClicker
         }
         #endregion
 
-        #region Helpers
+        #region Helpers        
+        /// <summary>
+        /// Gets the delay.
+        /// </summary>
+        /// <returns></returns>
         public int GetDelay()
         {
             DateTime now = DateTime.Now;
@@ -178,18 +278,20 @@ namespace AutoClicker
             return (int)delta.TotalMilliseconds;
         }
 
+        /// <summary>
+        /// Adds the instruction or increments the repetitions.
+        /// </summary>
+        /// <param name="instruction">The instruction.</param>
+        /// <returns></returns>
         private bool AddOrIncrement(Instructions.Instruction instruction)
         {
             int delay = GetDelay();
 
-            if(current == null)
+            if (currentInstruction == null || currentRun == null)
             {
-                window.AddInstruction(instruction);
-                current = instruction;
-                return true;
+                currentInstruction = instruction;
             }
-
-            if (instruction.Equals(current) && delay < REPETITION_MAX_DELAY)
+            else if (instruction.Equals(currentInstruction) && delay < REPETITION_MAX_DELAY)
             {
                 // TODO Wheel increment
                 //if (instruction.Type == InstructionType.WHEEL)
@@ -198,18 +300,20 @@ namespace AutoClicker
                 //}
                 //else
                 {
-                    current.Repetitions.Value++;
+                    currentInstruction.Repetitions.Inc();
                 }
             }
             else
             {
-                if (WithDelay)
+                if (IsRecordingWithDelay)
                 {
-                    current.Delay.Value = delay;
+                    currentInstruction.Delay.Value = delay;
                 }
-                window.AddInstruction(instruction);
-                current = instruction;
+                currentInstruction = instruction;
+                currentRun = null;
             }
+
+            currentRun = window.AddInstruction(currentInstruction, currentRun);
 
             return true;
         }
