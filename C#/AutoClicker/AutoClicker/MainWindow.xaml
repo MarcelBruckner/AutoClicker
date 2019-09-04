@@ -1,0 +1,292 @@
+﻿<Window x:Class="AutoClicker.MainWindow"
+        x:Name="mainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:core="clr-namespace:System;assembly=mscorlib"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:autoclicker="clr-namespace:AutoClicker"
+        xmlns:enums="clr-namespace:Enums"
+        mc:Ignorable="d"
+        Title="Auto Clicker" Height="500" Width="1100" Background="White">
+
+    <Window.Resources>
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+        <autoclicker:ValueToEqualsParameterConverter x:Key="TextBoxConverter"/>
+        <autoclicker:ComboBoxConverter x:Key="ComboBoxConverter"/>
+        <ObjectDataProvider x:Key="Types" MethodName="GetValues" ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="enums:InstructionType"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="Keys" MethodName="GetValues" ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="enums:VirtualKeyCode"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="ButtonTypes" MethodName="GetValues" ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="enums:ButtonType"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="MovementTypes" MethodName="GetValues" ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="enums:MovementType"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="HotkeyStates" MethodName="GetValues" ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="enums:HotkeyState"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
+
+    <DockPanel LastChildFill="True">
+
+        <Grid DockPanel.Dock="Top">
+            <Rectangle Height="0.5" Fill="Black"/>
+        </Grid>
+        <Menu DockPanel.Dock="Top" Padding="0 2" >
+            <MenuItem Header="_File">
+                <MenuItem Header="_Open" Click="Open_Click"/>
+                <MenuItem Header="_Save" Click="Save_Click"/>
+                <Separator/>
+                <MenuItem Header="_Close" Click="Close_Click"/>
+            </MenuItem>
+            <!--<Separator/>-->
+            <MenuItem Header="_Edit">
+                <MenuItem Header="_Delay">
+                    <Grid Width="100">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Minimum" Grid.Column="0"/>
+                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="1" Text="{Binding Path=GlobalDelay, ElementName=mainWindow}"/>
+                    </Grid>
+                    <Grid Width="100">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Random" Grid.Column="0"/>
+                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="10" Text="{Binding Path=GlobalRandomDelay, ElementName=mainWindow}"/>
+                    </Grid>
+                </MenuItem>
+                <MenuItem Header="_Repetitions">
+                    <Grid Width="100">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Minimum" Grid.Column="0"/>
+                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="1" Text="{Binding Path=GlobalRepetitions, ElementName=mainWindow}"/>
+                    </Grid>
+                    <Grid Width="100">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Random" Grid.Column="0"/>
+                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="10" Text="{Binding Path=GlobalRandomRepetitions, ElementName=mainWindow}"/>
+                    </Grid>
+                </MenuItem>
+                <MenuItem Header="_Speed">
+                    <Grid Width="100">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Minimum" Grid.Column="0"/>
+                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="1" Text="{Binding Path=GlobalSpeed, ElementName=mainWindow}"/>
+                    </Grid>
+                    <Grid Width="100">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Random" Grid.Column="0"/>
+                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="10" Text="{Binding Path=GlobalRandomSpeed, ElementName=mainWindow}"/>
+                    </Grid>
+                </MenuItem>
+                <Separator/>
+                <MenuItem Header="Movement Type" ItemsSource="{Binding Source={StaticResource MovementTypes}}">
+                    <MenuItem.ItemContainerStyle>
+                        <Style TargetType="MenuItem">
+                            <EventSetter Event="Click" Handler="MovementType_Click" />
+                        </Style>
+                    </MenuItem.ItemContainerStyle>
+                </MenuItem>
+                <MenuItem Header="_Position">
+                    <Grid Width="100">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="X Radius" Grid.Column="0"/>
+                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="1" Text="{Binding Path=GlobalRandomX, ElementName=mainWindow}"/>
+                    </Grid>
+                    <Grid Width="100">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Y Radius" Grid.Column="0"/>
+                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="10" Text="{Binding Path=GlobalRandomY, ElementName=mainWindow}"/>
+                    </Grid>
+                </MenuItem>
+                <MenuItem Header="_Drag">
+                    <Grid Width="100">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="X Radius" Grid.Column="0"/>
+                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="1" Text="{Binding Path=GlobalRandomDragX, ElementName=mainWindow}"/>
+                    </Grid>
+                    <Grid Width="100">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Y Radius" Grid.Column="0"/>
+                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="10" Text="{Binding Path=GlobalRandomDragY, ElementName=mainWindow}"/>
+                    </Grid>
+                </MenuItem>
+                <MenuItem Header="_Wheel">
+                    <Grid Width="100">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Minimum" Grid.Column="0"/>
+                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="1" Text="{Binding Path=GlobalWheel, ElementName=mainWindow}"/>
+                    </Grid>
+                    <Grid Width="100">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Random" Grid.Column="0"/>
+                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="10" Text="{Binding Path=GlobalRandomWheel, ElementName=mainWindow}"/>
+                    </Grid>
+                </MenuItem>
+                <Separator/>
+                <MenuItem Header="_Hotkeys">
+                    <MenuItem Header="Shift" ItemsSource="{Binding Source={StaticResource HotkeyStates}}">
+                        <MenuItem.ItemContainerStyle>
+                            <Style TargetType="MenuItem">
+                                <EventSetter Event="Click" Handler="Shift_Click" />
+                            </Style>
+                        </MenuItem.ItemContainerStyle>
+                    </MenuItem>
+                    <MenuItem Header="Ctrl" ItemsSource="{Binding Source={StaticResource HotkeyStates}}">
+                        <MenuItem.ItemContainerStyle>
+                            <Style TargetType="MenuItem">
+                                <EventSetter Event="Click" Handler="Ctrl_Click" />
+                            </Style>
+                        </MenuItem.ItemContainerStyle>
+                    </MenuItem>
+                    <MenuItem Header="Alt" ItemsSource="{Binding Source={StaticResource HotkeyStates}}">
+                        <MenuItem.ItemContainerStyle>
+                            <Style TargetType="MenuItem">
+                                <EventSetter Event="Click" Handler="Alt_Click" />
+                            </Style>
+                        </MenuItem.ItemContainerStyle>
+                    </MenuItem>
+                </MenuItem>
+                <Separator/>
+                <MenuItem Header="_Clear" Click="Clear_Click"/>
+            </MenuItem>
+
+            <MenuItem Header="_Add">
+				<MenuItem Header="_Hover" Click="AddMenu_Hover"/>
+				<MenuItem Header="_Click" Click="AddMenu_Click"/>
+				<MenuItem Header="_Drag" Click="AddMenu_Drag"/>
+				<MenuItem Header="_Wheel" Click="AddMenu_Wheel"/>
+				<Separator/>
+				<MenuItem Header="_Keystroke" Click="AddMenu_Keystroke"/>
+				<MenuItem Header="_Text" Click="AddMenu_Text"/>
+				<!--<MenuItem Header="_" Click="AddMenu"/>-->
+			</MenuItem>
+        </Menu>
+        <Grid DockPanel.Dock="Top">
+            <Rectangle Height="0.5" Fill="Black"/>
+        </Grid>
+
+        <Grid DockPanel.Dock="Top" Margin="5 10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Orientation="Horizontal" Grid.Column="0" VerticalAlignment="Center">
+                <ToggleButton x:Name="PlayButton" BorderThickness="0" Background="Transparent" IsChecked="{Binding ElementName=mainWindow, Path=IsPlaying, Mode=TwoWay}" Padding="2" Margin="5 0" Width="35" Height="35">
+                    <Image Source="Images/play.png" RenderOptions.BitmapScalingMode="HighQuality">
+                        <Image.ToolTip>
+                            <ToolTip>
+                                <TextBlock Text="Start playing the script."/>
+                            </ToolTip>
+                        </Image.ToolTip>
+                    </Image>
+                </ToggleButton>
+                <ToggleButton x:Name="RecordButton" BorderThickness="0" Background="Transparent" IsChecked="{Binding ElementName=mainWindow, Path=IsRecording, Mode=TwoWay}" Padding="2" Margin="5 0" Width="35" Height="35">
+                    <Image Source="Images/record2.png" RenderOptions.BitmapScalingMode="HighQuality">
+                        <Image.ToolTip>
+                            <ToolTip>
+                                <TextBlock Text="Start recording some instructions."/>
+                            </ToolTip>
+                        </Image.ToolTip>
+                    </Image>
+                </ToggleButton>
+                <ToggleButton x:Name="WithDelayButton" BorderThickness="0" Background="Transparent" IsChecked="{Binding ElementName=mainWindow, Path=WithDelay, Mode=TwoWay}" Padding="2" Margin="5 0" Width="35" Height="35">
+                    <Image Source="Images/stopwatch2.png" RenderOptions.BitmapScalingMode="HighQuality">
+                        <Image.ToolTip>
+                            <ToolTip>
+                                <TextBlock Text="Enable delay measurement between instructions."/>
+                            </ToolTip>
+                        </Image.ToolTip>
+                    </Image>
+                </ToggleButton>
+            </StackPanel>
+
+            <TextBlock Foreground="Black" FontSize="16" Grid.Column="1" Text="Auto Clicker" FontWeight="Bold" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+            <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <TextBox x:Name="RepetitionsTextBox" IsEnabled="False" TextChanged="RepetitionsTextBox_TextChanged" Text="5" MaxLength="5" VerticalAlignment="Center" Width="40" TextAlignment="Right" Padding="2"/>
+
+                <ToggleButton x:Name="InfiniteButton" BorderThickness="0" Background="Transparent" IsChecked="{Binding ElementName=mainWindow, Path=Infinite, Mode=TwoWay}" Padding="2" Margin="5 0" Width="35" Height="35">
+                    <Image Source="Images/infinity.png" RenderOptions.BitmapScalingMode="HighQuality">
+                        <Image.ToolTip>
+                            <ToolTip>
+                                <TextBlock Text="Enable infinite looping."/>
+                            </ToolTip>
+                        </Image.ToolTip>
+                    </Image>
+                </ToggleButton>
+            </StackPanel>
+        </Grid>
+
+        <RichTextBox DockPanel.Dock="Top"
+                     Margin="10 0 10 10"
+                     Padding="5"
+                     x:Name="InstructionsTextBox"
+                     AcceptsReturn="True"
+                     AcceptsTab="True"
+                     TextChanged="InstructionsTextBox_TextChanged"
+                     PreviewKeyDown="InstructionsTextBox_PreviewKeyDown">
+            
+            <RichTextBox.Resources>
+                <Style TargetType="{x:Type Paragraph}">
+                    <Setter Property="Margin" Value="0"/>
+                </Style>
+            </RichTextBox.Resources>
+        </RichTextBox>
+
+    </DockPanel>
+</Window>
