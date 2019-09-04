@@ -7,6 +7,7 @@
         xmlns:core="clr-namespace:System;assembly=mscorlib"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:autoclicker="clr-namespace:AutoClicker"
+        xmlns:enums="clr-namespace:Enums"
         mc:Ignorable="d"
         Title="Auto Clicker" Height="500" Width="1100" Background="White">
 
@@ -19,27 +20,27 @@
         <autoclicker:ComboBoxConverter x:Key="ComboBoxConverter"/>
         <ObjectDataProvider x:Key="Types" MethodName="GetValues" ObjectType="{x:Type core:Enum}">
             <ObjectDataProvider.MethodParameters>
-                <x:Type Type="autoclicker:InstructionType"/>
+                <x:Type Type="enums:InstructionType"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
         <ObjectDataProvider x:Key="Keys" MethodName="GetValues" ObjectType="{x:Type core:Enum}">
             <ObjectDataProvider.MethodParameters>
-                <x:Type Type="autoclicker:VirtualKeyCode"/>
+                <x:Type Type="enums:VirtualKeyCode"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
         <ObjectDataProvider x:Key="ButtonTypes" MethodName="GetValues" ObjectType="{x:Type core:Enum}">
             <ObjectDataProvider.MethodParameters>
-                <x:Type Type="autoclicker:ButtonType"/>
+                <x:Type Type="enums:ButtonType"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
         <ObjectDataProvider x:Key="MovementTypes" MethodName="GetValues" ObjectType="{x:Type core:Enum}">
             <ObjectDataProvider.MethodParameters>
-                <x:Type Type="autoclicker:MovementType"/>
+                <x:Type Type="enums:MovementType"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
         <ObjectDataProvider x:Key="HotkeyStates" MethodName="GetValues" ObjectType="{x:Type core:Enum}">
             <ObjectDataProvider.MethodParameters>
-                <x:Type Type="autoclicker:HotkeyState"/>
+                <x:Type Type="enums:HotkeyState"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
     </Window.Resources>

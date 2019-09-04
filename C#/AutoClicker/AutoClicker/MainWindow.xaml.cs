@@ -14,6 +14,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
 using System.Linq;
 using AutoClicker.InstructionsParser;
+using Enums;
 
 namespace AutoClicker
 {

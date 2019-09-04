@@ -30,7 +30,7 @@ namespace Tests
                 new KeyValuePair<VirtualKeyCode, bool>(VirtualKeyCode.VK_L, false),
                 new KeyValuePair<VirtualKeyCode, bool>(VirtualKeyCode.VK_T, false)
             };
-            List<KeyValuePair<VirtualKeyCode, bool>> parsed = text.ConvertTextToKeys();
+            List<KeyValuePair<VirtualKeyCode, bool>> parsed = text.Converted;
 
             for(int i = 0; i < expected.Count; i++)
             {

@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace AutoClicker
+namespace Enums
 {
     //
     // Zusammenfassung:

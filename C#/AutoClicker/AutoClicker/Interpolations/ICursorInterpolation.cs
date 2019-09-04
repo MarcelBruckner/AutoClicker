@@ -30,7 +30,7 @@ namespace AutoClicker
 
         public static double ConvertToRadians(double angle)
         {
-            return (Math.PI / 180) * angle;
+            return Math.PI / 180 * angle;
         }
 
         public static Vector RandomVector(int maxLength)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -8,42 +9,72 @@ using System.Threading.Tasks;
 
 namespace AutoClicker.Instructions
 {
-    /** Base class for instructions */
+    /// <summary>
+    /// Base class for all instructions
+    /// </summary>
     public class Instruction
     {
-        /** A random number generator */
-        internal Random random = new Random();
 
-        /** The step width in which the delays will be executed */
+        /// <summary>
+        /// A random number generator
+        /// </summary>
+        internal static Random random = new Random();
+
+        /// <summary>
+        /// The step width in which the delays will be executed
+        /// </summary>
         private const int delayStep = 500;
 
         #region Properties
-        /** A tuple for the delay after the execution */
+
+        /// <summary>
+        /// A tuple for the delay after the execution 
+        /// </summary>
         public IntTuple _delay;
         public IntTuple Delay { get => _delay ?? new IntTuple(MainWindow.GlobalDelay, MainWindow.GlobalRandomDelay); set => _delay = value; }
 
-        /** A tuple for the repetitions for how often the instruction will be executed */
+        /// <summary>
+        /// A tuple for the repetitions for how often the instruction will be executed
+        /// </summary>
         public IntTuple _repetitions;
         public IntTuple Repetitions { get => _repetitions ?? new IntTuple(MainWindow.GlobalRepetitions, MainWindow.GlobalRandomRepetitions); set => _repetitions = value; }
 
-        /** A tuple for the speed of the execution */
+        /// <summary>
+        /// A tuple for the speed of the execution
+        /// </summary>
         public DoubleTuple _speed;
         public DoubleTuple Speed { get => _speed ?? new DoubleTuple(MainWindow.GlobalSpeed, MainWindow.GlobalRandomSpeed); set => _speed = value; }
 
-        /** Is the shift key pressed during execution */
+        /// <summary>
+        /// Is the shift key pressed during execution
+        /// </summary>
         public bool Shift { get; set; }
 
-        /** Is the control key pressed during execution */
+        /// <summary>
+        /// Is the control key pressed during execution
+        /// </summary>
         public bool Ctrl { get; set; }
-        
-        /** Is the alt key pressed during execution */
+
+        /// <summary>
+        /// Is the alt key pressed during execution
+        /// </summary>
         public bool Alt { get; set; }
 
-        /** Is the instruction currently running */
+        /// <summary>
+        /// Is the instruction currently running
+        /// </summary>
         public bool IsRunning { get; set; } = false;
         #endregion
 
-        /** constructor */
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Instruction"/> class.
+        /// </summary>
+        /// <param name="delay">The delay.</param>
+        /// <param name="repetitions">The repetitions.</param>
+        /// <param name="speed">The speed.</param>
+        /// <param name="shift">if set to <c>true</c> [shift].</param>
+        /// <param name="ctrl">if set to <c>true</c> [control].</param>
+        /// <param name="alt">if set to <c>true</c> [alt].</param>
         public Instruction(IntTuple delay = null, IntTuple repetitions = null, DoubleTuple speed = null,
             bool shift = false, bool ctrl = false, bool alt = false)
         {
@@ -56,7 +87,9 @@ namespace AutoClicker.Instructions
             Alt = alt;
         }
 
-        /** The method to execute the instruction */
+        /// <summary>
+        /// Runs this instruction.
+        /// </summary>
         public void Run()
         {
             IsRunning = true;
@@ -75,13 +108,17 @@ namespace AutoClicker.Instructions
             repetitions.Value = save;
         }
 
-        /** Override this method to implement the specific execution steps of the instructions */
+        /// <summary>
+        /// Instruction specific execution.
+        /// </summary>
         internal virtual void SpecificExecute()
         {
             // EMPTY for override
         }
 
-        /** Delays the execution flow after one repetition of this instruction has finished */
+        /// <summary>
+        /// Delays the execution flow after one repetition of this instruction has finished
+        /// </summary>
         private void DoDelay()
         {
             IntTuple delay = Delay;
@@ -101,7 +138,12 @@ namespace AutoClicker.Instructions
             delay.Value = save;
         }
 
-        /** An array of virtual key codes of the hotkeys that are pressed during execution */
+        /// <summary>
+        /// An array of virtual key codes of the hotkeys that are pressed during execution
+        /// </summary>
+        /// <seealso cref="Shift"/>
+        /// <seealso cref="Ctrl"/>
+        /// <seealso cref="Alt"/>
         protected VirtualKeyCode[] Hotkeys
         {
             get
@@ -123,7 +165,13 @@ namespace AutoClicker.Instructions
             }
         }
 
-        /** equals */
+        /// <summary>
+        /// Determines whether the specified <see cref="System.Object" />, is equal to this instance.
+        /// </summary>
+        /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.
+        /// </returns>
         public override bool Equals(object obj)
         {
             if (!(obj is Instructions.Instruction other))
@@ -136,34 +184,61 @@ namespace AutoClicker.Instructions
                 Ctrl == other.Alt;
         }
 
-        /** Randomizes a tuple based on its value and random value */
+        /// <summary>
+        /// Randomizes a tuple based on its value and random value
+        /// </summary>
+        /// <param name="tuple"></param>
+        /// <returns></returns>
         internal double Randomize(IntTuple tuple)
         {
             return Randomize(tuple.Value, tuple.Random ?? 0);
         }
 
-        /** Randomizes a tuple based on its value and random value */
+        /// <summary>
+        /// Randomizes a tuple based on its value and random value
+        /// </summary>
+        /// <param name="tuple"></param>
+        /// <returns></returns>
         internal double Randomize(DoubleTuple tuple)
         {
             return Randomize(tuple.Value, tuple.Random ?? 0.0);
         }
 
-        /** Randomizes a value in the interval [value - range, value + range] */
+        /// <summary>
+        /// Randomizes a value in the interval [value - range, value + range]
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="range"></param>
+        /// <returns></returns>
         internal double Randomize(double value, double range)
         {
             return value + ((2 * random.NextDouble()) - 1) * range;
         }
-               
-        /** Override to specify the name of the instruction */
+
+        /// <summary>
+        /// Specifies the name of the instruction
+        /// </summary>
+        /// <returns>The name of the instruction</returns>
         internal virtual string GetName()
         {
             return "";
         }
 
-        /** Override to append the key value pairs of specific properties of the instructions */
-        internal virtual void AppendSpecifics(StringBuilder builder) { }
+        /// <summary>
+        /// Appends the key value pairs of specific properties of the instruction
+        /// </summary>
+        /// <param name="builder"></param>
+        internal virtual void AppendSpecifics(StringBuilder builder)
+        {
+            // EMPTY for override
+        }
 
-        /** toString */
+        /// <summary>
+        /// Converts to string.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
         public override string ToString()
         {
             StringBuilder builder = new StringBuilder(GetName() + ":");
@@ -189,7 +264,12 @@ namespace AutoClicker.Instructions
             return builder.ToString();
         }
 
-        /** Appends a key value pair to the string builder */
+        /// <summary>
+        /// Appends a key value pair to the string builder
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <param name="key"></param>
+        /// <param name="tuple"></param>
         protected void Append(StringBuilder builder, string key, IntTuple tuple)
         {
             if (tuple == null)
@@ -199,7 +279,12 @@ namespace AutoClicker.Instructions
             Append(builder, key, tuple.ToString());
         }
 
-        /** Appends a key value pair to the string builder */
+        /// <summary>
+        /// Appends a key value pair to the string builder
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <param name="key"></param>
+        /// <param name="tuple"></param>
         protected void Append(StringBuilder builder, string key, DoubleTuple tuple)
         {
             if (tuple == null)
@@ -209,7 +294,12 @@ namespace AutoClicker.Instructions
             Append(builder, key, tuple.ToString());
         }
 
-        /** Appends a key value pair to the string builder */
+        /// <summary>
+        /// Appends a key value pair to the string builder
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
         internal void Append(StringBuilder builder, string key, object value)
         {
             if (value == null)
@@ -222,7 +312,12 @@ namespace AutoClicker.Instructions
             builder.Append(value);
         }
 
-        /** hash code */
+        /// <summary>
+        /// Returns a hash code for this instance.
+        /// </summary>
+        /// <returns>
+        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+        /// </returns>
         public override int GetHashCode()
         {
             var hashCode = 628206347;

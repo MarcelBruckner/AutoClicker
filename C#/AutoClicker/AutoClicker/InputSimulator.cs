@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Enums;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices;
@@ -7,6 +8,9 @@ using System.Windows.Forms;
 
 namespace AutoClicker
 {
+    /// <summary>
+    /// Class to simulate mouse and keyboard input.
+    /// </summary>
     public static class InputSimulator
     {
         #region Win Stuff
@@ -99,26 +103,74 @@ namespace AutoClicker
         }
         #endregion
 
+        /// <summary>
+        /// Drags the mouse.
+        /// </summary>
+        /// <param name="move">The move.</param>
+        /// <param name="button">The button.</param>
+        /// <param name="v">The v.</param>
+        /// <param name="endX">The end x.</param>
+        /// <param name="endY">The end y.</param>
+        /// <param name="speed">The speed.</param>
+        /// <param name="hotkeys">The hotkeys.</param>
         public static void MouseDrag(MovementType move, ButtonType button, System.Windows.Vector v, int endX, int endY, double speed, params VirtualKeyCode[] hotkeys)
         {
             MouseDrag(move, button, (int)v.X, (int)v.Y, endX, endY, speed, hotkeys);
         }
+
+        /// <summary>
+        /// Drags the mouse.
+        /// </summary>
+        /// <param name="move">The move.</param>
+        /// <param name="button">The button.</param>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        /// <param name="endX">The end x.</param>
+        /// <param name="endY">The end y.</param>
+        /// <param name="speed">The speed.</param>
+        /// <param name="hotkeys">The hotkeys.</param>
         public static void MouseDrag(MovementType move, ButtonType button, int x, int y, int endX, int endY, double speed, params VirtualKeyCode[] hotkeys)
         {
             MouseDrag(move, (int)button, x, y, endX, endY, speed, hotkeys);
         }
+
+        /// <summary>
+        /// Drags the mouse.
+        /// </summary>
+        /// <param name="move">The move.</param>
+        /// <param name="button">The button.</param>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        /// <param name="endX">The end x.</param>
+        /// <param name="endY">The end y.</param>
+        /// <param name="speed">The speed.</param>
+        /// <param name="hotkeys">The hotkeys.</param>
         public static void MouseDrag(MovementType move, int button, int x, int y, int endX, int endY, double speed, params VirtualKeyCode[] hotkeys)
         {
             MouseDown(move, button, x, y, speed, hotkeys);
             MouseUp(move, button, endX, endY, speed, hotkeys);
         }
 
+        /// <summary>
+        /// Moves the mouse to the position and sets the button and the hotkeys to the down state.
+        /// </summary>
+        /// <param name="move">The move.</param>
+        /// <param name="button">The button.</param>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        /// <param name="speed">The speed.</param>
+        /// <param name="hotkeys">The hotkeys.</param>
         public static void MouseDown(MovementType move, int button, int x, int y, double speed, params VirtualKeyCode[] hotkeys)
         {
-            MoveMouse(move, x, y, speed);
+            MouseMove(move, x, y, speed);
             MouseDown(button, hotkeys);
         }
 
+        /// <summary>
+        /// Sets the button and the hotkeys to the down state.
+        /// </summary>
+        /// <param name="button">The button.</param>
+        /// <param name="hotkeys">The hotkeys.</param>
         public static void MouseDown(int button, params VirtualKeyCode[] hotkeys)
         {
             KeyDown(hotkeys);
@@ -145,6 +197,11 @@ namespace AutoClicker
             SendInput(1, ref mouseDownInput, Marshal.SizeOf(new INPUT()));
         }
 
+        /// <summary>
+        /// Sets the button and the hotkeys to the up state.
+        /// </summary>
+        /// <param name="button">The button.</param>
+        /// <param name="hotkeys">The hotkeys.</param>
         public static void MouseUp(int button, params VirtualKeyCode[] hotkeys)
         {
             INPUT mouseDownInput = new INPUT
@@ -171,43 +228,104 @@ namespace AutoClicker
             KeyUp(hotkeys);
         }
 
+        /// <summary>
+        /// Moves the mouse to the position and sets the button and the hotkeys to the up state.
+        /// </summary>
+        /// <param name="move">The move.</param>
+        /// <param name="button">The button.</param>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        /// <param name="speed">The speed.</param>
+        /// <param name="hotkeys">The hotkeys.</param>
         public static void MouseUp(MovementType move, int button, int x, int y, double speed, params VirtualKeyCode[] hotkeys)
         {
 
-            MoveMouse(move, x, y, speed);
+            MouseMove(move, x, y, speed);
 
             MouseUp(button, hotkeys);
         }
 
-        public static void MouseClick(MovementType move, ButtonType button, System.Windows.Vector v, double speed, params VirtualKeyCode[] hotkeys)
+        /// <summary>
+        /// Clicks the specified mouse button at the given position.
+        /// </summary>
+        /// <param name="move">The move.</param>
+        /// <param name="button">The button.</param>
+        /// <param name="position">The position.</param>
+        /// <param name="speed">The speed.</param>
+        /// <param name="hotkeys">The hotkeys.</param>
+        public static void MouseClick(MovementType move, ButtonType button, System.Windows.Vector position, double speed, params VirtualKeyCode[] hotkeys)
         {
-            MouseClick(move, button, (int)v.X, (int)v.Y, speed, hotkeys);
+            MouseClick(move, button, (int)position.X, (int)position.Y, speed, hotkeys);
         }
+
+        /// <summary>
+        /// Clicks the specified mouse button at the given position.
+        /// </summary>
+        /// <param name="move">The move.</param>
+        /// <param name="button">The button.</param>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        /// <param name="speed">The speed.</param>
+        /// <param name="hotkeys">The hotkeys.</param>
         public static void MouseClick(MovementType move, ButtonType button, int x, int y, double speed, params VirtualKeyCode[] hotkeys)
         {
             MouseClick(move, (int)button, x, y, speed, hotkeys);
         }
+
+        /// <summary>
+        /// Clicks the specified mouse button at the given position.
+        /// </summary>
+        /// <param name="move">The move.</param>
+        /// <param name="button">The button.</param>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        /// <param name="speed">The speed.</param>
+        /// <param name="hotkeys">The hotkeys.</param>
         public static void MouseClick(MovementType move, int button, int x, int y, double speed, params VirtualKeyCode[] hotkeys)
         {
             MouseDown(move, button, x, y, speed, hotkeys);
             MouseUp(move, button, x, y, speed, hotkeys);
         }
+
+        /// <summary>
+        /// Clicks the mouse at the current position.
+        /// </summary>
+        /// <param name="button">The button.</param>
+        /// <param name="hotkeys">The hotkeys.</param>
         public static void MouseClick(int button, params VirtualKeyCode[] hotkeys)
         {
             MouseDown(button, hotkeys);
             MouseUp(button, hotkeys);
         }
+
+        /// <summary>
+        /// Clicks the mouse at the current position.
+        /// </summary>
+        /// <param name="button">The button.</param>
+        /// <param name="hotkeys">The hotkeys.</param>
         public static void MouseClick(ButtonType button, params VirtualKeyCode[] hotkeys)
         {
             MouseClick((int)button, hotkeys);
         }
-        
-        public static void MoveMouse(MovementType move, System.Windows.Vector end, double speed)
+
+        /// <summary>
+        /// Moves the mouse.
+        /// </summary>
+        /// <param name="move">The move.</param>
+        /// <param name="end">The end.</param>
+        /// <param name="speed">The speed.</param>
+        public static void MouseMove(MovementType move, System.Windows.Vector end, double speed)
         {
-            MoveMouse(move, new Point((int)end.X, (int)end.Y), speed);
+            MouseMove(move, new Point((int)end.X, (int)end.Y), speed);
         }
 
-        public static void MoveMouse(MovementType move, Point end, double speed)
+        /// <summary>
+        /// Moves the mouse.
+        /// </summary>
+        /// <param name="move">The move.</param>
+        /// <param name="end">The end.</param>
+        /// <param name="speed">The speed.</param>
+        public static void MouseMove(MovementType move, Point end, double speed)
         {
             ICursorInterpolation interpolation;
 
@@ -228,11 +346,22 @@ namespace AutoClicker
             interpolation.Interpolate();
         }
 
-        public static void MoveMouse(MovementType move, int x, int y, double speed)
+        /// <summary>
+        /// Moves the mouse.
+        /// </summary>
+        /// <param name="move">The move.</param>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        /// <param name="speed">The speed.</param>
+        public static void MouseMove(MovementType move, int x, int y, double speed)
         {
-            MoveMouse(move, new Point(x, y), speed);
+            MouseMove(move, new Point(x, y), speed);
         }
 
+        /// <summary>
+        /// Sets the hotkeys down.
+        /// </summary>
+        /// <param name="keys">The keys.</param>
         public static void KeyDown(params VirtualKeyCode[] keys)
         {
             foreach (VirtualKeyCode key in keys)
@@ -252,7 +381,11 @@ namespace AutoClicker
                 SendInput(1, ref keyDownInput, Marshal.SizeOf(new INPUT()));
             }
         }
-
+    
+        /// <summary>
+        /// Sets the hotkeys up.
+        /// </summary>
+        /// <param name="keys">The keys.</param>
         public static void KeyUp(params VirtualKeyCode[] keys)
         {
             foreach (VirtualKeyCode key in keys)
@@ -273,12 +406,12 @@ namespace AutoClicker
                 SendInput(1, ref keyUpInput, Marshal.SizeOf(new INPUT()));
             }
         }
-
-        public static void KeyPress(VirtualKeyCode key)
-        {
-            KeyPress(key);
-        }
-
+        
+        /// <summary>
+        /// Presses the key while the hotkeys are pressed.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="hotkeys">The hotkeys.</param>
         public static void KeyPress(VirtualKeyCode key, params VirtualKeyCode[] hotkeys)
         {
             KeyDown(hotkeys);
@@ -288,13 +421,52 @@ namespace AutoClicker
             KeyUp(hotkeys);
         }
 
+        /// <summary>
+        /// Inputs the specified text inputs.
+        /// </summary>
+        /// <param name="inputs">The inputs.</param>
+        /// <param name="hotkeys">The hotkeys.</param>
+        public static void Text(List<KeyValuePair<VirtualKeyCode, bool>> inputs, params VirtualKeyCode[] hotkeys)
+        {
+            foreach (var input in inputs)
+            {
+                if (input.Value)
+                {
+                    KeyDown(VirtualKeyCode.SHIFT);
+                }
+                KeyPress(input.Key, hotkeys);
+                if (input.Value)
+                {
+                    KeyUp(VirtualKeyCode.SHIFT);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Moves the mousewheel.
+        /// </summary>
+        /// <param name="move">The move.</param>
+        /// <param name="v">The v.</param>
+        /// <param name="delta">The delta.</param>
+        /// <param name="speed">The speed.</param>
+        /// <param name="hotkeys">The hotkeys.</param>
         public static void MouseWheel(MovementType move, System.Windows.Vector v, int delta, double speed, params VirtualKeyCode[] hotkeys)
         {
             MouseWheel(move, (int)v.X, (int)v.Y, delta, speed, hotkeys);
         }
+
+        /// <summary>
+        /// Moves the mousewheel.
+        /// </summary>
+        /// <param name="move">The move.</param>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        /// <param name="delta">The delta.</param>
+        /// <param name="speed">The speed.</param>
+        /// <param name="hotkeys">The hotkeys.</param>
         public static void MouseWheel(MovementType move, int x, int y, int delta, double speed, params VirtualKeyCode[] hotkeys)
         {
-            MoveMouse(move, x, y, speed);
+            MouseMove(move, x, y, speed);
             KeyDown(hotkeys);
             INPUT mouseDownInput = new INPUT
             {

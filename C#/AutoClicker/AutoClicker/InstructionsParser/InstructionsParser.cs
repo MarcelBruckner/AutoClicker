@@ -7,8 +7,16 @@ using System.Threading.Tasks;
 
 namespace AutoClicker.InstructionsParser
 {
+    /// <summary>
+    /// Parser for the instructions input field
+    /// </summary>
     public class InstructionsParser
     {
+        /// <summary>
+        /// Parses the specified input.
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <returns></returns>
         public static List<Instructions.Instruction> Parse(string input)
         {
             AntlrInputStream inputStream = new AntlrInputStream(input);
@@ -18,9 +26,9 @@ namespace AutoClicker.InstructionsParser
             AutoClickerParser parser = new AutoClickerParser(commonTokenStream);
 
             AutoClickerParser.InstructionsContext context = parser.instructions();
-            AutoClickerVisitor visitor = new AutoClickerVisitor();
+            AutoClickerInstructionsVisitor visitor = new AutoClickerInstructionsVisitor();
 
-            return (List<Instructions.Instruction>)visitor.Visit(context);
+            return visitor.Visit(context);
         }
     }
 }

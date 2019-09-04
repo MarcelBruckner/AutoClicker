@@ -5,3 +5,13 @@ C:\Users\ga58lum\Documents\RS-Bots\C#\AutoClicker\globalhook2_src\GlobalHook\Gma
 C:\Users\ga58lum\Documents\RS-Bots\C#\AutoClicker\globalhook2_src\GlobalHook\Gma.UserActivityMonitor\obj\Debug\Gma.UserActivityMonitor.dll
 C:\Users\ga58lum\Documents\RS-Bots\C#\AutoClicker\globalhook2_src\GlobalHook\Gma.UserActivityMonitor\obj\Debug\Gma.UserActivityMonitor.pdb
 C:\Users\ga58lum\Documents\RS-Bots\C#\AutoClicker\globalhook2_src\GlobalHook\Gma.UserActivityMonitor\obj\Debug\Gma.UserActivityMonitor.csprojAssemblyReference.cache
+C:\Users\Marcel Bruckner\Documents\RS-Bots\C#\AutoClicker\globalhook2_src\GlobalHook\Gma.UserActivityMonitor\bin\Debug\Gma.xml
+C:\Users\Marcel Bruckner\Documents\RS-Bots\C#\AutoClicker\globalhook2_src\GlobalHook\Gma.UserActivityMonitor\bin\Debug\Gma.UserActivityMonitor.dll
+C:\Users\Marcel Bruckner\Documents\RS-Bots\C#\AutoClicker\globalhook2_src\GlobalHook\Gma.UserActivityMonitor\bin\Debug\Gma.UserActivityMonitor.pdb
+C:\Users\Marcel Bruckner\Documents\RS-Bots\C#\AutoClicker\globalhook2_src\GlobalHook\Gma.UserActivityMonitor\bin\Debug\Antlr4.Runtime.dll
+C:\Users\Marcel Bruckner\Documents\RS-Bots\C#\AutoClicker\globalhook2_src\GlobalHook\Gma.UserActivityMonitor\bin\Debug\Antlr4.Runtime.xml
+C:\Users\Marcel Bruckner\Documents\RS-Bots\C#\AutoClicker\globalhook2_src\GlobalHook\Gma.UserActivityMonitor\obj\Debug\Gma.UserActivityMonitor.csprojAssemblyReference.cache
+C:\Users\Marcel Bruckner\Documents\RS-Bots\C#\AutoClicker\globalhook2_src\GlobalHook\Gma.UserActivityMonitor\obj\Debug\Gma.UserActivityMonitor.csproj.CoreCompileInputs.cache
+C:\Users\Marcel Bruckner\Documents\RS-Bots\C#\AutoClicker\globalhook2_src\GlobalHook\Gma.UserActivityMonitor\obj\Debug\Gma.UserActivityMonitor.csproj.CopyComplete
+C:\Users\Marcel Bruckner\Documents\RS-Bots\C#\AutoClicker\globalhook2_src\GlobalHook\Gma.UserActivityMonitor\obj\Debug\Gma.UserActivityMonitor.dll
+C:\Users\Marcel Bruckner\Documents\RS-Bots\C#\AutoClicker\globalhook2_src\GlobalHook\Gma.UserActivityMonitor\obj\Debug\Gma.UserActivityMonitor.pdb

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,26 +7,50 @@ using System.Threading.Tasks;
 
 namespace AutoClicker.Instructions
 {
-    /** An instruction that executes a keystroke. */
+    /// <summary>
+    /// An instruction that executes a keystroke
+    /// </summary>
+    /// <seealso cref="Instruction" />
     public class Keystroke : Instruction
     {
-        /** The key code of the key that will be executed */
+        /// <summary>
+        /// The key code of the key that will be executed
+        /// </summary>
         public VirtualKeyCode Key { get; set; }
 
-        /** constructor */
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Keystroke"/> class.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="delay">The delay.</param>
+        /// <param name="repetitions">The repetitions.</param>
+        /// <param name="speed">The speed.</param>
+        /// <param name="shift">if set to <c>true</c> [shift].</param>
+        /// <param name="ctrl">if set to <c>true</c> [control].</param>
+        /// <param name="alt">if set to <c>true</c> [alt].</param>
         public Keystroke(VirtualKeyCode key, IntTuple delay = null, IntTuple repetitions = null, DoubleTuple speed = null,
             bool shift = false, bool ctrl = false, bool alt = false
             ) : base(delay, repetitions, speed, shift, ctrl, alt)
         {
             Key = key;
         }
-        
-        /** constructor */
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Keystroke"/> class.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="instruction">The instruction.</param>
         public Keystroke(VirtualKeyCode key, Instruction instruction = null
             ) : this(key, instruction._delay, instruction._repetitions, instruction._speed, instruction.Shift, instruction.Ctrl, instruction.Alt)
         { }
 
-        /** equals */
+        /// <summary>
+        /// Determines whether the specified <see cref="System.Object" />, is equal to this instance.
+        /// </summary>
+        /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.
+        /// </returns>
         public override bool Equals(object obj)
         {
             return obj is Keystroke keystroke &&
@@ -33,7 +58,12 @@ namespace AutoClicker.Instructions
                    Key == keystroke.Key;
         }
 
-        /** hash code */
+        /// <summary>
+        /// Returns a hash code for this instance.
+        /// </summary>
+        /// <returns>
+        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+        /// </returns>
         public override int GetHashCode()
         {
             var hashCode = -229860446;
@@ -42,16 +72,29 @@ namespace AutoClicker.Instructions
             return hashCode;
         }
 
+        /// <summary>
+        /// Instruction specific execution.
+        /// </summary>
         internal override void SpecificExecute()
         {
             InputSimulator.KeyPress(Key, Hotkeys);
         }
 
+        /// <summary>
+        /// Specifies the name of the instruction
+        /// </summary>
+        /// <returns>
+        /// The name of the instruction
+        /// </returns>
         internal override string GetName()
         {
             return "keystroke";
         }
 
+        /// <summary>
+        /// Appends the key value pairs of specific properties of the instruction
+        /// </summary>
+        /// <param name="builder"></param>
         internal override void AppendSpecifics(StringBuilder builder)
         {
             Append(builder, "key", Key);

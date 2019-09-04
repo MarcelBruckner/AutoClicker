@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Enums;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -39,9 +40,8 @@ namespace AutoClicker.Instructions
 
         internal override void SpecificExecute()
         {
-            MoveTo(X, Y);
             InputSimulator.MouseDrag(Movement, Button,
-                Randomized, (int)Randomize(EndX), (int)Randomize(EndY), Randomize(Speed), Hotkeys);
+                (int)Randomize(X), (int)Randomize(Y), (int)Randomize(EndX), (int)Randomize(EndY), Randomize(Speed), Hotkeys);
         }        
 
         internal override string GetName()

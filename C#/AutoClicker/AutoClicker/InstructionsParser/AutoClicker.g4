@@ -41,6 +41,8 @@ ENDY				: E N D Y;
 HOVER				: H O V E R;
 CLICK               : C L I C K;
 DRAG				: D R A G;
+TEXT				: T E X T;
+INPUT				: I N P U T;
 BUTTON              : B U T T O N;
 LEFT                : L E F T;
 RIGHT               : R I G H T;
@@ -63,6 +65,7 @@ ALT					: A L T;
 EQ					: '=';
 SLASH				: '/';
 IS					: ':';
+QUOTE				: '"';
 TRUE				: T R U E;
 FALSE				: F A L S E;
 NUMBER				: DIGIT+;
@@ -71,8 +74,7 @@ DECIMAL             : NUMBER ([.,] NUMBER)? ;
 WORD				: (LOWERCASE | UPPERCASE | '_')+;
 WHITESPACE          : [ \t\r\n] -> skip;
 NEWLINE             : ('\r'? '\n' | '\r')+ ;
-TEXT                : ('['|'(') .*? (']'|')');
-
+STRING				: '"' ~('\r' | '\n' | '"')* '"' ;
 
 /*
  * Parser Rules
@@ -83,7 +85,7 @@ doubleTuple			: EQ DECIMAL (SLASH DECIMAL)?;
 trueFalse			: EQ (TRUE | FALSE);
 
 instructions        : (instruction? NEWLINE)*;
-instruction         : click | hover | drag | keystroke;
+instruction         : click | hover | drag | keystroke | text;
 
 commons				: (delay | repetitions | speed | shift | ctrl | alt);
 delay				: (DELAY intTuple);
@@ -104,5 +106,7 @@ endY				: (ENDY intTuple);
 button              : (BUTTON EQ (LEFT | RIGHT | MIDDLE));
 movement			: (MOVEMENT EQ (SINUS | SPRING | JUMP));
 
-keystroke			: KEYSTROKE IS (keyInput | commons)*;
 keyInput			: (KEY EQ WORD);
+keystroke			: KEYSTROKE IS (keyInput | commons)*;
+stringInput			: (EQ STRING);
+text				: TEXT IS (INPUT stringInput | commons)*;
