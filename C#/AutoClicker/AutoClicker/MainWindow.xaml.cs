@@ -23,43 +23,541 @@ namespace AutoClicker
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        #region Global Attributes
+        #region Global Menu Attributes        
+
+        /// <summary>
+        /// The global speed
+        /// </summary>
         private static double _globalSpeed = 1;
+
+        /// <summary>
+        /// The global random speed
+        /// </summary>
         private static double _globalRandomSpeed = 0;
+
+        /// <summary>
+        /// The global delay
+        /// </summary>
         private static int _globalDelay = 50;
+
+        /// <summary>
+        /// The global random delay
+        /// </summary>
         private static int _globalRandomDelay = 5;
+
+        /// <summary>
+        /// The global repetitions
+        /// </summary>
         private static int _globalRepetitions = 1;
+
+        /// <summary>
+        /// The global random repetitions
+        /// </summary>
         private static int _globalRandomRepetitions = 1;
+
+        /// <summary>
+        /// The global random x
+        /// </summary>
         private static int _globalRandomX = 0;
+
+        /// <summary>
+        /// The global random y
+        /// </summary>
         private static int _globalRandomY = 0;
+
+        /// <summary>
+        /// The global random drag x
+        /// </summary>
         private static int _globalRandomDragX = 0;
+
+        /// <summary>
+        /// The global random drag y
+        /// </summary>
         private static int _globalRandomDragY = 0;
+
+        /// <summary>
+        /// The global wheel
+        /// </summary>
         private static int _globalWheel = 0;
+
+        /// <summary>
+        /// The global random wheel
+        /// </summary>
         private static int _globalRandomWheel = 0;
+
+        /// <summary>
+        /// The global control
+        /// </summary>
         private static bool _globalCtrl;
+
+        /// <summary>
+        /// The global shift
+        /// </summary>
         private static bool _globalShift;
+
+        /// <summary>
+        /// The global alt
+        /// </summary>
         private static bool _globalAlt;
+
+        /// <summary>
+        /// The global movement
+        /// </summary>
         private static MovementType _globalMovement = MovementType.SPRING;
+
+        /// <summary>
+        /// The global button type
+        /// </summary>
         private static ButtonType _globalButtonType;
         #endregion
 
-        Random random = new Random();
+        #region Global Menu Properties
 
+        /// <summary>
+        /// Gets or sets the type of the global movement.
+        /// </summary>
+        /// <value>
+        /// The type of the global movement.
+        /// </value>
+        public static MovementType GlobalMovementType
+        {
+            get => _globalMovement;
+            set
+            {
+                _globalMovement = value;
+                if (MessageBoxYes())
+                {
+                    //foreach (Instruction instruction in Instructions)
+                    //{
+                    //    instruction.Movement = value;
+                    //}
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the type of the global button.
+        /// </summary>
+        /// <value>
+        /// The type of the global button.
+        /// </value>
+        public static ButtonType GlobalButtonType
+        {
+            get => _globalButtonType;
+            set
+            {
+                _globalButtonType = value;
+                if (MessageBoxYes())
+                {
+                    //foreach (Instruction instruction in Instructions)
+                    //{
+                    //    instruction.Movement = value;
+                    //}
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the global speed.
+        /// </summary>
+        /// <value>
+        /// The global speed.
+        /// </value>
+        public static double GlobalSpeed
+        {
+            get => _globalSpeed;
+            set
+            {
+                _globalSpeed = value;
+                if (MessageBoxYes())
+                {
+                    //foreach (Instruction instruction in Instructions)
+                    //{
+                    //    instruction.Speed = value;
+                    //}
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the global random speed.
+        /// </summary>
+        /// <value>
+        /// The global random speed.
+        /// </value>
+        public static double GlobalRandomSpeed
+        {
+            get => _globalRandomSpeed;
+            set
+            {
+                _globalRandomSpeed = value;
+                if (MessageBoxYes())
+                {
+                    //foreach (Instruction instruction in Instructions)
+                    //{
+                    //    instruction.RandomSpeed = value;
+                    //}
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the global delay.
+        /// </summary>
+        /// <value>
+        /// The global delay.
+        /// </value>
+        public static int GlobalDelay
+        {
+            get => _globalDelay;
+            set
+            {
+                _globalDelay = value;
+                if (MessageBoxYes())
+                {
+                    //foreach (Instruction instruction in Instructions)
+                    //{
+                    //    instruction.Delay = value;
+                    //}
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the global random delay.
+        /// </summary>
+        /// <value>
+        /// The global random delay.
+        /// </value>
+        public static int GlobalRandomDelay
+        {
+            get => _globalRandomDelay;
+            set
+            {
+                _globalRandomDelay = value;
+                if (MessageBoxYes())
+                {
+                    //foreach (Instruction instruction in Instructions)
+                    //{
+                    //    instruction.RandomDelay = value;
+                    //}
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the global repetitions.
+        /// </summary>
+        /// <value>
+        /// The global repetitions.
+        /// </value>
+        public static int GlobalRepetitions
+        {
+            get => _globalRepetitions;
+            set
+            {
+                _globalRepetitions = value;
+                if (MessageBoxYes())
+                {
+                    //foreach (Instruction instruction in Instructions)
+                    //{
+                    //    instruction.Repetitions = value;
+                    //}
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the global random repetitions.
+        /// </summary>
+        /// <value>
+        /// The global random repetitions.
+        /// </value>
+        public static int GlobalRandomRepetitions
+        {
+            get => _globalRandomRepetitions;
+            set
+            {
+                _globalRandomRepetitions = value;
+                if (MessageBoxYes())
+                {
+                    //foreach (Instruction instruction in Instructions)
+                    //{
+                    //    instruction.RandomRepetitions = value;
+                    //}
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the global random x.
+        /// </summary>
+        /// <value>
+        /// The global random x.
+        /// </value>
+        public static int GlobalRandomX
+        {
+            get => _globalRandomX;
+            set
+            {
+                _globalRandomX = value;
+                if (MessageBoxYes())
+                {
+                    //foreach (Instruction instruction in Instructions)
+                    //{
+                    //    instruction.RandomX = value;
+                    //}
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the global random y.
+        /// </summary>
+        /// <value>
+        /// The global random y.
+        /// </value>
+        public static int GlobalRandomY
+        {
+            get => _globalRandomY;
+            set
+            {
+                _globalRandomY = value;
+                if (MessageBoxYes())
+                {
+                    //foreach (Instruction instruction in Instructions)
+                    //{
+                    //    instruction.RandomY = value;
+                    //}
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the global random drag x.
+        /// </summary>
+        /// <value>
+        /// The global random drag x.
+        /// </value>
+        public static int GlobalRandomDragX
+        {
+            get => _globalRandomDragX;
+            set
+            {
+                _globalRandomDragX = value;
+                if (MessageBoxYes())
+                {
+                    //foreach (Instruction instruction in Instructions)
+                    //{
+                    //    instruction.RandomEndX = value;
+                    //}
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the global random drag y.
+        /// </summary>
+        /// <value>
+        /// The global random drag y.
+        /// </value>
+        public static int GlobalRandomDragY
+        {
+            get => _globalRandomDragY;
+            set
+            {
+                _globalRandomDragY = value;
+                if (MessageBoxYes())
+                {
+                    //foreach (Instruction instruction in Instructions)
+                    //{
+                    //    instruction.RandomEndY = value;
+                    //}
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the global wheel.
+        /// </summary>
+        /// <value>
+        /// The global wheel.
+        /// </value>
+        public static int GlobalWheel
+        {
+            get => _globalWheel;
+            set
+            {
+                _globalWheel = value;
+                if (MessageBoxYes())
+                {
+                    //foreach (Instruction instruction in Instructions)
+                    //{
+                    //    instruction.Wheel = value;
+                    //}
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the global random wheel.
+        /// </summary>
+        /// <value>
+        /// The global random wheel.
+        /// </value>
+        public static int GlobalRandomWheel
+        {
+            get => _globalRandomWheel;
+            set
+            {
+                _globalRandomWheel = value;
+                if (MessageBoxYes())
+                {
+                    //foreach (Instruction instruction in Instructions)
+                    //{
+                    //    instruction.RandomWheel = value;
+                    //}
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [global control].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [global control]; otherwise, <c>false</c>.
+        /// </value>
+        public static bool GlobalCtrl
+        {
+            get => _globalCtrl;
+            set
+            {
+                _globalCtrl = value;
+                if (MessageBoxYes())
+                {
+                    //foreach (Instruction instruction in Instructions)
+                    //{
+                    //    instruction.Ctrl = value;
+                    //}
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [global shift].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [global shift]; otherwise, <c>false</c>.
+        /// </value>
+        public static bool GlobalShift
+        {
+            get => _globalShift;
+            set
+            {
+                _globalShift = value;
+                if (MessageBoxYes())
+                {
+                    //foreach (Instruction instruction in Instructions)
+                    //{
+                    //    instruction.Shift = value;
+                    //}
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [global alt].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [global alt]; otherwise, <c>false</c>.
+        /// </value>
+        public static bool GlobalAlt
+        {
+            get => _globalAlt;
+            set
+            {
+                _globalAlt = value;
+                if (MessageBoxYes())
+                {
+                    //foreach (Instruction instruction in Instructions)
+                    //{
+                    //    instruction.Alt = value;
+                    //}
+                }
+            }
+        }
+        #endregion
+
+        /// <summary>
+        /// The random number generator
+        /// </summary>
+        private static Random random = new Random();
+
+        /// <summary>
+        /// The file filter
+        /// </summary>
         private const string FILE_FILTER = "AutoClicker Files (*.autocl)|*.autocl";
+
+        /// <summary>
+        /// The record hotkey
+        /// </summary>
         public static readonly System.Windows.Forms.Keys RECORD_HOTKEY = System.Windows.Forms.Keys.F8;
+
+        /// <summary>
+        /// The play hotkey
+        /// </summary>
         public static readonly System.Windows.Forms.Keys PLAY_HOTKEY = System.Windows.Forms.Keys.F7;
 
+
+        /// <summary>
+        /// The with delay
+        /// </summary>
         private bool _withDelay;
+
+        /// <summary>
+        /// The infinite
+        /// </summary>
         private bool _infinite = true;
+
+        /// <summary>
+        /// The is playing
+        /// </summary>
         private bool _isPlaying;
+
+        /// <summary>
+        /// The is recording
+        /// </summary>
         private bool _isRecording;
+
+        /// <summary>
+        /// All repetitions
+        /// </summary>
         private int allRepetitions;
+
+        /// <summary>
+        /// The repetitions
+        /// </summary>
         private int _repetitions;
 
+        /// <summary>
+        /// The recorder
+        /// </summary>
         private Recorder recorder;
 
-        private List<Instructions.Instruction> Instructions => InstructionsParser.InstructionsParser.Parse(StringManager.RichTextBoxToString(InstructionsTextBox));
+        /// <summary>
+        /// Gets the instructions.
+        /// </summary>
+        /// <value>
+        /// The instructions.
+        /// </value>
+        private List<Instructions.Instruction> Instructions => InstructionsParser.InstructionsParser.Parse(StringManager.ConvertRichTextBoxToString(InstructionsTextBox));
 
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is recording.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is recording; otherwise, <c>false</c>.
+        /// </value>
         public bool IsRecording
         {
             get => _isRecording;
@@ -82,6 +580,13 @@ namespace AutoClicker
                 OnPropertyChanged("IsRecording");
             }
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is playing.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is playing; otherwise, <c>false</c>.
+        /// </value>
         public bool IsPlaying
         {
             get => _isPlaying;
@@ -93,7 +598,7 @@ namespace AutoClicker
                 {
                     IsRecording = false;
                     //WindowState = WindowState.Minimized;
-                    OnPlay();
+                    RunInstructions();
                 }
                 else
                 {
@@ -105,7 +610,14 @@ namespace AutoClicker
                 OnPropertyChanged("IsPlaying");
             }
         }
-        public bool Infinite
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is infinite looping.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is infinite looping; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsInfiniteLooping
         {
             get => _infinite;
             set
@@ -115,7 +627,14 @@ namespace AutoClicker
                 OnPropertyChanged("Infinite");
             }
         }
-        public bool WithDelay
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is recording with delay.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is recording with delay; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsRecordingWithDelay
         {
             get => _withDelay;
             set
@@ -125,6 +644,13 @@ namespace AutoClicker
                 OnPropertyChanged("WithDelay");
             }
         }
+
+        /// <summary>
+        /// Gets or sets the repetitions.
+        /// </summary>
+        /// <value>
+        /// The repetitions.
+        /// </value>
         public int Repetitions
         {
             get => _repetitions;
@@ -135,270 +661,15 @@ namespace AutoClicker
             }
         }
 
-        #region Globals
-        public static MovementType GlobalMovementType
-        {
-            get => _globalMovement;
-            set
-            {
-                _globalMovement = value;
-                if (MessageBoxYes())
-                {
-                    //foreach (Instruction instruction in Instructions)
-                    //{
-                    //    instruction.Movement = value;
-                    //}
-                }
-            }
-        }
-        public static ButtonType GlobalButtonType
-        {
-            get => _globalButtonType;
-            set
-            {
-                _globalButtonType = value;
-                if (MessageBoxYes())
-                {
-                    //foreach (Instruction instruction in Instructions)
-                    //{
-                    //    instruction.Movement = value;
-                    //}
-                }
-            }
-        }
-        public static double GlobalSpeed
-        {
-            get => _globalSpeed;
-            set
-            {
-                _globalSpeed = value;
-                if (MessageBoxYes())
-                {
-                    //foreach (Instruction instruction in Instructions)
-                    //{
-                    //    instruction.Speed = value;
-                    //}
-                }
-            }
-        }
-        public static double GlobalRandomSpeed
-        {
-            get => _globalRandomSpeed;
-            set
-            {
-                _globalRandomSpeed = value;
-                if (MessageBoxYes())
-                {
-                    //foreach (Instruction instruction in Instructions)
-                    //{
-                    //    instruction.RandomSpeed = value;
-                    //}
-                }
-            }
-        }
-        public static int GlobalDelay
-        {
-            get => _globalDelay;
-            set
-            {
-                _globalDelay = value;
-                if (MessageBoxYes())
-                {
-                    //foreach (Instruction instruction in Instructions)
-                    //{
-                    //    instruction.Delay = value;
-                    //}
-                }
-            }
-        }
-        public static int GlobalRandomDelay
-        {
-            get => _globalRandomDelay;
-            set
-            {
-                _globalRandomDelay = value;
-                if (MessageBoxYes())
-                {
-                    //foreach (Instruction instruction in Instructions)
-                    //{
-                    //    instruction.RandomDelay = value;
-                    //}
-                }
-            }
-        }
-        public static int GlobalRepetitions
-        {
-            get => _globalRepetitions;
-            set
-            {
-                _globalRepetitions = value;
-                if (MessageBoxYes())
-                {
-                    //foreach (Instruction instruction in Instructions)
-                    //{
-                    //    instruction.Repetitions = value;
-                    //}
-                }
-            }
-        }
-        public static int GlobalRandomRepetitions
-        {
-            get => _globalRandomRepetitions;
-            set
-            {
-                _globalRandomRepetitions = value;
-                if (MessageBoxYes())
-                {
-                    //foreach (Instruction instruction in Instructions)
-                    //{
-                    //    instruction.RandomRepetitions = value;
-                    //}
-                }
-            }
-        }
-        public static int GlobalRandomX
-        {
-            get => _globalRandomX;
-            set
-            {
-                _globalRandomX = value;
-                if (MessageBoxYes())
-                {
-                    //foreach (Instruction instruction in Instructions)
-                    //{
-                    //    instruction.RandomX = value;
-                    //}
-                }
-            }
-        }
-        public static int GlobalRandomY
-        {
-            get => _globalRandomY;
-            set
-            {
-                _globalRandomY = value;
-                if (MessageBoxYes())
-                {
-                    //foreach (Instruction instruction in Instructions)
-                    //{
-                    //    instruction.RandomY = value;
-                    //}
-                }
-            }
-        }
-        public static int GlobalRandomDragX
-        {
-            get => _globalRandomDragX;
-            set
-            {
-                _globalRandomDragX = value;
-                if (MessageBoxYes())
-                {
-                    //foreach (Instruction instruction in Instructions)
-                    //{
-                    //    instruction.RandomEndX = value;
-                    //}
-                }
-            }
-        }
-        public static int GlobalRandomDragY
-        {
-            get => _globalRandomDragY;
-            set
-            {
-                _globalRandomDragY = value;
-                if (MessageBoxYes())
-                {
-                    //foreach (Instruction instruction in Instructions)
-                    //{
-                    //    instruction.RandomEndY = value;
-                    //}
-                }
-            }
-        }
-        public static int GlobalWheel
-        {
-            get => _globalWheel;
-            set
-            {
-                _globalWheel = value;
-                if (MessageBoxYes())
-                {
-                    //foreach (Instruction instruction in Instructions)
-                    //{
-                    //    instruction.Wheel = value;
-                    //}
-                }
-            }
-        }
-        public static int GlobalRandomWheel
-        {
-            get => _globalRandomWheel;
-            set
-            {
-                _globalRandomWheel = value;
-                if (MessageBoxYes())
-                {
-                    //foreach (Instruction instruction in Instructions)
-                    //{
-                    //    instruction.RandomWheel = value;
-                    //}
-                }
-            }
-        }
-        public static bool GlobalCtrl
-        {
-            get => _globalCtrl;
-            set
-            {
-                _globalCtrl = value;
-                if (MessageBoxYes())
-                {
-                    //foreach (Instruction instruction in Instructions)
-                    //{
-                    //    instruction.Ctrl = value;
-                    //}
-                }
-            }
-        }
-        public static bool GlobalShift
-        {
-            get => _globalShift;
-            set
-            {
-                _globalShift = value;
-                if (MessageBoxYes())
-                {
-                    //foreach (Instruction instruction in Instructions)
-                    //{
-                    //    instruction.Shift = value;
-                    //}
-                }
-            }
-        }
-        public static bool GlobalAlt
-        {
-            get => _globalAlt;
-            set
-            {
-                _globalAlt = value;
-                if (MessageBoxYes())
-                {
-                    //foreach (Instruction instruction in Instructions)
-                    //{
-                    //    instruction.Alt = value;
-                    //}
-                }
-            }
-        }
-        #endregion
-                    
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MainWindow"/> class.
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
             InstructionsTextBox.Document.Blocks.Clear();
-            new HotkeyControl(PLAY_HOTKEY, OnPlayHotkey);
-            new HotkeyControl(RECORD_HOTKEY, OnRecorderHotkey);
+            new HotkeyControl(PLAY_HOTKEY, OnPlayHotkeyPressed);
+            new HotkeyControl(RECORD_HOTKEY, OnRecorderHotkeyPressed);
             recorder = new Recorder(this);
         }
 
@@ -413,7 +684,10 @@ namespace AutoClicker
 
         #region Buttons
 
-        public void OnRecorderHotkey()
+        /// <summary>
+        /// Called when recorder hotkey is pressed.
+        /// </summary>
+        public void OnRecorderHotkeyPressed()
         {
             if (IsPlaying)
             {
@@ -423,7 +697,10 @@ namespace AutoClicker
             IsRecording = !IsRecording;
         }
 
-        public void OnPlayHotkey()
+        /// <summary>
+        /// Called when play hotkey is pressed.
+        /// </summary>
+        public void OnPlayHotkeyPressed()
         {
             if (IsRecording)
             {
@@ -433,7 +710,10 @@ namespace AutoClicker
             IsPlaying = !IsPlaying;
         }
 
-        private void OnPlay()
+        /// <summary>
+        /// Runs the instructions.
+        /// </summary>
+        private void RunInstructions()
         {
             StopAll();
             allRepetitions = Repetitions;
@@ -445,7 +725,7 @@ namespace AutoClicker
             List<Instructions.Instruction> runningInstructions = Instructions;
             bw.DoWork += (sender, args) =>
             {
-                for (int i = 0; Infinite || i < allRepetitions; i++)
+                for (int i = 0; IsInfiniteLooping || i < allRepetitions; i++)
                 {
                     for (int j = 0; j < runningInstructions.Count; j++)
                     {
@@ -524,6 +804,12 @@ namespace AutoClicker
         #endregion
 
         #region TextBoxes
+
+        /// <summary>
+        /// Handles the TextChanged event of the RepetitionsTextBox control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="TextChangedEventArgs"/> instance containing the event data.</param>
         private void RepetitionsTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             TextBox box = (TextBox)sender;
@@ -538,6 +824,10 @@ namespace AutoClicker
             Repetitions = int.Parse(box.Text);
         }
 
+        /// <summary>
+        /// Removes the not number characters.
+        /// </summary>
+        /// <param name="textBox">The text box.</param>
         private void RemoveNotNumberCharacters(TextBox textBox)
         {
             int cursorPosition = textBox.SelectionStart;
@@ -557,6 +847,11 @@ namespace AutoClicker
             SetCursorPosititon(textBox, cursorPosition);
         }
 
+        /// <summary>
+        /// Sets the cursor posititon.
+        /// </summary>
+        /// <param name="textBox">The text box.</param>
+        /// <param name="position">The position.</param>
         private void SetCursorPosititon(TextBox textBox, int position)
         {
             textBox.SelectionStart = position;
@@ -565,6 +860,12 @@ namespace AutoClicker
         #endregion
 
         #region File Menu
+
+        /// <summary>
+        /// Handles the Click event of the Open control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void Open_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog()
@@ -579,13 +880,7 @@ namespace AutoClicker
                     {
                         StopAll();
                         string script = File.ReadAllText(dialog.FileName);
-                        List<Instruction> read = JsonConvert.DeserializeObject<List<Instruction>>(script);
-                        //Instructions.Clear();
-                        //read.ForEach(instruction =>
-                        //{
-                        //    instruction.IsRunning = false;
-                        //    Instructions.Add(instruction);
-                        //});
+                        InstructionsTextBox.Document.Blocks.Add(StringManager.ConvertStringToBlock(script));
                         break;
                     }
                     catch
@@ -600,6 +895,11 @@ namespace AutoClicker
             }
         }
 
+        /// <summary>
+        /// Handles the Click event of the Save control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void Save_Click(object sender, RoutedEventArgs e)
         {
             SaveFileDialog dialog = new SaveFileDialog()
@@ -611,8 +911,7 @@ namespace AutoClicker
                 try
                 {
                     StopAll();
-                    //string json = JsonConvert.SerializeObject(Instructions);
-                    //File.WriteAllText(dialog.FileName, json);
+                    File.WriteAllText(dialog.FileName, StringManager.ConvertRichTextBoxToString(InstructionsTextBox));
                 }
                 catch
                 {
@@ -621,6 +920,11 @@ namespace AutoClicker
             }
         }
 
+        /// <summary>
+        /// Handles the Click event of the Close control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void Close_Click(object sender, RoutedEventArgs e)
         {
             Environment.Exit(0);

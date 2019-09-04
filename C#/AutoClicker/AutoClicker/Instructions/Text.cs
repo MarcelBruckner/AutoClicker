@@ -98,7 +98,7 @@ namespace AutoClicker.Instructions
                 {
                     Console.WriteLine(c);
                     bool upper = char.IsUpper(c);
-                    if (char.IsLetterOrDigit(c) || char.IsWhiteSpace(c))
+                    //if (char.IsLetterOrDigit(c) || char.IsWhiteSpace(c))
                     {
                         keys.Add(new KeyValuePair<VirtualKeyCode, bool>(VirtualKeyCode.NONAME.FromString(c + ""), upper));
                     }
