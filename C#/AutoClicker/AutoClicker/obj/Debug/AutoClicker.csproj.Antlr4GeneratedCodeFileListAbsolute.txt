@@ -1,0 +1,6 @@
+C:\Users\Marcel Bruckner\Documents\RS-Bots\C#\AutoClicker\AutoClicker\obj\Debug\AutoClickerLexer.cs
+C:\Users\Marcel Bruckner\Documents\RS-Bots\C#\AutoClicker\AutoClicker\obj\Debug\AutoClickerParser.cs
+C:\Users\Marcel Bruckner\Documents\RS-Bots\C#\AutoClicker\AutoClicker\obj\Debug\AutoClickerListener.cs
+C:\Users\Marcel Bruckner\Documents\RS-Bots\C#\AutoClicker\AutoClicker\obj\Debug\AutoClickerBaseListener.cs
+C:\Users\Marcel Bruckner\Documents\RS-Bots\C#\AutoClicker\AutoClicker\obj\Debug\AutoClickerVisitor.cs
+C:\Users\Marcel Bruckner\Documents\RS-Bots\C#\AutoClicker\AutoClicker\obj\Debug\AutoClickerBaseVisitor.cs
