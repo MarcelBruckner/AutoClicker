@@ -14,7 +14,6 @@ namespace AutoClicker.Instructions
     /// </summary>
     public class Instruction
     {
-
         /// <summary>
         /// A random number generator
         /// </summary>
@@ -37,13 +36,16 @@ namespace AutoClicker.Instructions
         /// A tuple for the repetitions for how often the instruction will be executed
         /// </summary>
         public IntTuple _repetitions;
-        public IntTuple Repetitions { get
+        public IntTuple Repetitions
+        {
+            get
             {
-                IntTuple reps = _repetitions ?? new IntTuple(MainWindow.GlobalRepetitions);
-                _repetitions = reps;
+                IntTuple repetitions = _repetitions ?? new IntTuple(MainWindow.GlobalRepetitions);
+                _repetitions = repetitions;
                 return _repetitions;
             }
-            set => _repetitions = value; }
+            set => _repetitions = value;
+        }
 
         /// <summary>
         /// A tuple for the speed of the execution
@@ -188,6 +190,16 @@ namespace AutoClicker.Instructions
             return Shift == other.Shift &&
                 Alt == other.Alt &&
                 Ctrl == other.Alt;
+        }
+
+        /// <summary>
+        /// Determines whether the specified <see cref="System.Object" />, resembles this instance.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <returns></returns>
+        public virtual bool Resembles(object obj)
+        {
+            return false;
         }
 
         /// <summary>

@@ -63,6 +63,25 @@ namespace AutoClicker.Instructions
         }
 
         /// <summary>
+        /// Determines whether the specified <see cref="System.Object" />, resembles this instance.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <returns></returns>
+        public override bool Resembles(object obj)
+        {
+            return obj is Text;
+        }
+    
+        /// <summary>
+        /// Appends the specified other string.
+        /// </summary>
+        /// <param name="other">The other.</param>
+        public void Append(string other)
+        {
+            Input += other;
+        }
+
+        /// <summary>
         /// Returns a hash code for this instance.
         /// </summary>
         /// <returns>
@@ -81,7 +100,7 @@ namespace AutoClicker.Instructions
         /// </summary>
         internal override void SpecificExecute()
         {
-            InputSimulator.Text(Converted, Hotkeys);
+            InputSimulator.Text(Input, Hotkeys);
         }
 
         /// <summary>

@@ -95,7 +95,7 @@ namespace AutoClicker.Instructions
         /// </summary>
         internal override void SpecificExecute()
         {
-            InputSimulator.MouseDrag(MainWindow.GlobalMovementType, Button,
+            InputSimulator.MouseDrag(MainWindow.GlobalMovementType, Button ?? MainWindow.GlobalButtonType,
                 (int)Randomize(X), (int)Randomize(Y), (int)Randomize(EndX), (int)Randomize(EndY), Randomize(Speed), Hotkeys);
         }
 

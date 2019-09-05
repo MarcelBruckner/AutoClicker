@@ -16,8 +16,7 @@ namespace AutoClicker.Instructions
         /// The button that gets clicked
         /// </summary>
         /// <seealso cref="ButtonType"/>
-        private ButtonType? _button;
-        public ButtonType Button { get => _button ?? MainWindow.GlobalButtonType; set => _button = value; }
+        public ButtonType? Button { get; set; }
 
         #region Constructors
 
@@ -72,7 +71,7 @@ namespace AutoClicker.Instructions
             bool shift = false, bool ctrl = false, bool alt = false
             ) : base(x, y, movement, delay, repetitions, speed, shift, ctrl, alt)
         {
-            _button = button;
+            Button = button;
         }
 
         #endregion
@@ -82,7 +81,7 @@ namespace AutoClicker.Instructions
         /// </summary>
         internal override void MouseSpecificExecute()
         {
-            InputSimulator.MouseClick(Movement ?? MainWindow.GlobalMovementType, Button, RandomizedPosition, Randomize(Speed), Hotkeys);
+            InputSimulator.MouseClick(Movement ?? MainWindow.GlobalMovementType, Button ?? MainWindow.GlobalButtonType, RandomizedPosition, Randomize(Speed), Hotkeys);
         }
 
         /// <summary>
@@ -103,7 +102,7 @@ namespace AutoClicker.Instructions
         internal override void AppendSpecifics(StringBuilder builder)
         {
             base.AppendSpecifics(builder);
-            Append(builder, "button", _button);
+            Append(builder, "button", Button);
         }
 
         /// <summary>
@@ -122,17 +121,16 @@ namespace AutoClicker.Instructions
         /// <returns></returns>
         public int Distance(Click other) => (int)Math.Sqrt(Math.Pow(X.Value - other.X.Value, 2) + Math.Pow(Y.Value - other.Y.Value, 2));
 
+        
+
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object" />, is equal to this instance.
+        /// Determines whether the specified <see cref="System.Object" />, resembles this instance.
         /// </summary>
-        /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
-        /// <returns>
-        ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.
-        /// </returns>
-        public override bool Equals(object obj)
+        /// <param name="obj">The object.</param>
+        /// <returns></returns>
+        public override bool Resembles(object obj)
         {
             return obj is Click click &&
-                   base.Equals(obj) &&
                    IsSameClick(click);
         }
 
@@ -146,8 +144,23 @@ namespace AutoClicker.Instructions
         {
             var hashCode = 112211556;
             hashCode = hashCode * -1521134295 + base.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<ButtonType?>.Default.GetHashCode(_button);
+            hashCode = hashCode * -1521134295 + EqualityComparer<ButtonType?>.Default.GetHashCode(Button);
             return hashCode;
-        }        
+        }
+
+        /// <summary>
+        /// Determines whether the specified <see cref="System.Object" />, is equal to this instance.
+        /// </summary>
+        /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.
+        /// </returns>
+        public override bool Equals(object obj)
+        {
+            return obj is Click click &&
+                   base.Equals(obj) &&
+                   EqualityComparer<ButtonType?>.Default.Equals(Button, click.Button) &&
+                   Button == click.Button;
+        }
     }
 }

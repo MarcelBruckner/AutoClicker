@@ -442,6 +442,20 @@ namespace AutoClicker
             }
         }
 
+
+        /// <summary>
+        /// Inputs the specified text inputs.
+        /// </summary>
+        /// <param name="inputs">The inputs.</param>
+        /// <param name="hotkeys">The hotkeys.</param>
+        public static void Text(string inputs, params VirtualKeyCode[] hotkeys)
+        {
+            KeyDown(hotkeys);
+            WindowsInput.InputSimulator simulator = new WindowsInput.InputSimulator();
+            simulator.Keyboard.TextEntry(inputs);
+            KeyUp(hotkeys);
+        }
+
         /// <summary>
         /// Moves the mousewheel.
         /// </summary>

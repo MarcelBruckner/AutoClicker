@@ -11,6 +11,7 @@ using System.Collections.ObjectModel;
 using System.Data;
 using AutoClicker.Instructions;
 using Enums;
+using AutoClicker.Enums;
 
 namespace AutoClicker
 {
@@ -21,9 +22,14 @@ namespace AutoClicker
     class Recorder : IKeyboardListener
     {
         /// <summary>
-        /// The repetition maximum delay
+        /// The mouse repetition maximum delay
         /// </summary>
-        private const int REPETITION_MAX_DELAY = 200;
+        private const int MOUSE_REPETITION_MAX_DELAY = 200;
+
+        /// <summary>
+        /// The keyboard repetition maximum delay
+        /// </summary>
+        private const int KEYBOARD_REPETITION_MAX_DELAY = 1000;
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is recording.
@@ -67,7 +73,7 @@ namespace AutoClicker
         public bool IsRecordingWithDelay { get; set; }
 
         //private int current = -1;
-        
+
         /// <summary>
         /// The current instruction
         /// </summary>
@@ -136,11 +142,28 @@ namespace AutoClicker
         /// <param name="e">The <see cref="KeyEventArgs"/> instance containing the event data.</param>
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
-            Keys key = e.KeyCode;
+            Instructions.Instruction newInstruction;
 
-            if(key == MainWindow.RECORD_HOTKEY || key == MainWindow.PLAY_HOTKEY)
+            Keys key = e.KeyCode;
+            Console.WriteLine(key);
+            if (key == MainWindow.RECORD_HOTKEY || key == MainWindow.PLAY_HOTKEY)
             {
                 return;
+            }
+
+            string converted = WindowsKeyExtension.ToLiteral(WindowsKeyExtension.KeyCodeToUnicode(key));
+
+            if (isCtrlDown || isAltDown || converted.Length <= 0 || 
+                !((converted[0] >= 'A' && converted[0] <= 'Z') ||
+                (converted[0] >= 'a' && converted[0] <= 'z') ||
+                (converted[0] >= '0' && converted[0] <= '9' && !isShiftDown)))
+            {
+                VirtualKeyCode virtualKeyCode = (VirtualKeyCode)(int)key;
+                newInstruction = new Keystroke(virtualKeyCode, shift: isShiftDown, ctrl: isCtrlDown, alt: isAltDown);
+            }
+            else
+            {
+                newInstruction = new Text(converted, ctrl: isCtrlDown, alt: isAltDown);
             }
 
             bool hotkeyChanged = SetHotkeys(key, true);
@@ -149,9 +172,7 @@ namespace AutoClicker
                 return;
             }
 
-            //TODO Keyboard
-            Keystroke instruction = new Keystroke((VirtualKeyCode)(int)key, shift: isShiftDown, ctrl: isCtrlDown, alt: isAltDown);
-            AddOrIncrement(instruction);
+            AddOrIncrement(newInstruction);
         }
 
         /// <summary>
@@ -291,18 +312,18 @@ namespace AutoClicker
             {
                 currentInstruction = instruction;
             }
-            else if (instruction.Equals(currentInstruction) && delay < REPETITION_MAX_DELAY)
+            else if (instruction.Resembles(currentInstruction) &&
+                (instruction is Hover && delay < MOUSE_REPETITION_MAX_DELAY ||
+                instruction is Keystroke && delay < KEYBOARD_REPETITION_MAX_DELAY))
             {
-                // TODO Wheel increment
-                //if (instruction.Type == InstructionType.WHEEL)
-                //{
-                //    current.Wheel += instruction.Wheel;
-                //}
-                //else
-                {
-                    currentInstruction.Repetitions.Inc();
-                }
+                currentInstruction.Repetitions.Inc();
             }
+            else if (instruction.Resembles(currentInstruction) &&
+                instruction is Text text && delay < KEYBOARD_REPETITION_MAX_DELAY)
+            {
+                ((Text)currentInstruction).Append(text.Input);
+            }
+
             else
             {
                 if (IsRecordingWithDelay)
@@ -317,8 +338,6 @@ namespace AutoClicker
 
             return true;
         }
-
-
         #endregion
     }
 }

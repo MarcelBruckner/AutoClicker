@@ -59,6 +59,17 @@ namespace AutoClicker.Instructions
         }
 
         /// <summary>
+        /// Determines whether the specified <see cref="System.Object" />, resembles this instance.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <returns></returns>
+        public override bool Resembles(object obj)
+        {
+            return obj is Keystroke keystroke &&
+                     Key == keystroke.Key;
+        }
+
+        /// <summary>
         /// Returns a hash code for this instance.
         /// </summary>
         /// <returns>
@@ -88,7 +99,7 @@ namespace AutoClicker.Instructions
         /// </returns>
         internal override string GetName()
         {
-            return "keystroke";
+            return "key";
         }
 
         /// <summary>
