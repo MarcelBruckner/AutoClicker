@@ -51,6 +51,8 @@ MOVEMENT			: M O V E M E N T;
 SINUS				: S I N U S;
 SPRING				: S P R I N G;
 JUMP				: J U M P;
+WHEEL				: W H E E L;
+SCROLL				: S C R O L L;
 
 KEYSTROKE			: K E Y S T R O K E;
 KEY					: K E Y;
@@ -68,7 +70,7 @@ IS					: ':';
 QUOTE				: '"';
 TRUE				: T R U E;
 FALSE				: F A L S E;
-DECIMAL             : DIGIT+ ([.,] DIGIT+)? ;
+DECIMAL             : ('-' | '+')? DIGIT+ ([.,] DIGIT+)? ;
 // WORD                : (LOWERCASE | UPPERCASE | '_')+ ;
 WORD				: (LOWERCASE | UPPERCASE | '_')+;
 WHITESPACE          : [ \t\r\n] -> skip;
@@ -78,12 +80,11 @@ STRING				: '"' ~('\r' | '\n' | '"')* '"' ;
 /*
  * Parser Rules
  */
-
 decimalTuple		: EQ DECIMAL (SLASH DECIMAL)?;
 trueFalse			: EQ (TRUE | FALSE);
 
 instructions        : (instruction? NEWLINE)*;
-instruction         : click | hover | drag | keystroke | text;
+instruction         : click | hover | drag | keystroke | text | wheel;
 
 commons				: (delay | repetitions | speed | shift | ctrl | alt);
 delay				: (DELAY decimalTuple);
@@ -92,10 +93,12 @@ speed				: (SPEED decimalTuple);
 shift				: (SHIFT trueFalse);
 ctrl				: (CTRL trueFalse);
 alt					: (ALT trueFalse);
+scroll				: (SCROLL decimalTuple);
 
 hover				: HOVER IS (xPos | yPos | movement | commons)*;
 click               : CLICK IS (button | xPos | yPos | movement | commons)*; 
 drag				: DRAG IS (endX | endY | button | xPos | yPos | movement | commons)*;
+wheel				: WHEEL IS (scroll | xPos | yPos | movement | commons)*;
 
 xPos				: (X decimalTuple);
 yPos				: (Y decimalTuple);

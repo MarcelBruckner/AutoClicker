@@ -15,12 +15,7 @@ namespace AutoClicker.InstructionsParser
         /// The int tuple visitor
         /// </summary>
         private AutoClickerDecimalTupleVisitor decimalTupleVisitor = new AutoClickerDecimalTupleVisitor();
-
-        ///// <summary>
-        ///// The double tuple visitor
-        ///// </summary>
-        //private AutoClickerDoubleTupleVisitor doubleTupleVisitor = new AutoClickerDoubleTupleVisitor();
-
+        
         /// <summary>
         /// The enum visitor
         /// </summary>
@@ -78,6 +73,8 @@ namespace AutoClicker.InstructionsParser
 
             return new Hover(x, y, movement, commons);
         }
+
+        
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="M:AutoClicker.AutoClickerParser.click" />.
@@ -163,6 +160,44 @@ namespace AutoClicker.InstructionsParser
             }
 
             return new Drag(x, y, endX, endY, button, movement, commons);
+        }
+
+        /// <summary>
+        /// Visit a parse tree produced by <see cref="M:AutoClicker.AutoClickerParser.wheel" />.
+        /// <para>
+        /// The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+        /// on <paramref name="context" />.
+        /// </para>
+        /// </summary>
+        /// <param name="context">The parse tree.</param>
+        /// <returns></returns>
+        /// <return>The visitor result.</return>
+        public override Instructions.Instruction VisitWheel([NotNull] AutoClickerParser.WheelContext context)
+        {
+            DecimalTuple x = new DecimalTuple(0);
+            DecimalTuple y = new DecimalTuple(0);
+            MovementType? movement = null;
+            Instructions.Instruction commons = Commons(context.commons());
+
+            DecimalTuple scroll = new DecimalTuple(0);
+            if (context.scroll() != null && context.scroll().Count() > 0)
+            {
+                scroll = decimalTupleVisitor.Visit(context.scroll(0)) ?? scroll;
+            }
+            if (context.xPos() != null && context.xPos().Count() > 0)
+            {
+                x = decimalTupleVisitor.Visit(context.xPos(0)) ?? x;
+            }
+            if (context.yPos() != null && context.yPos().Count() > 0)
+            {
+                y = decimalTupleVisitor.Visit(context.yPos(0)) ?? y;
+            }
+            if (context.movement() != null && context.movement().Count() > 0)
+            {
+                movement = movementTypeVisitor.Visit(context.movement(0));
+            }
+
+            return new Wheel(scroll, x, y, movement, commons);
         }
 
         /// <summary>

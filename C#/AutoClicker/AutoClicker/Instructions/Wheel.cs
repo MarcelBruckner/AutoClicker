@@ -7,8 +7,18 @@ using System.Threading.Tasks;
 
 namespace AutoClicker.Instructions
 {
+    /// <summary>
+    /// Wheel scroll instruction
+    /// </summary>
+    /// <seealso cref="AutoClicker.Instructions.Hover" />
     public class Wheel : Hover
     {
+        /// <summary>
+        /// Gets or sets the scroll distance.
+        /// </summary>
+        /// <value>
+        /// The scroll distance.
+        /// </value>
         public DecimalTuple ScrollDistance { get; set; }
 
         /// <summary>
