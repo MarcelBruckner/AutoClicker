@@ -33,7 +33,14 @@ namespace AutoClicker.InstructionsParser
             List<Instructions.Instruction> instructions = new List<Instructions.Instruction>();
             foreach (var instruction in context.instruction())
             {
-                instructions.Add(instructionVisitor.Visit(instruction));
+                try
+                {
+                    instructions.Add(instructionVisitor.Visit(instruction));
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
 
             return instructions;

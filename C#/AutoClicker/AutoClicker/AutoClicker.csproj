@@ -101,7 +101,6 @@
     <Compile Include="InstructionsParser\AutoClickerTextInputVisitor.cs" />
     <Compile Include="InstructionsParser\AutoClickerTrueFalseVisitor.cs" />
     <Compile Include="Cursor.cs" />
-    <Compile Include="Enums\HotkeyStates.cs" />
     <Compile Include="Converters\ComboBoxConverter.cs" />
     <Compile Include="Converters\ValueToEqualsParameterConverter.cs" />
     <Compile Include="Enums\MovementType.cs" />

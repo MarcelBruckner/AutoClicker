@@ -256,26 +256,6 @@ namespace AutoClicker
         {
             GlobalMovementType = ConvertSender<MovementType>(sender);
         }
-        private void Speed_Click(object sender, RoutedEventArgs e)
-        {
-            GlobalSpeed = ConvertSender<double>(sender);
-        }
-
-        private void Alt_Click(object sender, RoutedEventArgs e)
-        {
-            HotkeyState state = ConvertSender<HotkeyState>(sender);
-            GlobalAlt = state == HotkeyState.ON;
-        }
-        private void Shift_Click(object sender, RoutedEventArgs e)
-        {
-            HotkeyState state = ConvertSender<HotkeyState>(sender);
-            GlobalShift = state == HotkeyState.ON;
-        }
-        private void Ctrl_Click(object sender, RoutedEventArgs e)
-        {
-            HotkeyState state = ConvertSender<HotkeyState>(sender);
-            GlobalCtrl = state == HotkeyState.ON;
-        }
 
         private static T ConvertSender<T>(object sender)
         {

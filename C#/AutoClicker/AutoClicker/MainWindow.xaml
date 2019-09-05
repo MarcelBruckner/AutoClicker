@@ -38,11 +38,6 @@
                 <x:Type Type="enums:MovementType"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
-        <ObjectDataProvider x:Key="HotkeyStates" MethodName="GetValues" ObjectType="{x:Type core:Enum}">
-            <ObjectDataProvider.MethodParameters>
-                <x:Type Type="enums:HotkeyState"/>
-            </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
     </Window.Resources>
 
     <DockPanel LastChildFill="True">
@@ -194,27 +189,18 @@
                 </MenuItem>
                 <Separator/>
                 <MenuItem Header="_Hotkeys">
-                    <MenuItem Header="Shift" ItemsSource="{Binding Source={StaticResource HotkeyStates}}">
-                        <MenuItem.ItemContainerStyle>
-                            <Style TargetType="MenuItem">
-                                <EventSetter Event="Click" Handler="Shift_Click" />
-                            </Style>
-                        </MenuItem.ItemContainerStyle>
-                    </MenuItem>
-                    <MenuItem Header="Ctrl" ItemsSource="{Binding Source={StaticResource HotkeyStates}}">
-                        <MenuItem.ItemContainerStyle>
-                            <Style TargetType="MenuItem">
-                                <EventSetter Event="Click" Handler="Ctrl_Click" />
-                            </Style>
-                        </MenuItem.ItemContainerStyle>
-                    </MenuItem>
-                    <MenuItem Header="Alt" ItemsSource="{Binding Source={StaticResource HotkeyStates}}">
-                        <MenuItem.ItemContainerStyle>
-                            <Style TargetType="MenuItem">
-                                <EventSetter Event="Click" Handler="Alt_Click" />
-                            </Style>
-                        </MenuItem.ItemContainerStyle>
-                    </MenuItem>
+                    <Grid Width="100">
+                        <TextBlock Text="Shift" Grid.Column="0" Grid.ColumnSpan="2"/>
+                        <ToggleButton Margin="10,0,0,0" Padding="1" Width="15" HorizontalAlignment="Right" Grid.Column="1" IsChecked="{Binding Path=GlobalShift, Mode=TwoWay}"/>
+                    </Grid>
+                    <Grid Width="100">
+                        <TextBlock Text="Ctrl" Grid.Column="0" Grid.ColumnSpan="2"/>
+                        <ToggleButton Margin="10,0,0,0" Padding="1" Width="15" HorizontalAlignment="Right" Grid.Column="1" IsChecked="{Binding Path=GlobalCtrl, Mode=TwoWay}"/>
+                    </Grid>
+                    <Grid Width="100">
+                        <TextBlock Text="Alt" Grid.Column="0" Grid.ColumnSpan="2"/>
+                        <ToggleButton Margin="10,0,0,0" Padding="1" Width="15" HorizontalAlignment="Right" Grid.Column="1" IsChecked="{Binding Path=GlobalAlt, Mode=TwoWay}"/>
+                    </Grid>
                 </MenuItem>
             </MenuItem>
 
@@ -289,7 +275,7 @@
             <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                 <TextBox x:Name="RepetitionsTextBox" IsEnabled="False" TextChanged="RepetitionsTextBox_TextChanged" Text="5" MaxLength="5" VerticalAlignment="Center" Width="40" TextAlignment="Right" Padding="2"/>
 
-                <ToggleButton x:Name="InfiniteButton" BorderThickness="0" Background="Transparent" IsChecked="{Binding ElementName=mainWindow, Path=Infinite, Mode=TwoWay}" Padding="2" Margin="5 0" Width="35" Height="35">
+                <ToggleButton x:Name="InfiniteButton" BorderThickness="0" Background="Transparent" IsChecked="{Binding Path=IsInfiniteLooping, Mode=TwoWay}" Padding="2" Margin="5 0" Width="35" Height="35">
                     <Image Source="Images/infinity.png" RenderOptions.BitmapScalingMode="HighQuality">
                         <Image.ToolTip>
                             <ToolTip>
