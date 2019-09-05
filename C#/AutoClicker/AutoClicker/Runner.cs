@@ -23,7 +23,7 @@ namespace AutoClicker
         /// <value>
         /// The running instruction.
         /// </value>
-        private Instructions.Instruction RunningInstruction { get; set; }
+        private Instructions.Instruction RunningInstruction { get; set; } = new Instructions.Instruction();
 
         /// <summary>
         /// Gets or sets the repetitions.
@@ -147,6 +147,7 @@ namespace AutoClicker
 
         public void Stop()
         {
+            RunningInstruction.IsRunning = false;
             IsPlaying = false;
         }
     }
