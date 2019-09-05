@@ -229,7 +229,7 @@ namespace AutoClicker
         {
             ButtonType button = GetButton(e.Button);
             Point p = Cursor.Point;
-            mouseDownPosition = new Click(p.X, p.Y, button: button, shift: isShiftDown, ctrl: isCtrlDown, alt: isAltDown);
+            mouseDownPosition = new Click(x: p.X, y: p.Y, button: button, shift: isShiftDown, ctrl: isCtrlDown, alt: isAltDown);
         }
 
         /// <summary>
@@ -241,7 +241,7 @@ namespace AutoClicker
         {
             ButtonType button = GetButton(e.Button);
             Point p = Cursor.Point;
-            Click end = new Click(p.X, p.Y, button: button, shift: isShiftDown, ctrl: isCtrlDown, alt: isAltDown);
+            Click end = new Click(x: p.X, y: p.Y, button: button, shift: isShiftDown, ctrl: isCtrlDown, alt: isAltDown);
 
             Click start = mouseDownPosition as Click;
             if (start != null && start.Button == end.Button && end.Distance(start) > Hover.MAX_UNCERTAINTY)
@@ -261,9 +261,8 @@ namespace AutoClicker
         /// <param name="e">The <see cref="MouseEventArgs"/> instance containing the event data.</param>
         private void OnMouseWheel(object sender, MouseEventArgs e)
         {
-            // TODO Wheel
-            //Instruction instruction = new Instruction(e.Delta, e.X, e.Y, isShiftDown, isCtrlDown, isAltDown);
-            //AddOrIncrement(instruction);
+            Wheel instruction = new Wheel(scrollDistance: e.Delta, x: e.X, y: e.Y, shift: isShiftDown, ctrl: isCtrlDown, alt: isAltDown);
+            AddOrIncrement(instruction);
         }
 
         /// <summary>
@@ -317,6 +316,11 @@ namespace AutoClicker
                 currentInstruction = instruction;
             }
             else if (instruction.Resembles(currentInstruction) &&
+                instruction is Wheel wheel && delay < MOUSE_REPETITION_MAX_DELAY)
+            {
+                ((Wheel)currentInstruction).ScrollDistance.Inc(wheel.ScrollDistance.Value);
+            }
+            else if (instruction.Resembles(currentInstruction) &&
                 (instruction is Hover && delay < MOUSE_REPETITION_MAX_DELAY ||
                 instruction is Keystroke && delay < KEYBOARD_REPETITION_MAX_DELAY))
             {
@@ -327,12 +331,11 @@ namespace AutoClicker
             {
                 ((Text)currentInstruction).Append(text.Input);
             }
-
             else
             {
                 if (IsRecordingWithDelay)
                 {
-                    currentInstruction.Delay.Value = delay;
+                    currentInstruction.Delay().Inc(delay);
                 }
                 currentInstruction = instruction;
                 currentRun = null;

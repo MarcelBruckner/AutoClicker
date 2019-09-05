@@ -29,18 +29,29 @@ namespace AutoClicker.Instructions
         /// <summary>
         /// A tuple for the delay after the execution 
         /// </summary>
-        public IntTuple _delay;
-        public IntTuple Delay { get => _delay ?? new IntTuple(MainWindow.GlobalDelay); set => _delay = value; }
+        private DecimalTuple _delay;
+        public DecimalTuple Delay(bool valueNeeded = false)
+        {
+            if (!valueNeeded)
+            {
+                return _delay;
+            }
+            return _delay ?? new DecimalTuple(MainWindow.GlobalDelay, MainWindow.GlobalRandomDelay);
+        }
+        public void Delay(DecimalTuple delay)
+        {
+            _delay = delay;
+        }
 
         /// <summary>
         /// A tuple for the repetitions for how often the instruction will be executed
         /// </summary>
-        public IntTuple _repetitions;
-        public IntTuple Repetitions
+        private DecimalTuple _repetitions;
+        public DecimalTuple Repetitions
         {
             get
             {
-                IntTuple repetitions = _repetitions ?? new IntTuple(MainWindow.GlobalRepetitions);
+                DecimalTuple repetitions = _repetitions ?? new DecimalTuple(MainWindow.GlobalRepetitions);
                 _repetitions = repetitions;
                 return _repetitions;
             }
@@ -50,8 +61,20 @@ namespace AutoClicker.Instructions
         /// <summary>
         /// A tuple for the speed of the execution
         /// </summary>
-        public DoubleTuple _speed;
-        public DoubleTuple Speed { get => _speed ?? new DoubleTuple(MainWindow.GlobalSpeed); set => _speed = value; }
+        private DecimalTuple _speed;
+        public DecimalTuple Speed(bool valueNeeded = false)
+        {
+            if (!valueNeeded)
+            {
+                return _speed;
+            }
+
+            return _speed ?? new DecimalTuple(MainWindow.GlobalSpeed);
+        }
+        public void Speed(DecimalTuple speed)
+        {
+            _speed = speed;
+        }
 
         /// <summary>
         /// Is the shift key pressed during execution
@@ -83,12 +106,12 @@ namespace AutoClicker.Instructions
         /// <param name="shift">if set to <c>true</c> [shift].</param>
         /// <param name="ctrl">if set to <c>true</c> [control].</param>
         /// <param name="alt">if set to <c>true</c> [alt].</param>
-        public Instruction(IntTuple delay = null, IntTuple repetitions = null, DoubleTuple speed = null,
+        public Instruction(DecimalTuple delay = null, DecimalTuple repetitions = null, DecimalTuple speed = null,
             bool shift = false, bool ctrl = false, bool alt = false)
         {
-            Delay = delay;
+            Delay(delay);
             Repetitions = repetitions;
-            Speed = speed;
+            Speed(speed);
 
             Shift = shift;
             Ctrl = ctrl;
@@ -101,10 +124,10 @@ namespace AutoClicker.Instructions
         public void Run()
         {
             IsRunning = true;
-            IntTuple repetitions = Repetitions;
+            DecimalTuple repetitions = Repetitions;
 
-            int save = repetitions.Value;
-            int totalRepetitions = repetitions.Value + random.Next(repetitions.Random ?? MainWindow.GlobalRandomRepetitions);
+            int save = (int)repetitions.Value;
+            int totalRepetitions = (int)repetitions.Value + random.Next((int)(repetitions.Random ?? MainWindow.GlobalRandomRepetitions));
             repetitions.Value = 1;
             while (IsRunning && repetitions.Value <= totalRepetitions)
             {
@@ -129,16 +152,15 @@ namespace AutoClicker.Instructions
         /// </summary>
         private void DoDelay()
         {
-            IntTuple delay = Delay;
-
-            int save = delay.Value;
-            int totalDelay = delay.Value + random.Next(delay.Random ?? MainWindow.GlobalRandomDelay);
+            DecimalTuple delay = Delay(true);
+            double save = delay.Value;
+            int totalDelay = delay.Get(MainWindow.GlobalRandomDelay);
 
             delay.Value = 0;
 
             while (IsRunning && delay.Value < totalDelay)
             {
-                int toDelay = Math.Min(totalDelay, Math.Min(delayStep, totalDelay - delay.Value));
+                int toDelay = (int)Math.Min(totalDelay, Math.Min(delayStep, totalDelay - delay.Value));
                 delay.Value += toDelay;
                 Thread.Sleep(toDelay);
             }
@@ -203,37 +225,6 @@ namespace AutoClicker.Instructions
         }
 
         /// <summary>
-        /// Randomizes a tuple based on its value and random value
-        /// </summary>
-        /// <param name="tuple"></param>
-        /// <returns></returns>
-        internal double Randomize(IntTuple tuple)
-        {
-            return Randomize(tuple.Value, tuple.Random ?? 0);
-        }
-
-        /// <summary>
-        /// Randomizes a tuple based on its value and random value
-        /// </summary>
-        /// <param name="tuple"></param>
-        /// <returns></returns>
-        internal double Randomize(DoubleTuple tuple)
-        {
-            return Randomize(tuple.Value, tuple.Random ?? 0.0);
-        }
-
-        /// <summary>
-        /// Randomizes a value in the interval [value - range, value + range]
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="range"></param>
-        /// <returns></returns>
-        internal double Randomize(double value, double range)
-        {
-            return value + ((2 * random.NextDouble()) - 1) * range;
-        }
-
-        /// <summary>
         /// Specifies the name of the instruction
         /// </summary>
         /// <returns>The name of the instruction</returns>
@@ -288,7 +279,7 @@ namespace AutoClicker.Instructions
         /// <param name="builder"></param>
         /// <param name="key"></param>
         /// <param name="tuple"></param>
-        protected void Append(StringBuilder builder, string key, IntTuple tuple)
+        protected void Append(StringBuilder builder, string key, DecimalTuple tuple)
         {
             if (tuple == null)
             {
@@ -303,7 +294,7 @@ namespace AutoClicker.Instructions
         /// <param name="builder"></param>
         /// <param name="key"></param>
         /// <param name="tuple"></param>
-        protected void Append(StringBuilder builder, string key, DoubleTuple tuple, double globalDefaultValue = 0)
+        protected void Append(StringBuilder builder, string key, DecimalTuple tuple, double globalDefaultValue = 0)
         {
             if (tuple == null)
             {
@@ -339,9 +330,9 @@ namespace AutoClicker.Instructions
         public override int GetHashCode()
         {
             var hashCode = 628206347;
-            hashCode = hashCode * -1521134295 + EqualityComparer<IntTuple>.Default.GetHashCode(_delay);
-            hashCode = hashCode * -1521134295 + EqualityComparer<IntTuple>.Default.GetHashCode(_repetitions);
-            hashCode = hashCode * -1521134295 + EqualityComparer<DoubleTuple>.Default.GetHashCode(_speed);
+            hashCode = hashCode * -1521134295 + EqualityComparer<DecimalTuple>.Default.GetHashCode(_delay);
+            hashCode = hashCode * -1521134295 + EqualityComparer<DecimalTuple>.Default.GetHashCode(_repetitions);
+            hashCode = hashCode * -1521134295 + EqualityComparer<DecimalTuple>.Default.GetHashCode(_speed);
             hashCode = hashCode * -1521134295 + Shift.GetHashCode();
             hashCode = hashCode * -1521134295 + Ctrl.GetHashCode();
             hashCode = hashCode * -1521134295 + Alt.GetHashCode();

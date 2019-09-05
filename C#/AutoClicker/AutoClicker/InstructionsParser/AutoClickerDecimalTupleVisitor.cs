@@ -7,8 +7,8 @@ namespace AutoClicker.InstructionsParser
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="AutoClicker.AutoClickerBaseVisitor{AutoClicker.Instructions.IntTuple}" />
-    public class AutoClickerIntTupleVisitor : AutoClickerBaseVisitor<IntTuple>
+    /// <seealso cref="AutoClicker.AutoClickerBaseVisitor{AutoClicker.Instructions.DecimalTuple}" />
+    public class AutoClickerDecimalTupleVisitor : AutoClickerBaseVisitor<DecimalTuple>
     {
         /// <summary>
         /// Visit a parse tree produced by <see cref="M:AutoClicker.AutoClickerParser.xPos" />.
@@ -20,9 +20,9 @@ namespace AutoClicker.InstructionsParser
         /// <param name="context">The parse tree.</param>
         /// <returns></returns>
         /// <return>The visitor result.</return>
-        public override IntTuple VisitXPos([NotNull] AutoClickerParser.XPosContext context)
+        public override DecimalTuple VisitXPos([NotNull] AutoClickerParser.XPosContext context)
         {
-            return Visit(context.intTuple());
+            return Visit(context.decimalTuple());
         }
 
         /// <summary>
@@ -35,9 +35,9 @@ namespace AutoClicker.InstructionsParser
         /// <param name="context">The parse tree.</param>
         /// <returns></returns>
         /// <return>The visitor result.</return>
-        public override IntTuple VisitYPos([NotNull] AutoClickerParser.YPosContext context)
+        public override DecimalTuple VisitYPos([NotNull] AutoClickerParser.YPosContext context)
         {
-            return Visit(context.intTuple());
+            return Visit(context.decimalTuple());
         }
 
         /// <summary>
@@ -50,21 +50,21 @@ namespace AutoClicker.InstructionsParser
         /// <param name="context">The parse tree.</param>
         /// <returns></returns>
         /// <return>The visitor result.</return>
-        public override IntTuple VisitIntTuple([NotNull] AutoClickerParser.IntTupleContext context)
+        public override DecimalTuple VisitDecimalTuple([NotNull] AutoClickerParser.DecimalTupleContext context)
         {
-            if (context.NUMBER(0).Symbol.TokenIndex < 0)
+            if (context.DECIMAL(0).Symbol.TokenIndex < 0)
             {
                 return null;
             }
 
-            int value = int.Parse(context.NUMBER(0).GetText());
+            int value = int.Parse(context.DECIMAL(0).GetText());
             int? delta = null;
 
-            if (context.NUMBER().Count() > 1)
+            if (context.DECIMAL().Count() > 1)
             {
-                delta = int.Parse(context.NUMBER(1).GetText());
+                delta = int.Parse(context.DECIMAL(1).GetText());
             }
-            return new IntTuple(value, delta);
-        }        
+            return new DecimalTuple(value, delta);
+        }
     }
 }

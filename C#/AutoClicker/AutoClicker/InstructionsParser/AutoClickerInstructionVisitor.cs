@@ -14,12 +14,12 @@ namespace AutoClicker.InstructionsParser
         /// <summary>
         /// The int tuple visitor
         /// </summary>
-        private AutoClickerIntTupleVisitor intTupleVisitor = new AutoClickerIntTupleVisitor();
+        private AutoClickerDecimalTupleVisitor decimalTupleVisitor = new AutoClickerDecimalTupleVisitor();
 
-        /// <summary>
-        /// The double tuple visitor
-        /// </summary>
-        private AutoClickerDoubleTupleVisitor doubleTupleVisitor = new AutoClickerDoubleTupleVisitor();
+        ///// <summary>
+        ///// The double tuple visitor
+        ///// </summary>
+        //private AutoClickerDoubleTupleVisitor doubleTupleVisitor = new AutoClickerDoubleTupleVisitor();
 
         /// <summary>
         /// The enum visitor
@@ -58,18 +58,18 @@ namespace AutoClicker.InstructionsParser
         /// <return>The visitor result.</return>
         public override Instructions.Instruction VisitHover([NotNull] AutoClickerParser.HoverContext context)
         {
-            IntTuple x = new IntTuple(0);
-            IntTuple y = new IntTuple(0);
+            DecimalTuple x = new DecimalTuple(0);
+            DecimalTuple y = new DecimalTuple(0);
             MovementType? movement = null;
             Instructions.Instruction commons = Commons(context.commons());
 
             if (context.xPos() != null && context.xPos().Count() > 0)
             {
-                x = intTupleVisitor.Visit(context.xPos(0)) ?? x;
+                x = decimalTupleVisitor.Visit(context.xPos(0)) ?? x;
             }
             if (context.yPos() != null && context.yPos().Count() > 0)
             {
-                y = intTupleVisitor.Visit(context.yPos(0)) ?? y;
+                y = decimalTupleVisitor.Visit(context.yPos(0)) ?? y;
             }
             if (context.movement() != null && context.movement().Count() > 0)
             {
@@ -91,8 +91,8 @@ namespace AutoClicker.InstructionsParser
         /// <return>The visitor result.</return>
         public override Instructions.Instruction VisitClick([NotNull] AutoClickerParser.ClickContext context)
         {
-            IntTuple x = new IntTuple(0);
-            IntTuple y = new IntTuple(0);
+            DecimalTuple x = new DecimalTuple(0);
+            DecimalTuple y = new DecimalTuple(0);
             MovementType? movement = null;
             Instructions.Instruction commons = Commons(context.commons());
 
@@ -103,11 +103,11 @@ namespace AutoClicker.InstructionsParser
             }
             if (context.xPos() != null && context.xPos().Count() > 0)
             {
-                x = intTupleVisitor.Visit(context.xPos(0)) ?? x;
+                x = decimalTupleVisitor.Visit(context.xPos(0)) ?? x;
             }
             if (context.yPos() != null && context.yPos().Count() > 0)
             {
-                y = intTupleVisitor.Visit(context.yPos(0)) ?? y;
+                y = decimalTupleVisitor.Visit(context.yPos(0)) ?? y;
             }
             if (context.movement() != null && context.movement().Count() > 0)
             {
@@ -129,10 +129,10 @@ namespace AutoClicker.InstructionsParser
         /// <return>The visitor result.</return>
         public override Instructions.Instruction VisitDrag([NotNull] AutoClickerParser.DragContext context)
         {
-            IntTuple x = new IntTuple(0);
-            IntTuple y = new IntTuple(0);
-            IntTuple endX = new IntTuple(0);
-            IntTuple endY = new IntTuple(0);
+            DecimalTuple x = new DecimalTuple(0);
+            DecimalTuple y = new DecimalTuple(0);
+            DecimalTuple endX = new DecimalTuple(0);
+            DecimalTuple endY = new DecimalTuple(0);
             MovementType? movement = null;
             Instructions.Instruction commons = Commons(context.commons());
 
@@ -143,19 +143,19 @@ namespace AutoClicker.InstructionsParser
             }
             if (context.xPos() != null && context.xPos().Count() > 0)
             {
-                x = intTupleVisitor.Visit(context.xPos(0)) ?? x;
+                x = decimalTupleVisitor.Visit(context.xPos(0)) ?? x;
             }
             if (context.yPos() != null && context.yPos().Count() > 0)
             {
-                y = intTupleVisitor.Visit(context.yPos(0)) ?? y;
+                y = decimalTupleVisitor.Visit(context.yPos(0)) ?? y;
             }
             if (context.endX() != null && context.endX().Count() > 0)
             {
-                endX = intTupleVisitor.Visit(context.endX(0)) ?? endX;
+                endX = decimalTupleVisitor.Visit(context.endX(0)) ?? endX;
             }
             if (context.endY() != null && context.endY().Count() > 0)
             {
-                endY = intTupleVisitor.Visit(context.endY(0)) ?? endY;
+                endY = decimalTupleVisitor.Visit(context.endY(0)) ?? endY;
             }
             if (context.movement() != null && context.movement().Count() > 0)
             {
@@ -226,9 +226,9 @@ namespace AutoClicker.InstructionsParser
             AutoClickerParser.CommonsContext alt = contexts.FirstOrDefault(context => context.alt() != null);
 
             return new Instructions.Instruction(
-                delay == null ? null : intTupleVisitor.Visit(delay),
-                repetitions == null ? null : intTupleVisitor.Visit(repetitions),
-                speed == null ? null : doubleTupleVisitor.Visit(speed),
+                delay == null ? null : decimalTupleVisitor.Visit(delay),
+                repetitions == null ? null : decimalTupleVisitor.Visit(repetitions),
+                speed == null ? null : decimalTupleVisitor.Visit(speed),
                 shift == null ? false : trueFalseVisitor.Visit(shift),
                 ctrl == null ? false : trueFalseVisitor.Visit(ctrl),
                 alt == null ? false : trueFalseVisitor.Visit(alt));

@@ -28,7 +28,7 @@ namespace AutoClicker.Instructions
         /// <param name="shift">if set to <c>true</c> [shift].</param>
         /// <param name="ctrl">if set to <c>true</c> [control].</param>
         /// <param name="alt">if set to <c>true</c> [alt].</param>
-        public Keystroke(VirtualKeyCode key=VirtualKeyCode.SPACE, IntTuple delay = null, IntTuple repetitions = null, DoubleTuple speed = null,
+        public Keystroke(VirtualKeyCode key=VirtualKeyCode.SPACE, DecimalTuple delay = null, DecimalTuple repetitions = null, DecimalTuple speed = null,
             bool shift = false, bool ctrl = false, bool alt = false
             ) : base(delay, repetitions, speed, shift, ctrl, alt)
         {
@@ -41,7 +41,7 @@ namespace AutoClicker.Instructions
         /// <param name="key">The key.</param>
         /// <param name="instruction">The instruction.</param>
         public Keystroke(VirtualKeyCode key, Instruction instruction = null
-            ) : this(key, instruction.Delay, instruction.Repetitions, instruction.Speed, instruction.Shift, instruction.Ctrl, instruction.Alt)
+            ) : this(key, instruction.Delay(), instruction.Repetitions, instruction.Speed(), instruction.Shift, instruction.Ctrl, instruction.Alt)
         { }
 
         /// <summary>

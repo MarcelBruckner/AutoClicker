@@ -21,17 +21,18 @@ namespace AutoClicker.Instructions
         /// <summary>
         /// The movement type of the mouse
         /// </summary>
-        public MovementType? Movement { get; set; }
+        private MovementType? _movement;
+        public MovementType Movement { get => _movement ?? MainWindow.GlobalMovementType; set => _movement = value; }
 
         /// <summary>
         /// The on screen X position of the desired mouse position
         /// </summary>
-        public IntTuple X { get; set; }
+        public DecimalTuple X { get; set; }
 
         /// <summary>
         /// The on screen Y position of the desired mouse position
         /// </summary>
-        public IntTuple Y { get; set; }
+        public DecimalTuple Y { get; set; }
 
         /// <summary>
         /// The final on screen position after randomization
@@ -54,9 +55,9 @@ namespace AutoClicker.Instructions
         /// <param name="ctrl">if set to <c>true</c> [control].</param>
         /// <param name="alt">if set to <c>true</c> [alt].</param>
         public Hover(int x = 0, int y = 0, MovementType? movement = null,
-            IntTuple delay = null, IntTuple repetitions = null, DoubleTuple speed = null,
+            DecimalTuple delay = null, DecimalTuple repetitions = null, DecimalTuple speed = null,
             bool shift = false, bool ctrl = false, bool alt = false
-            ) : this(new IntTuple(x), new IntTuple(y), movement,
+            ) : this(new DecimalTuple(x), new DecimalTuple(y), movement,
                 delay, repetitions, speed, shift, ctrl, alt)
         { }
 
@@ -72,15 +73,15 @@ namespace AutoClicker.Instructions
         /// <param name="shift">if set to <c>true</c> [shift].</param>
         /// <param name="ctrl">if set to <c>true</c> [control].</param>
         /// <param name="alt">if set to <c>true</c> [alt].</param>
-        public Hover(IntTuple x, IntTuple y, MovementType? movement = null,
-            IntTuple delay = null, IntTuple repetitions = null, DoubleTuple speed = null,
+        public Hover(DecimalTuple x, DecimalTuple y, MovementType? movement = null,
+            DecimalTuple delay = null, DecimalTuple repetitions = null, DecimalTuple speed = null,
             bool shift = false, bool ctrl = false, bool alt = false
             ) : base(delay, repetitions, speed, shift, ctrl, alt)
         {
             X = x;
             Y = y;
 
-            Movement = movement;
+            _movement = movement;
         }
 
         /// <summary>
@@ -90,9 +91,9 @@ namespace AutoClicker.Instructions
         /// <param name="y">The y.</param>
         /// <param name="movement">The movement.</param>
         /// <param name="instruction">The instruction.</param>
-        public Hover(IntTuple x, IntTuple y, MovementType? movement = null,
+        public Hover(DecimalTuple x, DecimalTuple y, MovementType? movement = null,
             Instruction instruction = null
-            ) : this(x, y, movement, instruction.Delay, instruction.Repetitions, instruction.Speed, instruction.Shift, instruction.Ctrl, instruction.Alt)
+            ) : this(x, y, movement, instruction.Delay(), instruction.Repetitions, instruction.Speed(), instruction.Shift, instruction.Ctrl, instruction.Alt)
         { }
 
         #endregion
@@ -114,7 +115,7 @@ namespace AutoClicker.Instructions
         /// </summary>
         internal virtual void MouseSpecificExecute()
         {
-            InputSimulator.MouseMove(Movement ?? MainWindow.GlobalMovementType, RandomizedPosition, Randomize(Speed));
+            InputSimulator.MouseMove(Movement, RandomizedPosition, Speed(true).Get(MainWindow.GlobalRandomSpeed));
         }
 
         /// <summary>
@@ -122,9 +123,16 @@ namespace AutoClicker.Instructions
         /// </summary>
         /// <param name="x">The x.</param>
         /// <param name="y">The y.</param>
-        internal void RandomizePosition(IntTuple x, IntTuple y)
+        internal void RandomizePosition(DecimalTuple x, DecimalTuple y)
         {
-            RandomizedPosition = new Vector(Randomize(x), Randomize(y));
+            if (x == null || y == null)
+            {
+                RandomizedPosition = Cursor.Vector;
+            }
+            else
+            {
+                RandomizedPosition = new Vector(x.Get(0), y.Get(0));
+            }
         }
 
         /// <summary>
@@ -161,8 +169,8 @@ namespace AutoClicker.Instructions
             return obj is Hover hover &&
                    base.Equals(obj) &&
                    EqualityComparer<MovementType?>.Default.Equals(Movement, hover.Movement) &&
-                   EqualityComparer<IntTuple>.Default.Equals(X, hover.X) &&
-                   EqualityComparer<IntTuple>.Default.Equals(Y, hover.Y);
+                   EqualityComparer<DecimalTuple>.Default.Equals(X, hover.X) &&
+                   EqualityComparer<DecimalTuple>.Default.Equals(Y, hover.Y);
         }
 
         /// <summary>
@@ -176,8 +184,8 @@ namespace AutoClicker.Instructions
             var hashCode = 295077388;
             hashCode = hashCode * -1521134295 + base.GetHashCode();
             hashCode = hashCode * -1521134295 + EqualityComparer<MovementType?>.Default.GetHashCode(Movement);
-            hashCode = hashCode * -1521134295 + EqualityComparer<IntTuple>.Default.GetHashCode(X);
-            hashCode = hashCode * -1521134295 + EqualityComparer<IntTuple>.Default.GetHashCode(Y);
+            hashCode = hashCode * -1521134295 + EqualityComparer<DecimalTuple>.Default.GetHashCode(X);
+            hashCode = hashCode * -1521134295 + EqualityComparer<DecimalTuple>.Default.GetHashCode(Y);
             return hashCode;
         }
 
@@ -191,6 +199,10 @@ namespace AutoClicker.Instructions
         {
             get
             {
+                if (X == null || Y == null)
+                {
+                    return false;
+                }
                 int dx = (int)Math.Abs(RandomizedPosition.X - Cursor.Vector.X);
                 int dy = (int)Math.Abs(RandomizedPosition.Y - Cursor.Vector.Y);
 
@@ -198,6 +210,34 @@ namespace AutoClicker.Instructions
                 Console.WriteLine(next);
                 return next > 0.025 && dx < (X.Random ?? MainWindow.GlobalRandomX) && dy < (Y.Random ?? MainWindow.GlobalRandomY);
             }
+        }
+
+
+        /// <summary>
+        /// Determines whether the mouse positions are roughly the same.
+        /// </summary>
+        /// <param name="other">The other.</param>
+        /// <returns>
+        ///   <c>true</c> if the mouse positions are roughly the same; otherwise, <c>false</c>.
+        /// </returns>
+        public bool IsSamePosition(Hover other)
+        {
+            return Distance(other) < MAX_UNCERTAINTY;
+        }
+
+        /// <summary>
+        /// Calculates the euclidean distance to the specified other click.
+        /// </summary>
+        /// <param name="other">The other.</param>
+        /// <returns></returns>
+        public int Distance(Hover other)
+        {
+            if (X == null || Y == null ||
+                other.X == null || other.Y == null)
+            {
+                return -1;
+            }
+            return (int)Math.Sqrt(Math.Pow(X.Value - other.X.Value, 2) + Math.Pow(Y.Value - other.Y.Value, 2));
         }
     }
 }

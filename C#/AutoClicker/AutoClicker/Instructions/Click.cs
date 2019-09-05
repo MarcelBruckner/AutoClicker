@@ -12,11 +12,13 @@ namespace AutoClicker.Instructions
     /// <seealso cref="AutoClicker.Instructions.Hover" />
     public class Click : Hover
     {
+
         /// <summary>
         /// The button that gets clicked
         /// </summary>
         /// <seealso cref="ButtonType"/>
-        public ButtonType? Button { get; set; }
+        private ButtonType? _button;
+        public ButtonType Button { get => _button ?? MainWindow.GlobalButtonType; set => _button = value; }
 
         #region Constructors
 
@@ -33,10 +35,10 @@ namespace AutoClicker.Instructions
         /// <param name="shift">if set to <c>true</c> [shift].</param>
         /// <param name="ctrl">if set to <c>true</c> [control].</param>
         /// <param name="alt">if set to <c>true</c> [alt].</param>
-        public Click(int x=0, int y=0, ButtonType? button = null, MovementType? movement = null,
-            IntTuple delay = null, IntTuple repetitions = null, DoubleTuple speed = null,
+        public Click(int x = 0, int y = 0, ButtonType? button = null, MovementType? movement = null,
+            DecimalTuple delay = null, DecimalTuple repetitions = null, DecimalTuple speed = null,
             bool shift = false, bool ctrl = false, bool alt = false
-            ) : this(new IntTuple(x), new IntTuple(y), button, movement,
+            ) : this(new DecimalTuple(x), new DecimalTuple(y), button, movement,
                 delay, repetitions, speed, shift, ctrl, alt)
         { }
 
@@ -48,9 +50,9 @@ namespace AutoClicker.Instructions
         /// <param name="button">The button.</param>
         /// <param name="movement">The movement.</param>
         /// <param name="instruction">The instruction.</param>
-        public Click(IntTuple x, IntTuple y, ButtonType? button, MovementType? movement,
-            Instruction instruction 
-            ) : this(x, y, button, movement, instruction.Delay, instruction.Repetitions, instruction.Speed, instruction.Shift, instruction.Ctrl, instruction.Alt)
+        public Click(DecimalTuple x, DecimalTuple y, ButtonType? button, MovementType? movement,
+            Instruction instruction
+            ) : this(x, y, button, movement, instruction.Delay(), instruction.Repetitions, instruction.Speed(), instruction.Shift, instruction.Ctrl, instruction.Alt)
         { }
 
         /// <summary>
@@ -66,12 +68,12 @@ namespace AutoClicker.Instructions
         /// <param name="shift">if set to <c>true</c> [shift].</param>
         /// <param name="ctrl">if set to <c>true</c> [control].</param>
         /// <param name="alt">if set to <c>true</c> [alt].</param>
-        public Click(IntTuple x, IntTuple y, ButtonType? button = null, MovementType? movement = null,
-            IntTuple delay = null, IntTuple repetitions = null, DoubleTuple speed = null,
+        public Click(DecimalTuple x, DecimalTuple y, ButtonType? button = null, MovementType? movement = null,
+            DecimalTuple delay = null, DecimalTuple repetitions = null, DecimalTuple speed = null,
             bool shift = false, bool ctrl = false, bool alt = false
             ) : base(x, y, movement, delay, repetitions, speed, shift, ctrl, alt)
         {
-            Button = button;
+            _button = button;
         }
 
         #endregion
@@ -81,7 +83,7 @@ namespace AutoClicker.Instructions
         /// </summary>
         internal override void MouseSpecificExecute()
         {
-            InputSimulator.MouseClick(Movement ?? MainWindow.GlobalMovementType, Button ?? MainWindow.GlobalButtonType, RandomizedPosition, Randomize(Speed), Hotkeys);
+            InputSimulator.MouseClick(Movement, Button, RandomizedPosition, Speed(true).Get(MainWindow.GlobalRandomSpeed), Hotkeys);
         }
 
         /// <summary>
@@ -112,16 +114,8 @@ namespace AutoClicker.Instructions
         /// <returns>
         ///   <c>true</c> if the other specified click has the same button and position; otherwise, <c>false</c>.
         /// </returns>
-        public bool IsSameClick(Click other) => Button == other.Button && Distance(other) < MAX_UNCERTAINTY;
+        public bool IsSameClick(Click other) => Button == other.Button && IsSamePosition(other);
 
-        /// <summary>
-        /// Calculates the euclidean distance to the specified other click.
-        /// </summary>
-        /// <param name="other">The other.</param>
-        /// <returns></returns>
-        public int Distance(Click other) => (int)Math.Sqrt(Math.Pow(X.Value - other.X.Value, 2) + Math.Pow(Y.Value - other.Y.Value, 2));
-
-        
 
         /// <summary>
         /// Determines whether the specified <see cref="System.Object" />, resembles this instance.

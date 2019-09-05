@@ -204,7 +204,10 @@
             </MenuItem>
 
             <MenuItem Header="_Add">
-				<MenuItem Header="_Hover" Click="AddMenu_Hover"/>
+                <MenuItem Header="_Delay" Click="AddMenu_Delay"/>
+                <MenuItem Header="_Loop" Click="AddMenu_Loop"/>
+                <Separator/>
+                <MenuItem Header="_Hover" Click="AddMenu_Hover"/>
 				<MenuItem Header="_Click" Click="AddMenu_Click"/>
 				<MenuItem Header="_Drag" Click="AddMenu_Drag"/>
 				<MenuItem Header="_Wheel" Click="AddMenu_Wheel"/>

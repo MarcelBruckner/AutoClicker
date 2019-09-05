@@ -68,8 +68,7 @@ IS					: ':';
 QUOTE				: '"';
 TRUE				: T R U E;
 FALSE				: F A L S E;
-NUMBER				: DIGIT+;
-DECIMAL             : NUMBER ([.,] NUMBER)? ;
+DECIMAL             : DIGIT+ ([.,] DIGIT+)? ;
 // WORD                : (LOWERCASE | UPPERCASE | '_')+ ;
 WORD				: (LOWERCASE | UPPERCASE | '_')+;
 WHITESPACE          : [ \t\r\n] -> skip;
@@ -80,17 +79,16 @@ STRING				: '"' ~('\r' | '\n' | '"')* '"' ;
  * Parser Rules
  */
 
-intTuple			: EQ NUMBER (SLASH NUMBER)?;
-doubleTuple			: EQ DECIMAL (SLASH DECIMAL)?;
+decimalTuple		: EQ DECIMAL (SLASH DECIMAL)?;
 trueFalse			: EQ (TRUE | FALSE);
 
 instructions        : (instruction? NEWLINE)*;
 instruction         : click | hover | drag | keystroke | text;
 
 commons				: (delay | repetitions | speed | shift | ctrl | alt);
-delay				: (DELAY intTuple);
-repetitions			: (REPETITIONS intTuple);
-speed				: (SPEED doubleTuple);
+delay				: (DELAY decimalTuple);
+repetitions			: (REPETITIONS decimalTuple);
+speed				: (SPEED decimalTuple);
 shift				: (SHIFT trueFalse);
 ctrl				: (CTRL trueFalse);
 alt					: (ALT trueFalse);
@@ -99,10 +97,10 @@ hover				: HOVER IS (xPos | yPos | movement | commons)*;
 click               : CLICK IS (button | xPos | yPos | movement | commons)*; 
 drag				: DRAG IS (endX | endY | button | xPos | yPos | movement | commons)*;
 
-xPos				: (X intTuple);
-yPos				: (Y intTuple);
-endX				: (ENDX intTuple);
-endY				: (ENDY intTuple);
+xPos				: (X decimalTuple);
+yPos				: (Y decimalTuple);
+endX				: (ENDX decimalTuple);
+endY				: (ENDY decimalTuple);
 button              : (BUTTON EQ (LEFT | RIGHT | MIDDLE));
 movement			: (MOVEMENT EQ (SINUS | SPRING | JUMP));
 

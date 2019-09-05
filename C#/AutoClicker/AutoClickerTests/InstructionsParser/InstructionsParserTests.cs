@@ -10,23 +10,23 @@ namespace AutoClicker.InstructionsParser.Tests
     public class InstructionsParserTests
     {
         private Drag testDrag = new Drag(
-                new IntTuple(546, 22), new IntTuple(234, 4), 
-                new IntTuple(546, 22), new IntTuple(234, 4), ButtonType.MIDDLE, MovementType.SPRING,
-                new IntTuple(789, 43), new IntTuple(34, 342), new DoubleTuple(4.2, 3.9),
+                new DecimalTuple(546, 22), new DecimalTuple(234, 4), 
+                new DecimalTuple(546, 22), new DecimalTuple(234, 4), ButtonType.MIDDLE, MovementType.SPRING,
+                new DecimalTuple(789, 43), new DecimalTuple(34, 342), new DecimalTuple(4.2, 3.9),
                 true, true, true);
 
         private Click testClick = new Click(
-                new IntTuple(546, 22), new IntTuple(234, 4), ButtonType.MIDDLE, MovementType.SPRING,
-                new IntTuple(789, 43), new IntTuple(34, 342), new DoubleTuple(4.2, 3.9),
+                new DecimalTuple(546, 22), new DecimalTuple(234, 4), ButtonType.MIDDLE, MovementType.SPRING,
+                new DecimalTuple(789, 43), new DecimalTuple(34, 342), new DecimalTuple(4.2, 3.9),
                 true, true, true);
 
         private Hover testHover = new Hover(
-                new IntTuple(546, 22), new IntTuple(234, 4), MovementType.SPRING,
-                new IntTuple(789, 43), new IntTuple(34, 342), new DoubleTuple(4.2, 3.9),
+                new DecimalTuple(546, 22), new DecimalTuple(234, 4), MovementType.SPRING,
+                new DecimalTuple(789, 43), new DecimalTuple(34, 342), new DecimalTuple(4.2, 3.9),
                 true, true, true);
 
         private Keystroke testKeystroke = new Keystroke(VirtualKeyCode.RETURN,
-            new IntTuple(789, 43), new IntTuple(34, 342), new DoubleTuple(4.2, 3.9),
+            new DecimalTuple(789, 43), new DecimalTuple(34, 342), new DecimalTuple(4.2, 3.9),
                 true, true, true);
 
         [TestMethod()]

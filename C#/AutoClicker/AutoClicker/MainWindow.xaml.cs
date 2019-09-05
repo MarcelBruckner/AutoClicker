@@ -946,6 +946,14 @@ namespace AutoClicker
 
         #region Add Menu
 
+        private void AddMenu_Delay(object sender, RoutedEventArgs e)
+        {
+            //AddInstruction(new Instructions.Hover());
+        }
+        private void AddMenu_Loop(object sender, RoutedEventArgs e)
+        {
+            //AddInstruction(new Instructions.Hover());
+        }
         private void AddMenu_Hover(object sender, RoutedEventArgs e)
         {
             AddInstruction(new Instructions.Hover());
@@ -961,7 +969,7 @@ namespace AutoClicker
         }
         private void AddMenu_Wheel(object sender, RoutedEventArgs e)
         {
-            //AddInstruction(new Instructions.Wheel());
+            AddInstruction(new Instructions.Wheel());
         }
         private void AddMenu_Keystroke(object sender, RoutedEventArgs e)
         {
@@ -1068,16 +1076,6 @@ namespace AutoClicker
         protected void OnPropertyChanged(string name)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
-
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

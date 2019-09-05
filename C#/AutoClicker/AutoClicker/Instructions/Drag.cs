@@ -16,14 +16,12 @@ namespace AutoClicker.Instructions
         /// <summary>
         /// The end x
         /// </summary>
-        private IntTuple _endX;
-        public IntTuple EndX { get => new IntTuple(_endX.Value, _endX.Random ?? MainWindow.GlobalRandomDragX); set => _endX = value; }
+        public DecimalTuple EndX { get; set; }
 
         /// <summary>
         /// The end y
         /// </summary>
-        private IntTuple _endY;
-        public IntTuple EndY { get => new IntTuple(_endY.Value, _endY.Random ?? MainWindow.GlobalRandomDragY); set => _endY = value; }
+        public DecimalTuple EndY { get; set; }
 
         #region Constructors
 
@@ -43,9 +41,9 @@ namespace AutoClicker.Instructions
         /// <param name="ctrl">if set to <c>true</c> [control].</param>
         /// <param name="alt">if set to <c>true</c> [alt].</param>
         public Drag(int x=0, int y=0, int endX=0, int endY=0, ButtonType? button = null, MovementType? movement = null,
-            IntTuple delay = null, IntTuple repetitions = null, DoubleTuple speed = null,
+            DecimalTuple delay = null, DecimalTuple repetitions = null, DecimalTuple speed = null,
             bool shift = false, bool ctrl = false, bool alt = false
-            ) : this(new IntTuple(x), new IntTuple(y), new IntTuple(endX), new IntTuple(endY), button, movement,
+            ) : this(new DecimalTuple(x), new DecimalTuple(y), new DecimalTuple(endX), new DecimalTuple(endY), button, movement,
                 delay, repetitions, speed, shift, ctrl, alt)
         { }
 
@@ -59,9 +57,9 @@ namespace AutoClicker.Instructions
         /// <param name="button">The button.</param>
         /// <param name="movement">The movement.</param>
         /// <param name="instruction">The instruction.</param>
-        public Drag(IntTuple x, IntTuple y, IntTuple endX, IntTuple endY, ButtonType? button = null, MovementType? movement = null,
+        public Drag(DecimalTuple x, DecimalTuple y, DecimalTuple endX, DecimalTuple endY, ButtonType? button = null, MovementType? movement = null,
             Instruction instruction = null
-            ) : this(x, y, endX, endY, button, movement, instruction.Delay, instruction.Repetitions, instruction.Speed, instruction.Shift, instruction.Ctrl, instruction.Alt)
+            ) : this(x, y, endX, endY, button, movement, instruction.Delay(), instruction.Repetitions, instruction.Speed(), instruction.Shift, instruction.Ctrl, instruction.Alt)
         {
         }
 
@@ -80,8 +78,8 @@ namespace AutoClicker.Instructions
         /// <param name="shift">if set to <c>true</c> [shift].</param>
         /// <param name="ctrl">if set to <c>true</c> [control].</param>
         /// <param name="alt">if set to <c>true</c> [alt].</param>
-        public Drag(IntTuple x, IntTuple y, IntTuple endX, IntTuple endY, ButtonType? button = null, MovementType? movement = null,
-            IntTuple delay = null, IntTuple repetitions = null, DoubleTuple speed = null,
+        public Drag(DecimalTuple x, DecimalTuple y, DecimalTuple endX, DecimalTuple endY, ButtonType? button = null, MovementType? movement = null,
+            DecimalTuple delay = null, DecimalTuple repetitions = null, DecimalTuple speed = null,
             bool shift = false, bool ctrl = false, bool alt = false
             ) : base(x, y, button, movement, delay, repetitions, speed, shift, ctrl, alt)
         {
@@ -95,8 +93,8 @@ namespace AutoClicker.Instructions
         /// </summary>
         internal override void SpecificExecute()
         {
-            InputSimulator.MouseDrag(MainWindow.GlobalMovementType, Button ?? MainWindow.GlobalButtonType,
-                (int)Randomize(X), (int)Randomize(Y), (int)Randomize(EndX), (int)Randomize(EndY), Randomize(Speed), Hotkeys);
+            InputSimulator.MouseDrag(MainWindow.GlobalMovementType, Button,
+                X.Get(0), Y.Get(0), EndX.Get(0), EndY.Get(0), Speed(true).Get(MainWindow.GlobalRandomSpeed), Hotkeys);
         }
 
         /// <summary>
@@ -117,8 +115,8 @@ namespace AutoClicker.Instructions
         internal override void AppendSpecifics(StringBuilder builder)
         {
             base.AppendSpecifics(builder);
-            Append(builder, "endX", _endX);
-            Append(builder, "endY", _endY);
+            Append(builder, "endX", EndX);
+            Append(builder, "endY", EndY);
         }
 
         /// <summary>
@@ -132,8 +130,8 @@ namespace AutoClicker.Instructions
         {
             return obj is Drag drag &&
                    base.Equals(obj) &&
-                   EqualityComparer<IntTuple>.Default.Equals(_endX, drag._endX) &&
-                   EqualityComparer<IntTuple>.Default.Equals(_endY, drag._endY);
+                   EqualityComparer<DecimalTuple>.Default.Equals(EndX, drag.EndX) &&
+                   EqualityComparer<DecimalTuple>.Default.Equals(EndY, drag.EndY);
         }
 
         /// <summary>
@@ -146,8 +144,8 @@ namespace AutoClicker.Instructions
         {
             var hashCode = 1210200173;
             hashCode = hashCode * -1521134295 + base.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<IntTuple>.Default.GetHashCode(_endX);
-            hashCode = hashCode * -1521134295 + EqualityComparer<IntTuple>.Default.GetHashCode(_endY);
+            hashCode = hashCode * -1521134295 + EqualityComparer<DecimalTuple>.Default.GetHashCode(EndX);
+            hashCode = hashCode * -1521134295 + EqualityComparer<DecimalTuple>.Default.GetHashCode(EndY);
             return hashCode;
         }
     }
