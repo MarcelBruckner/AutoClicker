@@ -9,7 +9,7 @@
         xmlns:autoclicker="clr-namespace:AutoClicker"
         xmlns:enums="clr-namespace:Enums"
         mc:Ignorable="d"
-        Title="Auto Clicker" Height="500" Width="1100" Background="White">
+        Title="Auto Clicker" Height="500" Width="600" Background="White">
 
     <Window.Resources>
         <Style TargetType="DataGridColumnHeader">
@@ -57,8 +57,25 @@
                 <Separator/>
                 <MenuItem Header="_Close" Click="Close_Click"/>
             </MenuItem>
+
+            <MenuItem Header="_Add Instruction">
+                <MenuItem Header="_Delay" Click="AddMenu_Delay"/>
+                <MenuItem Header="_Loop" Click="AddMenu_Loop"/>
+                <Separator/>
+                <MenuItem Header="_Hover" Click="AddMenu_Hover"/>
+                <MenuItem Header="_Click" Click="AddMenu_Click"/>
+                <MenuItem Header="_Drag" Click="AddMenu_Drag"/>
+                <MenuItem Header="_Wheel" Click="AddMenu_Wheel"/>
+                <Separator/>
+                <MenuItem Header="_Keystroke" Click="AddMenu_Keystroke"/>
+                <MenuItem Header="_Text" Click="AddMenu_Text"/>
+                <Separator/>
+                <MenuItem Header="_Clear" Click="Clear_Click"/>
+                <!--<MenuItem Header="_" Click="AddMenu"/>-->
+            </MenuItem>
+
             <!--<Separator/>-->
-            <MenuItem Header="_Edit">
+            <MenuItem Header="_Default Values">
                 <MenuItem Header="_Delay">
                     <Grid Width="100">
                         <Grid.ColumnDefinitions>
@@ -199,23 +216,8 @@
                         </MenuItem.ItemContainerStyle>
                     </MenuItem>
                 </MenuItem>
-                <Separator/>
-                <MenuItem Header="_Clear" Click="Clear_Click"/>
             </MenuItem>
 
-            <MenuItem Header="_Add">
-                <MenuItem Header="_Delay" Click="AddMenu_Delay"/>
-                <MenuItem Header="_Loop" Click="AddMenu_Loop"/>
-                <Separator/>
-                <MenuItem Header="_Hover" Click="AddMenu_Hover"/>
-				<MenuItem Header="_Click" Click="AddMenu_Click"/>
-				<MenuItem Header="_Drag" Click="AddMenu_Drag"/>
-				<MenuItem Header="_Wheel" Click="AddMenu_Wheel"/>
-				<Separator/>
-				<MenuItem Header="_Keystroke" Click="AddMenu_Keystroke"/>
-				<MenuItem Header="_Text" Click="AddMenu_Text"/>
-				<!--<MenuItem Header="_" Click="AddMenu"/>-->
-			</MenuItem>
         </Menu>
         <Grid DockPanel.Dock="Top">
             <Rectangle Height="0.5" Fill="Black"/>
@@ -282,7 +284,8 @@
                      AcceptsReturn="True"
                      AcceptsTab="True"
                      TextChanged="InstructionsTextBox_TextChanged"
-                     PreviewKeyDown="InstructionsTextBox_PreviewKeyDown">
+                     PreviewKeyDown="InstructionsTextBox_PreviewKeyDown"
+                     VerticalScrollBarVisibility="Auto">
             
             <RichTextBox.Resources>
                 <Style TargetType="{x:Type Paragraph}">

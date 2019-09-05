@@ -482,13 +482,29 @@ namespace AutoClicker
         {
             MouseMove(move, x, y, speed);
             KeyDown(hotkeys);
+
+
             INPUT mouseDownInput = new INPUT
             {
                 type = SendInputEventType.InputMouse
             };
             mouseDownInput.mkhi.mi.dwFlags = MouseEventFlags.MOUSEEVENTF_WHEEL;
-            mouseDownInput.mkhi.mi.mouseData = (uint)delta;
+
+            int sign = delta / Math.Abs(delta);
+            int stepSize = 120;
+            int remaining = delta;
+
+            while(Math.Abs(remaining - sign * stepSize) > 0)
+            {
+                remaining -= stepSize * sign;
+
+                mouseDownInput.mkhi.mi.mouseData = (uint)(stepSize * sign);
+                SendInput(1, ref mouseDownInput, Marshal.SizeOf(new INPUT()));
+            }
+
+            mouseDownInput.mkhi.mi.mouseData = (uint)remaining;
             SendInput(1, ref mouseDownInput, Marshal.SizeOf(new INPUT()));
+
             KeyUp(hotkeys);
         }
     }

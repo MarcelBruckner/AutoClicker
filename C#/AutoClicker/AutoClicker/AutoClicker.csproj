@@ -117,6 +117,7 @@
     <Compile Include="Instructions\Instruction.cs" />
     <Compile Include="Instructions\DecimalTuple.cs" />
     <Compile Include="Instructions\Keystroke.cs" />
+    <Compile Include="Instructions\Loop.cs" />
     <Compile Include="Instructions\Text.cs" />
     <Compile Include="Instructions\Wheel.cs" />
     <Compile Include="Interpolations\ICursorInterpolation.cs" />
@@ -127,6 +128,7 @@
     <Compile Include="InputSimulator.cs" />
     <Compile Include="InstructionsParser\InstructionsParser.cs" />
     <Compile Include="Recorder.cs" />
+    <Compile Include="Runner.cs" />
     <Compile Include="StringManager.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
