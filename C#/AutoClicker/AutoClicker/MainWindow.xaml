@@ -239,6 +239,18 @@
                             </ToolTip>
                         </Image.ToolTip>
                     </Image>
+                    <ToggleButton.ContextMenu>
+                        <ContextMenu>
+                            <Grid Width="120">
+                                <TextBlock Text="Minimize on start" Grid.Column="0" Grid.ColumnSpan="2"/>
+                                <ToggleButton Margin="10,0,0,0" Padding="1" Width="15" HorizontalAlignment="Right" Grid.Column="1" IsChecked="{Binding Path=MinimizeOnPlay, Mode=TwoWay}"/>
+                            </Grid>
+                            <Grid Width="120">
+                                <TextBlock Text="Maximize on stop" Grid.Column="0" Grid.ColumnSpan="2"/>
+                                <ToggleButton Margin="10,0,0,0" Padding="1" Width="15" HorizontalAlignment="Right" Grid.Column="1" IsChecked="{Binding Path=MaximizeOnStopPlay, Mode=TwoWay}"/>
+                            </Grid>
+                        </ContextMenu>
+                    </ToggleButton.ContextMenu>
                 </ToggleButton>
                 <ToggleButton x:Name="RecordButton" BorderThickness="0" Background="Transparent" IsChecked="{Binding ElementName=mainWindow, Path=IsRecording, Mode=TwoWay}" Padding="2" Margin="5 0" Width="35" Height="35">
                     <Image Source="Images/record2.png" RenderOptions.BitmapScalingMode="HighQuality">
@@ -248,8 +260,20 @@
                             </ToolTip>
                         </Image.ToolTip>
                     </Image>
+                    <ToggleButton.ContextMenu>
+                        <ContextMenu>
+                            <Grid Width="120">
+                                <TextBlock Text="Minimize on start" Grid.Column="0" Grid.ColumnSpan="2"/>
+                                <ToggleButton Margin="10,0,0,0" Padding="1" Width="15" HorizontalAlignment="Right" Grid.Column="1" IsChecked="{Binding Path=MinimizeOnRecord, Mode=TwoWay}"/>
+                            </Grid>
+                            <Grid Width="120">
+                                <TextBlock Text="Maximize on stop" Grid.Column="0" Grid.ColumnSpan="2"/>
+                                <ToggleButton Margin="10,0,0,0" Padding="1" Width="15" HorizontalAlignment="Right" Grid.Column="1" IsChecked="{Binding Path=MaximizeOnStopRecord, Mode=TwoWay}"/>
+                            </Grid>
+                        </ContextMenu>
+                    </ToggleButton.ContextMenu>
                 </ToggleButton>
-                <ToggleButton x:Name="WithDelayButton" BorderThickness="0" Background="Transparent" IsChecked="{Binding ElementName=mainWindow, Path=WithDelay, Mode=TwoWay}" Padding="2" Margin="5 0" Width="35" Height="35">
+                <ToggleButton x:Name="WithDelayButton" BorderThickness="0" Background="Transparent" IsChecked="{Binding ElementName=mainWindow, Path=IsRecordingWithDelay, Mode=TwoWay}" Padding="2" Margin="5 0" Width="35" Height="35">
                     <Image Source="Images/stopwatch2.png" RenderOptions.BitmapScalingMode="HighQuality">
                         <Image.ToolTip>
                             <ToolTip>

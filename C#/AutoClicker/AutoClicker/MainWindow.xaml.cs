@@ -293,6 +293,66 @@ namespace AutoClicker
             InstructionsTextBox.Document.Blocks.Clear();
         }
         #endregion
+
+        #region Context Menus
+        /// <summary>
+        /// Gets or sets a value indicating whether [minimize on play].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [minimize on play]; otherwise, <c>false</c>.
+        /// </value>
+        public bool MinimizeOnPlay { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [maximize on stop play].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [maximize on stop play]; otherwise, <c>false</c>.
+        /// </value>
+        public bool MaximizeOnStopPlay { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [minimize on record].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [minimize on record]; otherwise, <c>false</c>.
+        /// </value>
+        public bool MinimizeOnRecord { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [maximize on stop record].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [maximize on stop record]; otherwise, <c>false</c>.
+        /// </value>
+        public bool MaximizeOnStopRecord { get; set; } = true;
+
+        /// <summary>
+        /// Sets the state of the window.
+        /// </summary>
+        /// <param name="minimize">if set to <c>true</c> [maximized].</param>
+        public void MinimizeWindow(bool minimize)
+        {
+            if (minimize)
+            {
+                WindowState = WindowState.Minimized;
+            }
+        }
+
+        /// <summary>
+        /// Sets the state of the window.
+        /// </summary>
+        /// <param name="minimize">if set to <c>true</c> [maximized].</param>
+        public void MaximizeWindow(bool maximize)
+        {
+            if (maximize)
+            {
+                WindowState = WindowState.Normal;
+                Activate();
+            }
+        }
+        #endregion
+
         #endregion
 
         #region Add Menu
@@ -521,14 +581,13 @@ namespace AutoClicker
                 if (_isPlaying)
                 {
                     IsRecording = false;
-                    WindowState = WindowState.Minimized;
+                    MinimizeWindow(MinimizeOnPlay);
                     runner.Run(Instructions, Repetitions, IsInfiniteLooping);
                 }
                 else
                 {
                     StopAll();
-                    //WindowState = WindowState.Normal;
-                    Activate();
+                    MaximizeWindow(MaximizeOnStopPlay);
                 }
                 InstructionsTextBox.IsEnabled = !value;
                 OnPropertyChanged("IsPlaying");
@@ -611,11 +670,12 @@ namespace AutoClicker
                     StopAll();
                     IsPlaying = false;
                     recorder.AddHooks();
+                    MinimizeWindow(MinimizeOnRecord);
                 }
                 else
                 {
-                    Activate();
                     recorder.RemoveHooks();
+                    MaximizeWindow(MaximizeOnStopRecord);
                 }
                 InstructionsTextBox.IsEnabled = !value;
                 OnPropertyChanged("IsRecording");
@@ -636,6 +696,7 @@ namespace AutoClicker
         /// </summary>
         public MainWindow()
         {
+            DataContext = this;
             InitializeComponent();
             InstructionsTextBox.Document.Blocks.Clear();
             new HotkeyControl(PLAY_HOTKEY, OnPlayHotkeyPressed);

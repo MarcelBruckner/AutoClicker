@@ -100,7 +100,6 @@
     <Compile Include="InstructionsParser\AutoClickerInstructionVisitor.cs" />
     <Compile Include="InstructionsParser\AutoClickerTextInputVisitor.cs" />
     <Compile Include="InstructionsParser\AutoClickerTrueFalseVisitor.cs" />
-    <Compile Include="InstructionsParser\AutoClickerKeyInputVisitor.cs" />
     <Compile Include="Cursor.cs" />
     <Compile Include="Enums\HotkeyStates.cs" />
     <Compile Include="Converters\ComboBoxConverter.cs" />

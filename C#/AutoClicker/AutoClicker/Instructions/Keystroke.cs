@@ -108,7 +108,7 @@ namespace AutoClicker.Instructions
         /// <param name="builder"></param>
         internal override void AppendSpecifics(StringBuilder builder)
         {
-            Append(builder, "key", Key);
+            Append(builder, "input", "\"" + Key + "\"");
         }
     }
 }

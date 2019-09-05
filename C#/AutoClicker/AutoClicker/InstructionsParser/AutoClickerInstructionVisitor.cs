@@ -32,11 +32,6 @@ namespace AutoClicker.InstructionsParser
         private AutoClickerTrueFalseVisitor trueFalseVisitor = new AutoClickerTrueFalseVisitor();
 
         /// <summary>
-        /// The key input visitor
-        /// </summary>
-        private AutoClickerKeyInputVisitor keyInputVisitor = new AutoClickerKeyInputVisitor();
-
-        /// <summary>
         /// The text input visitor
         /// </summary>
         private AutoClickerTextInputVisitor textInputVisitor = new AutoClickerTextInputVisitor();
@@ -215,9 +210,9 @@ namespace AutoClicker.InstructionsParser
             Instructions.Instruction commons = Commons(context.commons());
 
             VirtualKeyCode key = VirtualKeyCode.NONE;
-            if (context.keyInput() != null && context.keyInput().Count() > 0)
+            if (context.stringInput() != null && context.stringInput().Count() > 0)
             {
-                key = keyInputVisitor.Visit(context.keyInput(0));
+                key = VirtualKeyCode.NONE.FromString(textInputVisitor.Visit(context.stringInput(0)));
             }
 
             return new Keystroke(key, commons);

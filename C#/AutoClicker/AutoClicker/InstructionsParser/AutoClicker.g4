@@ -107,7 +107,6 @@ endY				: (ENDY decimalTuple);
 button              : (BUTTON EQ (LEFT | RIGHT | MIDDLE));
 movement			: (MOVEMENT EQ (SINUS | SPRING | JUMP));
 
-keyInput			: (KEY EQ WORD);
-keystroke			: KEYSTROKE IS (keyInput | commons)*;
-stringInput			: (EQ STRING);
-text				: TEXT IS (INPUT stringInput | commons)*;
+stringInput			: (INPUT EQ STRING);
+keystroke			: KEY IS (stringInput | commons)*;
+text				: TEXT IS (stringInput | commons)*;
