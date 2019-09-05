@@ -521,7 +521,7 @@ namespace AutoClicker
                 if (_isPlaying)
                 {
                     IsRecording = false;
-                    //WindowState = WindowState.Minimized;
+                    WindowState = WindowState.Minimized;
                     runner.Run(Instructions, Repetitions, IsInfiniteLooping);
                 }
                 else
