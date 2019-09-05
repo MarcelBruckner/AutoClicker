@@ -106,8 +106,9 @@ namespace AutoClicker.Instructions
             if (!AlreadyThere)
             {
                 RandomizePosition(X, Y);
-                MouseSpecificExecute();
             }
+
+            MouseSpecificExecute();
         }
 
         /// <summary>
