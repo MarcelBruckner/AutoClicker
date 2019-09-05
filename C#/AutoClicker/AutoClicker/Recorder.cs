@@ -163,6 +163,10 @@ namespace AutoClicker
             }
             else
             {
+                if (isShiftDown)
+                {
+                    converted = converted.ToUpperInvariant();
+                }
                 newInstruction = new Text(converted, ctrl: isCtrlDown, alt: isAltDown);
             }
 
