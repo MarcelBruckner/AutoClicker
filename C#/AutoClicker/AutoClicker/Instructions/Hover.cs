@@ -9,7 +9,7 @@ namespace AutoClicker.Instructions
     /// <summary>
     /// Instruction to hover the mouse
     /// </summary>
-    /// <seealso cref="AutoClicker.Instructions.Instruction" />
+    /// <seealso cref="Instruction" />
     public class Hover : Instruction
     {
         #region Properties
@@ -17,12 +17,7 @@ namespace AutoClicker.Instructions
         /// The maximal uncertainty in pixels that distinguishs two mouse positions
         /// </summary>
         internal static readonly int MAX_UNCERTAINTY = 20;
-
-        /// <summary>
-        /// The movement type of the mouse
-        /// </summary>
-        private MovementType? _movement;
-        public MovementType Movement { get => _movement ?? MainWindow.GlobalMovementType; set => _movement = value; }
+        public MovementType Movement { get; }
 
         /// <summary>
         /// The on screen X position of the desired mouse position
@@ -37,7 +32,7 @@ namespace AutoClicker.Instructions
         /// <summary>
         /// The final on screen position after randomization
         /// </summary>
-        internal System.Windows.Vector RandomizedPosition { get; set; }
+        internal Vector RandomizedPosition { get; set; }
         #endregion
 
         #region Constructors
@@ -54,11 +49,11 @@ namespace AutoClicker.Instructions
         /// <param name="shift">if set to <c>true</c> [shift].</param>
         /// <param name="ctrl">if set to <c>true</c> [control].</param>
         /// <param name="alt">if set to <c>true</c> [alt].</param>
-        public Hover(int x = 0, int y = 0, MovementType? movement = null,
+        public Hover(int x, int y, MovementType movement = MovementType.GLOBAL,
             DecimalTuple delay = null, DecimalTuple repetitions = null, DecimalTuple speed = null,
-            bool shift = false, bool ctrl = false, bool alt = false
+            bool shift = false, bool ctrl = false, bool alt = false, GlobalData globalData = null
             ) : this(new DecimalTuple(x), new DecimalTuple(y), movement,
-                delay, repetitions, speed, shift, ctrl, alt)
+                delay, repetitions, speed, shift, ctrl, alt, globalData)
         { }
 
         /// <summary>
@@ -73,15 +68,15 @@ namespace AutoClicker.Instructions
         /// <param name="shift">if set to <c>true</c> [shift].</param>
         /// <param name="ctrl">if set to <c>true</c> [control].</param>
         /// <param name="alt">if set to <c>true</c> [alt].</param>
-        public Hover(DecimalTuple x, DecimalTuple y, MovementType? movement = null,
+        public Hover(DecimalTuple x = null, DecimalTuple y = null, MovementType movement = MovementType.GLOBAL,
             DecimalTuple delay = null, DecimalTuple repetitions = null, DecimalTuple speed = null,
-            bool shift = false, bool ctrl = false, bool alt = false
-            ) : base(delay, repetitions, speed, shift, ctrl, alt)
+            bool shift = false, bool ctrl = false, bool alt = false, GlobalData globalData = null
+            ) : base(delay, repetitions, speed, shift, ctrl, alt, globalData)
         {
             X = x;
             Y = y;
 
-            _movement = movement;
+            Movement = movement;
         }
 
         /// <summary>
@@ -91,9 +86,8 @@ namespace AutoClicker.Instructions
         /// <param name="y">The y.</param>
         /// <param name="movement">The movement.</param>
         /// <param name="instruction">The instruction.</param>
-        public Hover(DecimalTuple x, DecimalTuple y, MovementType? movement = null,
-            Instruction instruction = null
-            ) : this(x, y, movement, instruction.Delay(), instruction.Repetitions, instruction.Speed(), instruction.Shift, instruction.Ctrl, instruction.Alt)
+        public Hover(Instruction instruction, DecimalTuple x = null, DecimalTuple y = null, MovementType movement = MovementType.GLOBAL, GlobalData globalData = null) 
+            : this(x, y, movement, instruction.Delay(), instruction.Repetitions, instruction.Speed(), instruction.Shift, instruction.Ctrl, instruction.Alt, globalData)
         { }
 
         #endregion
@@ -116,7 +110,7 @@ namespace AutoClicker.Instructions
         /// </summary>
         internal virtual void MouseSpecificExecute()
         {
-            InputSimulator.MouseMove(Movement, RandomizedPosition, Speed(true).Get(MainWindow.GlobalRandomSpeed));
+            InputSimulator.MouseMove(Movement, RandomizedPosition, Speed(true).Get(GlobalData.RandomSpeed));
         }
 
         /// <summary>
@@ -153,9 +147,18 @@ namespace AutoClicker.Instructions
         /// <param name="builder"></param>
         internal override void AppendSpecifics(StringBuilder builder)
         {
-            Append(builder, "x", X);
-            Append(builder, "y", Y);
-            Append(builder, "movement", Movement);
+            if (X != null)
+            {
+                Append(builder, "x", X);
+            }
+            if (Y != null)
+            {
+                Append(builder, "y", Y);
+            }
+            if (Movement != MovementType.GLOBAL)
+            {
+                Append(builder, "movement", Movement);
+            }
         }
 
         /// <summary>
@@ -209,7 +212,7 @@ namespace AutoClicker.Instructions
 
                 double next = random.NextDouble();
                 Console.WriteLine(next);
-                return next > 0.025 && dx < (X.Random ?? MainWindow.GlobalRandomX) && dy < (Y.Random ?? MainWindow.GlobalRandomY);
+                return next > 0.025 && dx < (X.Random ?? GlobalData.RandomX) && dy < (Y.Random ?? GlobalData.RandomY);
             }
         }
 

@@ -36,7 +36,7 @@ namespace AutoClicker.Instructions
             {
                 return _delay;
             }
-            return _delay ?? new DecimalTuple(MainWindow.GlobalDelay, MainWindow.GlobalRandomDelay);
+            return _delay ?? new DecimalTuple(GlobalData.Delay, GlobalData.RandomDelay);
         }
         public void Delay(DecimalTuple delay)
         {
@@ -51,7 +51,7 @@ namespace AutoClicker.Instructions
         {
             get
             {
-                DecimalTuple repetitions = _repetitions ?? new DecimalTuple(MainWindow.GlobalRepetitions);
+                DecimalTuple repetitions = _repetitions ?? new DecimalTuple(GlobalData.Repetitions);
                 _repetitions = repetitions;
                 return _repetitions;
             }
@@ -69,7 +69,7 @@ namespace AutoClicker.Instructions
                 return _speed;
             }
 
-            return _speed ?? new DecimalTuple(MainWindow.GlobalSpeed);
+            return _speed ?? new DecimalTuple(GlobalData.Speed);
         }
         public void Speed(DecimalTuple speed)
         {
@@ -92,6 +92,14 @@ namespace AutoClicker.Instructions
         public bool Alt { get; set; }
 
         /// <summary>
+        /// Gets or sets the global data.
+        /// </summary>
+        /// <value>
+        /// The global data.
+        /// </value>
+        public GlobalData GlobalData { get; set; }
+
+        /// <summary>
         /// Is the instruction currently running
         /// </summary>
         public bool IsRunning { get; set; } = false;
@@ -107,7 +115,7 @@ namespace AutoClicker.Instructions
         /// <param name="ctrl">if set to <c>true</c> [control].</param>
         /// <param name="alt">if set to <c>true</c> [alt].</param>
         public Instruction(DecimalTuple delay = null, DecimalTuple repetitions = null, DecimalTuple speed = null,
-            bool shift = false, bool ctrl = false, bool alt = false)
+            bool shift = false, bool ctrl = false, bool alt = false, GlobalData globalData = null)
         {
             Delay(delay);
             Repetitions = repetitions;
@@ -116,6 +124,8 @@ namespace AutoClicker.Instructions
             Shift = shift;
             Ctrl = ctrl;
             Alt = alt;
+
+            GlobalData = globalData ?? new GlobalData();
         }
 
         /// <summary>
@@ -127,7 +137,7 @@ namespace AutoClicker.Instructions
             DecimalTuple repetitions = Repetitions;
 
             int save = (int)repetitions.Value;
-            int totalRepetitions = (int)repetitions.Value + random.Next((int)(repetitions.Random ?? MainWindow.GlobalRandomRepetitions));
+            int totalRepetitions = (int)repetitions.Value + random.Next((int)(repetitions.Random ?? GlobalData.RandomRepetitions));
             repetitions.Value = 1;
             while (IsRunning && repetitions.Value <= totalRepetitions)
             {
@@ -154,7 +164,7 @@ namespace AutoClicker.Instructions
         {
             DecimalTuple delay = Delay(true);
             double save = delay.Value;
-            int totalDelay = delay.Get(MainWindow.GlobalRandomDelay);
+            int totalDelay = delay.Get(GlobalData.RandomDelay);
 
             delay.Value = 0;
 
@@ -258,15 +268,15 @@ namespace AutoClicker.Instructions
             Append(builder, "repetitions", _repetitions);
             Append(builder, "speed", _speed);
 
-            if (Shift != MainWindow.GlobalShift)
+            if (Shift != GlobalData.Shift)
             {
                 Append(builder, "shift", Shift);
             }
-            if (Ctrl != MainWindow.GlobalCtrl)
+            if (Ctrl != GlobalData.Ctrl)
             {
                 Append(builder, "ctrl", Ctrl);
             }
-            if (Alt != MainWindow.GlobalAlt)
+            if (Alt != GlobalData.Alt)
             {
                 Append(builder, "alt", Alt);
             }

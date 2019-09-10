@@ -12,13 +12,13 @@ namespace AutoClicker.Instructions
     /// <seealso cref="AutoClicker.Instructions.Hover" />
     public class Click : Hover
     {
-
         /// <summary>
-        /// The button that gets clicked
+        /// Gets or sets the button.
         /// </summary>
-        /// <seealso cref="ButtonType"/>
-        private ButtonType? _button;
-        public ButtonType Button { get => _button ?? MainWindow.GlobalButtonType; set => _button = value; }
+        /// <value>
+        /// The button.
+        /// </value>
+        public ButtonType Button { get; set; }
 
         #region Constructors
 
@@ -35,9 +35,9 @@ namespace AutoClicker.Instructions
         /// <param name="shift">if set to <c>true</c> [shift].</param>
         /// <param name="ctrl">if set to <c>true</c> [control].</param>
         /// <param name="alt">if set to <c>true</c> [alt].</param>
-        public Click(int x = 0, int y = 0, ButtonType? button = null, MovementType? movement = null,
+        public Click(int x = 0, int y = 0, ButtonType button= ButtonType.GLOBAL, MovementType movement = MovementType.GLOBAL,
             DecimalTuple delay = null, DecimalTuple repetitions = null, DecimalTuple speed = null,
-            bool shift = false, bool ctrl = false, bool alt = false
+            bool shift = false, bool ctrl = false, bool alt = false, GlobalData globalData = null
             ) : this(new DecimalTuple(x), new DecimalTuple(y), button, movement,
                 delay, repetitions, speed, shift, ctrl, alt)
         { }
@@ -50,8 +50,7 @@ namespace AutoClicker.Instructions
         /// <param name="button">The button.</param>
         /// <param name="movement">The movement.</param>
         /// <param name="instruction">The instruction.</param>
-        public Click(DecimalTuple x, DecimalTuple y, ButtonType? button, MovementType? movement,
-            Instruction instruction
+        public Click(Instruction instruction, DecimalTuple x=null, DecimalTuple y = null, ButtonType button=ButtonType.GLOBAL, MovementType movement= MovementType.GLOBAL, GlobalData globalData = null
             ) : this(x, y, button, movement, instruction.Delay(), instruction.Repetitions, instruction.Speed(), instruction.Shift, instruction.Ctrl, instruction.Alt)
         { }
 
@@ -68,12 +67,12 @@ namespace AutoClicker.Instructions
         /// <param name="shift">if set to <c>true</c> [shift].</param>
         /// <param name="ctrl">if set to <c>true</c> [control].</param>
         /// <param name="alt">if set to <c>true</c> [alt].</param>
-        public Click(DecimalTuple x, DecimalTuple y, ButtonType? button = null, MovementType? movement = null,
+        public Click(DecimalTuple x, DecimalTuple y, ButtonType button = ButtonType.GLOBAL, MovementType movement = MovementType.GLOBAL,
             DecimalTuple delay = null, DecimalTuple repetitions = null, DecimalTuple speed = null,
-            bool shift = false, bool ctrl = false, bool alt = false
-            ) : base(x, y, movement, delay, repetitions, speed, shift, ctrl, alt)
+            bool shift = false, bool ctrl = false, bool alt = false, GlobalData globalData = null
+            ) : base(x, y, movement, delay, repetitions, speed, shift, ctrl, alt, globalData)
         {
-            _button = button;
+            Button = button;
         }
 
         #endregion
@@ -83,7 +82,7 @@ namespace AutoClicker.Instructions
         /// </summary>
         internal override void MouseSpecificExecute()
         {
-            InputSimulator.MouseClick(Movement, Button, RandomizedPosition, Speed(true).Get(MainWindow.GlobalRandomSpeed), Hotkeys);
+            InputSimulator.MouseClick(Movement, Button, RandomizedPosition, Speed(true).Get(GlobalData.RandomSpeed), Hotkeys);
         }
 
         /// <summary>
@@ -104,7 +103,10 @@ namespace AutoClicker.Instructions
         internal override void AppendSpecifics(StringBuilder builder)
         {
             base.AppendSpecifics(builder);
-            Append(builder, "button", Button);
+            if (Button != ButtonType.GLOBAL)
+            {
+                Append(builder, "button", Button);
+            }
         }
 
         /// <summary>

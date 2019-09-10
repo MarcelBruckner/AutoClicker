@@ -14,7 +14,7 @@ namespace AutoClicker.InstructionsParser
     /// 
     /// </summary>
     /// <seealso cref="AutoClicker.AutoClickerBaseVisitor{Enums.ButtonType?}" />
-    public class AutoClickerButtonTypeVisitor : AutoClickerBaseVisitor<ButtonType?>
+    public class AutoClickerButtonTypeVisitor : AutoClickerBaseVisitor<ButtonType>
     {
         /// <summary>
         /// Visit a parse tree produced by <see cref="M:AutoClicker.AutoClickerParser.button" />.
@@ -26,7 +26,7 @@ namespace AutoClicker.InstructionsParser
         /// <param name="context">The parse tree.</param>
         /// <returns></returns>
         /// <return>The visitor result.</return>
-        public override ButtonType? VisitButton([NotNull] AutoClickerParser.ButtonContext context)
+        public override ButtonType VisitButton([NotNull] AutoClickerParser.ButtonContext context)
         {
             if (context.RIGHT() != null)
             {
@@ -40,7 +40,7 @@ namespace AutoClicker.InstructionsParser
             {
                 return ButtonType.LEFT;
             }
-            return null;
+            return ButtonType.GLOBAL;
         }
     }
 }

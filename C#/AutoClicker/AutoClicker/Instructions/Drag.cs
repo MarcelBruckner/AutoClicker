@@ -40,11 +40,11 @@ namespace AutoClicker.Instructions
         /// <param name="shift">if set to <c>true</c> [shift].</param>
         /// <param name="ctrl">if set to <c>true</c> [control].</param>
         /// <param name="alt">if set to <c>true</c> [alt].</param>
-        public Drag(int x=0, int y=0, int endX=0, int endY=0, ButtonType? button = null, MovementType? movement = null,
+        public Drag(int x=0, int y=0, int endX=0, int endY=0, ButtonType button = ButtonType.GLOBAL, MovementType movement = MovementType.GLOBAL,
             DecimalTuple delay = null, DecimalTuple repetitions = null, DecimalTuple speed = null,
-            bool shift = false, bool ctrl = false, bool alt = false
+            bool shift = false, bool ctrl = false, bool alt = false, GlobalData globalData = null
             ) : this(new DecimalTuple(x), new DecimalTuple(y), new DecimalTuple(endX), new DecimalTuple(endY), button, movement,
-                delay, repetitions, speed, shift, ctrl, alt)
+                delay, repetitions, speed, shift, ctrl, alt, globalData)
         { }
 
         /// <summary>
@@ -57,9 +57,9 @@ namespace AutoClicker.Instructions
         /// <param name="button">The button.</param>
         /// <param name="movement">The movement.</param>
         /// <param name="instruction">The instruction.</param>
-        public Drag(DecimalTuple x, DecimalTuple y, DecimalTuple endX, DecimalTuple endY, ButtonType? button = null, MovementType? movement = null,
-            Instruction instruction = null
-            ) : this(x, y, endX, endY, button, movement, instruction.Delay(), instruction.Repetitions, instruction.Speed(), instruction.Shift, instruction.Ctrl, instruction.Alt)
+        public Drag(Instruction instruction, DecimalTuple x = null, DecimalTuple y = null, DecimalTuple endX = null, DecimalTuple endY = null, 
+            ButtonType button = ButtonType.GLOBAL, MovementType movement = MovementType.GLOBAL, GlobalData globalData = null
+            ) : this(x, y, endX, endY, button, movement, instruction.Delay(), instruction.Repetitions, instruction.Speed(), instruction.Shift, instruction.Ctrl, instruction.Alt, globalData)
         {
         }
 
@@ -78,10 +78,10 @@ namespace AutoClicker.Instructions
         /// <param name="shift">if set to <c>true</c> [shift].</param>
         /// <param name="ctrl">if set to <c>true</c> [control].</param>
         /// <param name="alt">if set to <c>true</c> [alt].</param>
-        public Drag(DecimalTuple x, DecimalTuple y, DecimalTuple endX, DecimalTuple endY, ButtonType? button = null, MovementType? movement = null,
+        public Drag(DecimalTuple x, DecimalTuple y, DecimalTuple endX, DecimalTuple endY, ButtonType button = ButtonType.GLOBAL, MovementType movement = MovementType.GLOBAL,
             DecimalTuple delay = null, DecimalTuple repetitions = null, DecimalTuple speed = null,
-            bool shift = false, bool ctrl = false, bool alt = false
-            ) : base(x, y, button, movement, delay, repetitions, speed, shift, ctrl, alt)
+            bool shift = false, bool ctrl = false, bool alt = false, GlobalData globalData = null
+            ) : base(x, y, button, movement, delay, repetitions, speed, shift, ctrl, alt, globalData)
         {
             EndX = endX;
             EndY = endY;
@@ -93,8 +93,8 @@ namespace AutoClicker.Instructions
         /// </summary>
         internal override void SpecificExecute()
         {
-            InputSimulator.MouseDrag(MainWindow.GlobalMovementType, Button,
-                X.Get(0), Y.Get(0), EndX.Get(0), EndY.Get(0), Speed(true).Get(MainWindow.GlobalRandomSpeed), Hotkeys);
+            InputSimulator.MouseDrag(GlobalData.MovementType, Button,
+                X.Get(0), Y.Get(0), EndX.Get(0), EndY.Get(0), Speed(true).Get(GlobalData.RandomSpeed), Hotkeys);
         }
 
         /// <summary>

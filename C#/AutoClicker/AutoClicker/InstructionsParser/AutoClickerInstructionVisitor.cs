@@ -50,7 +50,7 @@ namespace AutoClicker.InstructionsParser
         {
             DecimalTuple x = new DecimalTuple(0);
             DecimalTuple y = new DecimalTuple(0);
-            MovementType? movement = null;
+            MovementType movement = MovementType.GLOBAL;
             Instructions.Instruction commons = Commons(context.commons());
 
             if (context.xPos() != null && context.xPos().Count() > 0)
@@ -66,7 +66,7 @@ namespace AutoClicker.InstructionsParser
                 movement = movementTypeVisitor.Visit(context.movement(0));
             }
 
-            return new Hover(x, y, movement, commons);
+            return new Hover(x: x, y: y, movement: movement, instruction: commons);
         }
 
         
@@ -85,10 +85,10 @@ namespace AutoClicker.InstructionsParser
         {
             DecimalTuple x = new DecimalTuple(0);
             DecimalTuple y = new DecimalTuple(0);
-            MovementType? movement = null;
+            MovementType movement = MovementType.GLOBAL;
             Instructions.Instruction commons = Commons(context.commons());
 
-            ButtonType? button = null;
+            ButtonType button = ButtonType.GLOBAL;
             if (context.button() != null && context.button().Count() > 0)
             {
                 button = buttonTypeVisitor.Visit(context.button(0));
@@ -106,7 +106,7 @@ namespace AutoClicker.InstructionsParser
                 movement = movementTypeVisitor.Visit(context.movement(0));
             }
 
-            return new Click(x, y, button, movement, commons);
+            return new Click(commons, x, y, button, movement);
         }
 
         /// <summary>
@@ -125,10 +125,10 @@ namespace AutoClicker.InstructionsParser
             DecimalTuple y = new DecimalTuple(0);
             DecimalTuple endX = new DecimalTuple(0);
             DecimalTuple endY = new DecimalTuple(0);
-            MovementType? movement = null;
+            MovementType movement = MovementType.GLOBAL;
             Instructions.Instruction commons = Commons(context.commons());
 
-            ButtonType? button = null;
+            ButtonType button = ButtonType.GLOBAL;
             if (context.button() != null && context.button().Count() > 0)
             {
                 button = buttonTypeVisitor.Visit(context.button(0));
@@ -154,7 +154,7 @@ namespace AutoClicker.InstructionsParser
                 movement = movementTypeVisitor.Visit(context.movement(0));
             }
 
-            return new Drag(x, y, endX, endY, button, movement, commons);
+            return new Drag(commons, x, y, endX, endY, button, movement);
         }
 
         /// <summary>
@@ -171,7 +171,7 @@ namespace AutoClicker.InstructionsParser
         {
             DecimalTuple x = new DecimalTuple(0);
             DecimalTuple y = new DecimalTuple(0);
-            MovementType? movement = null;
+            MovementType movement = MovementType.GLOBAL;
             Instructions.Instruction commons = Commons(context.commons());
 
             DecimalTuple scroll = new DecimalTuple(0);

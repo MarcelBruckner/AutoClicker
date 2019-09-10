@@ -77,7 +77,7 @@ namespace AutoClicker
         /// <summary>
         /// The current instruction
         /// </summary>
-        private Instructions.Instruction currentInstruction = null;
+        private Instruction currentInstruction = null;
 
         /// <summary>
         /// The current run
@@ -153,7 +153,7 @@ namespace AutoClicker
 
             string converted = WindowsKeyExtension.ToLiteral(WindowsKeyExtension.KeyCodeToUnicode(key));
 
-            if (isCtrlDown || isAltDown || converted.Length <= 0 || 
+            if (isCtrlDown || isAltDown || converted.Length <= 0 ||
                 !((converted[0] >= 'A' && converted[0] <= 'Z') ||
                 (converted[0] >= 'a' && converted[0] <= 'z') ||
                 (converted[0] >= '0' && converted[0] <= '9' && !isShiftDown)))
@@ -272,7 +272,7 @@ namespace AutoClicker
         /// <returns></returns>
         private ButtonType GetButton(MouseButtons button)
         {
-            ButtonType _button;
+            ButtonType _button = ButtonType.GLOBAL;
             switch (button)
             {
                 case MouseButtons.Middle:
@@ -281,9 +281,13 @@ namespace AutoClicker
                 case MouseButtons.Right:
                     _button = ButtonType.RIGHT;
                     break;
-                default:
+                case MouseButtons.Left:
                     _button = ButtonType.LEFT;
                     break;
+            }
+            if (_button == window.GlobalData.ButtonType)
+            {
+                _button = ButtonType.GLOBAL;
             }
             return _button;
         }

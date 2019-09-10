@@ -78,7 +78,7 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Minimum" Grid.Column="0"/>
-                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="1" Text="{Binding Path=GlobalDelay, ElementName=mainWindow}"/>
+                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="1" Text="{Binding Path=GlobalData.Delay, Mode=TwoWay}" />
                     </Grid>
                     <Grid Width="100">
                         <Grid.ColumnDefinitions>
@@ -86,7 +86,7 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Random" Grid.Column="0"/>
-                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="10" Text="{Binding Path=GlobalRandomDelay, ElementName=mainWindow}"/>
+                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="10" Text="{Binding Path=GlobalData.RandomDelay, Mode=TwoWay}"/>
                     </Grid>
                 </MenuItem>
                 <MenuItem Header="_Repetitions">
@@ -96,7 +96,7 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Minimum" Grid.Column="0"/>
-                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="1" Text="{Binding Path=GlobalRepetitions, ElementName=mainWindow}"/>
+                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="1" DataContext="{Binding GlobalData, FallbackValue='error'}" Text="{Binding Path=Repetitions, Mode=TwoWay}"/>
                     </Grid>
                     <Grid Width="100">
                         <Grid.ColumnDefinitions>
@@ -104,7 +104,7 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Random" Grid.Column="0"/>
-                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="10" Text="{Binding Path=GlobalRandomRepetitions, ElementName=mainWindow}"/>
+                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="10" Text="{Binding Path=GlobalData.RandomRepetitions, Mode=TwoWay}"/>
                     </Grid>
                 </MenuItem>
                 <MenuItem Header="_Speed">
@@ -114,7 +114,7 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Minimum" Grid.Column="0"/>
-                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="1" Text="{Binding Path=GlobalSpeed, ElementName=mainWindow}"/>
+                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="1" Text="{Binding Path=GlobalData.Speed, Mode=TwoWay, ElementName=mainWindow}"/>
                     </Grid>
                     <Grid Width="100">
                         <Grid.ColumnDefinitions>
@@ -122,14 +122,26 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Random" Grid.Column="0"/>
-                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="10" Text="{Binding Path=GlobalRandomSpeed, ElementName=mainWindow}"/>
+                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="10" Text="{Binding Path=GlobalData.RandomSpeed, Mode=TwoWay}"/>
                     </Grid>
                 </MenuItem>
                 <Separator/>
-                <MenuItem Header="Movement Type" ItemsSource="{Binding Source={StaticResource MovementTypes}}">
+                <MenuItem Header="Movement Type">
+                    <ComboBox>
+                        
+                    </ComboBox>
+                </MenuItem>
+                    <MenuItem Header="Movement Type" ItemsSource="{Binding Source={StaticResource MovementTypes}}">
                     <MenuItem.ItemContainerStyle>
                         <Style TargetType="MenuItem">
                             <EventSetter Event="Click" Handler="MovementType_Click" />
+                        </Style>
+                    </MenuItem.ItemContainerStyle>
+                </MenuItem>
+                <MenuItem Header="Button Type" ItemsSource="{Binding Source={StaticResource ButtonTypes}}">
+                    <MenuItem.ItemContainerStyle>
+                        <Style TargetType="MenuItem">
+                            <EventSetter Event="Click" Handler="ButtonType_Click" />
                         </Style>
                     </MenuItem.ItemContainerStyle>
                 </MenuItem>
@@ -140,7 +152,7 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="X Radius" Grid.Column="0"/>
-                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="1" Text="{Binding Path=GlobalRandomX, ElementName=mainWindow}"/>
+                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="1" Text="{Binding Path=GlobalData.RandomX, Mode=TwoWay}"/>
                     </Grid>
                     <Grid Width="100">
                         <Grid.ColumnDefinitions>
@@ -148,7 +160,7 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Y Radius" Grid.Column="0"/>
-                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="10" Text="{Binding Path=GlobalRandomY, ElementName=mainWindow}"/>
+                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="10" Text="{Binding Path=GlobalData.RandomY, Mode=TwoWay}"/>
                     </Grid>
                 </MenuItem>
                 <MenuItem Header="_Drag">
@@ -158,7 +170,7 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="X Radius" Grid.Column="0"/>
-                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="1" Text="{Binding Path=GlobalRandomDragX, ElementName=mainWindow}"/>
+                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="1" Text="{Binding Path=GlobalData.RandomDragX, Mode=TwoWay}"/>
                     </Grid>
                     <Grid Width="100">
                         <Grid.ColumnDefinitions>
@@ -166,7 +178,7 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Y Radius" Grid.Column="0"/>
-                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="10" Text="{Binding Path=GlobalRandomDragY, ElementName=mainWindow}"/>
+                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="10" Text="{Binding Path=GlobalData.RandomDragY, Mode=TwoWay}"/>
                     </Grid>
                 </MenuItem>
                 <MenuItem Header="_Wheel">
@@ -176,7 +188,7 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Minimum" Grid.Column="0"/>
-                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="1" Text="{Binding Path=GlobalWheel, ElementName=mainWindow}"/>
+                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="1" Text="{Binding Path=GlobalData.Wheel, Mode=TwoWay}"/>
                     </Grid>
                     <Grid Width="100">
                         <Grid.ColumnDefinitions>
@@ -184,22 +196,22 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Random" Grid.Column="0"/>
-                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="10" Text="{Binding Path=GlobalRandomWheel, ElementName=mainWindow}"/>
+                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="10" Text="{Binding Path=GlobalData.RandomWheel, Mode=TwoWay}"/>
                     </Grid>
                 </MenuItem>
                 <Separator/>
                 <MenuItem Header="_Hotkeys">
                     <Grid Width="100">
                         <TextBlock Text="Shift" Grid.Column="0" Grid.ColumnSpan="2"/>
-                        <ToggleButton Margin="10,0,0,0" Padding="1" Width="15" HorizontalAlignment="Right" Grid.Column="1" IsChecked="{Binding Path=GlobalShift, Mode=TwoWay}"/>
+                        <ToggleButton Margin="10,0,0,0" Padding="1" Width="15" HorizontalAlignment="Right" Grid.Column="1" IsChecked="{Binding Path=GlobalData.Shift, Mode=TwoWay}"/>
                     </Grid>
                     <Grid Width="100">
                         <TextBlock Text="Ctrl" Grid.Column="0" Grid.ColumnSpan="2"/>
-                        <ToggleButton Margin="10,0,0,0" Padding="1" Width="15" HorizontalAlignment="Right" Grid.Column="1" IsChecked="{Binding Path=GlobalCtrl, Mode=TwoWay}"/>
+                        <ToggleButton Margin="10,0,0,0" Padding="1" Width="15" HorizontalAlignment="Right" Grid.Column="1" IsChecked="{Binding Path=GlobalData.Ctrl, Mode=TwoWay}"/>
                     </Grid>
                     <Grid Width="100">
                         <TextBlock Text="Alt" Grid.Column="0" Grid.ColumnSpan="2"/>
-                        <ToggleButton Margin="10,0,0,0" Padding="1" Width="15" HorizontalAlignment="Right" Grid.Column="1" IsChecked="{Binding Path=GlobalAlt, Mode=TwoWay}"/>
+                        <ToggleButton Margin="10,0,0,0" Padding="1" Width="15" HorizontalAlignment="Right" Grid.Column="1" IsChecked="{Binding Path=GlobalData.Alt, Mode=TwoWay}"/>
                     </Grid>
                 </MenuItem>
             </MenuItem>

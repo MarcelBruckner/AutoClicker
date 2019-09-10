@@ -8,6 +8,9 @@ using System.IO;
 using System.Windows.Documents;
 using System.Collections.Generic;
 using Enums;
+using AutoClicker.Instructions;
+using Newtonsoft.Json;
+using System.Runtime.CompilerServices;
 
 namespace AutoClicker
 {
@@ -36,6 +39,14 @@ namespace AutoClicker
         /// The play hotkey
         /// </summary>
         public const System.Windows.Forms.Keys PLAY_HOTKEY = System.Windows.Forms.Keys.F7;
+
+        /// <summary>
+        /// The global and instructions separator
+        /// </summary>
+        private const string GLOBAL_AND_INSTRUCTIONS_SEPARATOR = "***********************************************************" +
+            "**********************************************************************************************************************" +
+            "**********************************************************************************************************************";
+
         #endregion
 
         #region Menus
@@ -59,8 +70,31 @@ namespace AutoClicker
                     try
                     {
                         StopAll();
+                        InstructionsTextBox.Document.Blocks.Clear();
                         string script = File.ReadAllText(dialog.FileName);
-                        InstructionsTextBox.Document.Blocks.Add(StringManager.ConvertStringToBlock(script));
+
+                        GlobalData = new GlobalData();
+
+                        if (script.Contains(GLOBAL_AND_INSTRUCTIONS_SEPARATOR))
+                        {
+                            string[] splitted = script.Split(GLOBAL_AND_INSTRUCTIONS_SEPARATOR.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                            try
+                            {
+                                GlobalData = JsonConvert.DeserializeObject<GlobalData>(splitted[0]);
+                            }
+                            catch
+                            {
+                                MessageBox.Show("Error deserializing the global values. Using default values.");
+                            }
+
+                            InstructionsTextBox.Document.Blocks.Add(StringManager.ConvertStringToBlock(splitted[1].Trim()));
+                        }
+                        else
+                        {
+                            MessageBox.Show("Couldn't distinguish between global values and instructions.");
+                            InstructionsTextBox.Document.Blocks.Add(StringManager.ConvertStringToBlock(script));
+                        }
+
                         break;
                     }
                     catch
@@ -91,7 +125,10 @@ namespace AutoClicker
                 try
                 {
                     StopAll();
-                    File.WriteAllText(dialog.FileName, StringManager.ConvertRichTextBoxToString(InstructionsTextBox));
+                    string serialized = JsonConvert.SerializeObject(GlobalData);
+                    serialized += GLOBAL_AND_INSTRUCTIONS_SEPARATOR;
+                    serialized += StringManager.ConvertRichTextBoxToString(InstructionsTextBox);
+                    File.WriteAllText(dialog.FileName, serialized);
                 }
                 catch
                 {
@@ -110,166 +147,49 @@ namespace AutoClicker
             Environment.Exit(0);
         }
         #endregion
-        
-        #region Defaults Menu
-        #region Global Menu Properties
 
-        /// <summary>
-        /// Gets or sets the type of the global movement.
-        /// </summary>
-        /// <value>
-        /// The type of the global movement.
-        /// </value>
-        public static MovementType GlobalMovementType { get; set; } = MovementType.SPRING;
-
-        /// <summary>
-        /// Gets or sets the type of the global button.
-        /// </summary>
-        /// <value>
-        /// The type of the global button.
-        /// </value>
-        public static ButtonType GlobalButtonType { get; set; }
-
-        /// <summary>
-        /// Gets or sets the global speed.
-        /// </summary>
-        /// <value>
-        /// The global speed.
-        /// </value>
-        public static double GlobalSpeed { get; set; } = 1;
-
-        /// <summary>
-        /// Gets or sets the global random speed.
-        /// </summary>
-        /// <value>
-        /// The global random speed.
-        /// </value>
-        public static double GlobalRandomSpeed { get; set; } = 0;
-
-        /// <summary>
-        /// Gets or sets the global delay.
-        /// </summary>
-        /// <value>
-        /// The global delay.
-        /// </value>
-        public static int GlobalDelay { get; set; } = 50;
-
-        /// <summary>
-        /// Gets or sets the global random delay.
-        /// </summary>
-        /// <value>
-        /// The global random delay.
-        /// </value>
-        public static int GlobalRandomDelay { get; set; } = 5;
-
-        /// <summary>
-        /// Gets or sets the global repetitions.
-        /// </summary>
-        /// <value>
-        /// The global repetitions.
-        /// </value>
-        public static int GlobalRepetitions { get; set; } = 1;
-
-        /// <summary>
-        /// Gets or sets the global random repetitions.
-        /// </summary>
-        /// <value>
-        /// The global random repetitions.
-        /// </value>
-        public static int GlobalRandomRepetitions { get; set; } = 0;
-
-        /// <summary>
-        /// Gets or sets the global random x.
-        /// </summary>
-        /// <value>
-        /// The global random x.
-        /// </value>
-        public static int GlobalRandomX { get; set; } = 0;
-
-        /// <summary>
-        /// Gets or sets the global random y.
-        /// </summary>
-        /// <value>
-        /// The global random y.
-        /// </value>
-        public static int GlobalRandomY { get; set; } = 0;
-
-        /// <summary>
-        /// Gets or sets the global random drag x.
-        /// </summary>
-        /// <value>
-        /// The global random drag x.
-        /// </value>
-        public static int GlobalRandomDragX { get; set; } = 0;
-
-        /// <summary>
-        /// Gets or sets the global random drag y.
-        /// </summary>
-        /// <value>
-        /// The global random drag y.
-        /// </value>
-        public static int GlobalRandomDragY { get; set; } = 0;
-
-        /// <summary>
-        /// Gets or sets the global wheel.
-        /// </summary>
-        /// <value>
-        /// The global wheel.
-        /// </value>
-        public static int GlobalWheel { get; set; } = 0;
-
-        /// <summary>
-        /// Gets or sets the global random wheel.
-        /// </summary>
-        /// <value>
-        /// The global random wheel.
-        /// </value>
-        public static int GlobalRandomWheel { get; set; } = 0;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether [global control].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [global control]; otherwise, <c>false</c>.
-        /// </value>
-        public static bool GlobalCtrl { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether [global shift].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [global shift]; otherwise, <c>false</c>.
-        /// </value>
-        public static bool GlobalShift { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether [global alt].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [global alt]; otherwise, <c>false</c>.
-        /// </value>
-        public static bool GlobalAlt { get; set; }
-        #endregion
-        
         #region Edit Menu
+
+        /// <summary>
+        /// Handles the Click event of the MovementType control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void MovementType_Click(object sender, RoutedEventArgs e)
         {
-            GlobalMovementType = ConvertSender<MovementType>(sender);
+            GlobalData.MovementType = ConvertSender<MovementType>(sender);
         }
 
+        /// <summary>
+        /// Handles the Click event of the ButtonType control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
+        private void ButtonType_Click(object sender, RoutedEventArgs e)
+        {
+            GlobalData.ButtonType = ConvertSender<ButtonType>(sender);
+        }
+
+        /// <summary>
+        /// Converts the sender.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="sender">The sender.</param>
+        /// <returns></returns>
         private static T ConvertSender<T>(object sender)
         {
             MenuItem choice = sender as MenuItem;
             return (T)choice.DataContext;
         }
 
-        private static bool MessageBoxYes()
-        {
-            return MessageBox.Show("Update all existing instructions?", "Update", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
-        }
-
+        /// <summary>
+        /// Handles the Click event of the Clear control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void Clear_Click(object sender, RoutedEventArgs e)
         {
+            GlobalData = new GlobalData();
             InstructionsTextBox.Document.Blocks.Clear();
         }
         #endregion
@@ -331,8 +251,6 @@ namespace AutoClicker
                 Activate();
             }
         }
-        #endregion
-
         #endregion
 
         #region Add Menu
@@ -536,7 +454,7 @@ namespace AutoClicker
         /// The is recording
         /// </summary>
         private bool _isRecording;
-        
+
         /// <summary>
         /// The repetitions
         /// </summary>
@@ -570,7 +488,7 @@ namespace AutoClicker
                     MaximizeWindow(MaximizeOnStopPlay);
                 }
                 InstructionsTextBox.IsEnabled = !value;
-                OnPropertyChanged("IsPlaying");
+                NotifyPropertyChanged();
             }
         }
 
@@ -587,7 +505,7 @@ namespace AutoClicker
             {
                 _infinite = value;
                 RepetitionsTextBox.IsEnabled = !value;
-                OnPropertyChanged("Infinite");
+                NotifyPropertyChanged();
             }
         }
 
@@ -603,7 +521,7 @@ namespace AutoClicker
             set
             {
                 _repetitions = value;
-                OnPropertyChanged("Repetitions");
+                NotifyPropertyChanged();
             }
         }
         #endregion
@@ -614,6 +532,7 @@ namespace AutoClicker
         /// The recorder
         /// </summary>
         private Recorder recorder;
+        private GlobalData globalData;
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is recording with delay.
@@ -628,7 +547,7 @@ namespace AutoClicker
             {
                 _withDelay = value;
                 recorder.IsRecordingWithDelay = value;
-                OnPropertyChanged("WithDelay");
+                NotifyPropertyChanged();
             }
         }
 
@@ -658,7 +577,7 @@ namespace AutoClicker
                     MaximizeWindow(MaximizeOnStopRecord);
                 }
                 InstructionsTextBox.IsEnabled = !value;
-                OnPropertyChanged("IsRecording");
+                NotifyPropertyChanged();
             }
         }
         #endregion
@@ -670,13 +589,30 @@ namespace AutoClicker
         /// The instructions.
         /// </value>
         private List<Instructions.Instruction> Instructions => InstructionsParser.InstructionsParser.Parse(StringManager.ConvertRichTextBoxToString(InstructionsTextBox));
-        
+
+        /// <summary>
+        /// Gets or sets the global data.
+        /// </summary>
+        /// <value>
+        /// The global data.
+        /// </value>
+        public GlobalData GlobalData
+        {
+            get => globalData;
+            set
+            {
+                globalData = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindow"/> class.
         /// </summary>
         public MainWindow()
         {
             DataContext = this;
+            GlobalData = new GlobalData();
             InitializeComponent();
             InstructionsTextBox.Document.Blocks.Clear();
             new HotkeyControl(PLAY_HOTKEY, OnPlayHotkeyPressed);
@@ -689,9 +625,12 @@ namespace AutoClicker
         /// Occurs when a property value changes.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string name)
+        // This method is called by the Set accessor of each property.
+        // The CallerMemberName attribute that is applied to the optional propertyName
+        // parameter causes the property name of the caller to be substituted as an argument.
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

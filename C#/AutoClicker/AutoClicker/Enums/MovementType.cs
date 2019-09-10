@@ -8,8 +8,9 @@ namespace Enums
 {
     public enum MovementType
     {
-        SPRING,
-        JUMP,
-        SINUS
+        GLOBAL = -1,
+        SPRING = 0,
+        JUMP = 1,
+        SINUS = 2
     }
 }
