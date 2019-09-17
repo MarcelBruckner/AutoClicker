@@ -414,8 +414,18 @@ namespace AutoClicker
             {
                 Run newRun = new Run(instruction.ToString());
                 Block block = new Paragraph(newRun);
-                InstructionsTextBox.Document.Blocks.Add(block);
-                InstructionsTextBox.ScrollToEnd();
+
+                TextPointer caretRun = InstructionsTextBox.CaretPosition.GetNextInsertionPosition(LogicalDirection.Backward);
+                if (caretRun is null)
+                {
+                    InstructionsTextBox.Document.Blocks.Add(block);
+                }
+                else
+                {
+                    InstructionsTextBox.Document.Blocks.InsertAfter(caretRun.Paragraph, block);
+                }
+                InstructionsTextBox.CaretPosition = block.ContentEnd;
+                newRun.BringIntoView();
                 return newRun;
             }
             else
@@ -425,22 +435,6 @@ namespace AutoClicker
             }
         }
 
-        private void InstructionsTextBox_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
-        {
-            if (e.Key == System.Windows.Input.Key.Return ||
-                e.Key == System.Windows.Input.Key.Tab ||
-                e.Key == System.Windows.Input.Key.Space)
-            {
-                foreach (Instruction instruction in Instructions)
-                {
-                    Console.WriteLine(instruction);
-                }
-            }
-        }
-
-        private void InstructionsTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-        }
         #endregion
         #endregion
 

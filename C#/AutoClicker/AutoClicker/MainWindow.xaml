@@ -317,8 +317,6 @@
                      x:Name="InstructionsTextBox"
                      AcceptsReturn="True"
                      AcceptsTab="True"
-                     TextChanged="InstructionsTextBox_TextChanged"
-                     PreviewKeyDown="InstructionsTextBox_PreviewKeyDown"
                      VerticalScrollBarVisibility="Auto"
                      IsEnabled="{Binding InputFieldsEnabled}">
 
