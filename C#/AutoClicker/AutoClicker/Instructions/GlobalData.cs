@@ -26,7 +26,6 @@ namespace AutoClicker.Instructions
         private int randomY = 0;
         private int randomDragX = 0;
         private int randomDragY = 0;
-        private int wheel = 0;
         private int randomWheel = 0;
         private bool ctrl = false;
         private bool shift = false;
@@ -210,22 +209,6 @@ namespace AutoClicker.Instructions
             set
             {
                 randomDragY = value;
-                NotifyPropertyChanged();
-            }
-        }
-        /// <summary>
-        /// Gets or sets the global wheel.
-        /// </summary>
-        /// <value>
-        /// The global wheel.
-        /// </value>
-        [JsonProperty]
-        public int Wheel
-        {
-            get => wheel;
-            set
-            {
-                wheel = value;
                 NotifyPropertyChanged();
             }
         }

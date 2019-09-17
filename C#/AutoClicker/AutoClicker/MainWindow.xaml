@@ -173,14 +173,6 @@
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Minimum" Grid.Column="0"/>
-                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="1" Text="{Binding Path=GlobalData.Wheel, Mode=TwoWay}"/>
-                    </Grid>
-                    <Grid Width="100">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
                         <TextBlock Text="Random" Grid.Column="0"/>
                         <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="10" Text="{Binding Path=GlobalData.RandomWheel, Mode=TwoWay}"/>
                     </Grid>
