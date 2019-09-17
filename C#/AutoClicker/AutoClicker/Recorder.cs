@@ -151,9 +151,11 @@ namespace AutoClicker
                 return;
             }
 
+            bool recordText = false;
+
             string converted = WindowsKeyExtension.ToLiteral(WindowsKeyExtension.KeyCodeToUnicode(key));
 
-            if (isCtrlDown || isAltDown || converted.Length <= 0 ||
+            if (!recordText || isCtrlDown || isAltDown || converted.Length <= 0 ||
                 !((converted[0] >= 'A' && converted[0] <= 'Z') ||
                 (converted[0] >= 'a' && converted[0] <= 'z') ||
                 (converted[0] >= '0' && converted[0] <= '9' && !isShiftDown)))

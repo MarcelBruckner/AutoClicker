@@ -102,31 +102,7 @@ namespace AutoClicker.Instructions
         {
             InputSimulator.Text(Input, Hotkeys);
         }
-
-        /// <summary>
-        /// Converts the text to keys.
-        /// </summary>
-        /// <returns></returns>
-        public List<KeyValuePair<VirtualKeyCode, bool>> Converted
-        {
-            get
-            {
-                List<KeyValuePair<VirtualKeyCode, bool>> keys = new List<KeyValuePair<VirtualKeyCode, bool>>();
-
-                foreach (char c in Input)
-                {
-                    //Console.WriteLine(c);
-                    bool upper = char.IsUpper(c);
-                    //if (char.IsLetterOrDigit(c) || char.IsWhiteSpace(c))
-                    {
-                        keys.Add(new KeyValuePair<VirtualKeyCode, bool>(VirtualKeyCode.NONAME.FromString(c + ""), upper));
-                    }
-                }
-
-                return keys;
-            }
-        }
-
+        
         /// <summary>
         /// Specifies the name of the instruction
         /// </summary>

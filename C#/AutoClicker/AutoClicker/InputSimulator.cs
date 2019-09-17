@@ -451,8 +451,20 @@ namespace AutoClicker
         public static void Text(string inputs, params VirtualKeyCode[] hotkeys)
         {
             KeyDown(hotkeys);
-            WindowsInput.InputSimulator simulator = new WindowsInput.InputSimulator();
-            simulator.Keyboard.TextEntry(inputs);
+
+            foreach(char c in inputs)
+            {
+                if (char.IsUpper(c))
+                {
+                    KeyDown(VirtualKeyCode.SHIFT);
+                }
+                KeyPress(VirtualKeyCode.NONE.FromString(c + ""));
+                if (char.IsUpper(c))
+                {
+                    KeyUp(VirtualKeyCode.SHIFT);
+                }
+            }
+
             KeyUp(hotkeys);
         }
 
