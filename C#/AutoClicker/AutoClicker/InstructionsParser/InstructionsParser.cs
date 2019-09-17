@@ -1,4 +1,5 @@
 ﻿using Antlr4.Runtime;
+using AutoClicker.Instructions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace AutoClicker.InstructionsParser
         /// </summary>
         /// <param name="input">The input.</param>
         /// <returns></returns>
-        public static List<Instructions.Instruction> Parse(string input)
+        public static List<Instruction> Parse(string input, GlobalData globalData = null)
         {
             AntlrInputStream inputStream = new AntlrInputStream(input);
 
@@ -28,7 +29,17 @@ namespace AutoClicker.InstructionsParser
             AutoClickerParser.InstructionsContext context = parser.instructions();
             AutoClickerInstructionsVisitor visitor = new AutoClickerInstructionsVisitor();
 
-            return visitor.Visit(context);
+            List<Instruction> instructions = visitor.Visit(context);
+
+            if(globalData != null)
+            {
+                foreach(var instruction in instructions)
+                {
+                    instruction.GlobalData = globalData;
+                }
+            }
+
+            return instructions;
         }
     }
 }

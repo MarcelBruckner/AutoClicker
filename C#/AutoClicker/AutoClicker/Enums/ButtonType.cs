@@ -8,7 +8,6 @@ namespace Enums
 {
     public enum ButtonType
     {
-        GLOBAL = -1,
         LEFT = 0,
         RIGHT = 1,
         MIDDLE = 2

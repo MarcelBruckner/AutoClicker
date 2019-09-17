@@ -17,7 +17,11 @@ namespace AutoClicker.Instructions
         /// The maximal uncertainty in pixels that distinguishs two mouse positions
         /// </summary>
         internal static readonly int MAX_UNCERTAINTY = 20;
-        public MovementType Movement { get; }
+
+        /// <summary>
+        /// The movement type
+        /// </summary>
+        public MovementType? MovementType { get; }
 
         /// <summary>
         /// The on screen X position of the desired mouse position
@@ -49,7 +53,7 @@ namespace AutoClicker.Instructions
         /// <param name="shift">if set to <c>true</c> [shift].</param>
         /// <param name="ctrl">if set to <c>true</c> [control].</param>
         /// <param name="alt">if set to <c>true</c> [alt].</param>
-        public Hover(int x, int y, MovementType movement = MovementType.GLOBAL,
+        public Hover(int x, int y, MovementType? movement = null,
             DecimalTuple delay = null, DecimalTuple repetitions = null, DecimalTuple speed = null,
             bool shift = false, bool ctrl = false, bool alt = false, GlobalData globalData = null
             ) : this(new DecimalTuple(x), new DecimalTuple(y), movement,
@@ -68,7 +72,7 @@ namespace AutoClicker.Instructions
         /// <param name="shift">if set to <c>true</c> [shift].</param>
         /// <param name="ctrl">if set to <c>true</c> [control].</param>
         /// <param name="alt">if set to <c>true</c> [alt].</param>
-        public Hover(DecimalTuple x = null, DecimalTuple y = null, MovementType movement = MovementType.GLOBAL,
+        public Hover(DecimalTuple x = null, DecimalTuple y = null, MovementType? movement = null,
             DecimalTuple delay = null, DecimalTuple repetitions = null, DecimalTuple speed = null,
             bool shift = false, bool ctrl = false, bool alt = false, GlobalData globalData = null
             ) : base(delay, repetitions, speed, shift, ctrl, alt, globalData)
@@ -76,7 +80,7 @@ namespace AutoClicker.Instructions
             X = x;
             Y = y;
 
-            Movement = movement;
+            MovementType = movement;
         }
 
         /// <summary>
@@ -86,7 +90,7 @@ namespace AutoClicker.Instructions
         /// <param name="y">The y.</param>
         /// <param name="movement">The movement.</param>
         /// <param name="instruction">The instruction.</param>
-        public Hover(Instruction instruction, DecimalTuple x = null, DecimalTuple y = null, MovementType movement = MovementType.GLOBAL, GlobalData globalData = null) 
+        public Hover(Instruction instruction, DecimalTuple x = null, DecimalTuple y = null, MovementType? movement = null, GlobalData globalData = null) 
             : this(x, y, movement, instruction.Delay(), instruction.Repetitions, instruction.Speed(), instruction.Shift, instruction.Ctrl, instruction.Alt, globalData)
         { }
 
@@ -110,7 +114,7 @@ namespace AutoClicker.Instructions
         /// </summary>
         internal virtual void MouseSpecificExecute()
         {
-            InputSimulator.MouseMove(Movement, RandomizedPosition, Speed(true).Get(GlobalData.RandomSpeed));
+            InputSimulator.MouseMove(MovementType ?? GlobalData.MovementType, RandomizedPosition, Speed(true).Get(GlobalData.RandomSpeed));
         }
 
         /// <summary>
@@ -155,9 +159,9 @@ namespace AutoClicker.Instructions
             {
                 Append(builder, "y", Y);
             }
-            if (Movement != MovementType.GLOBAL)
+            if (MovementType != null && MovementType != GlobalData.MovementType)
             {
-                Append(builder, "movement", Movement);
+                Append(builder, "movement", MovementType);
             }
         }
 
@@ -172,7 +176,7 @@ namespace AutoClicker.Instructions
         {
             return obj is Hover hover &&
                    base.Equals(obj) &&
-                   EqualityComparer<MovementType?>.Default.Equals(Movement, hover.Movement) &&
+                   EqualityComparer<MovementType?>.Default.Equals(MovementType, hover.MovementType) &&
                    EqualityComparer<DecimalTuple>.Default.Equals(X, hover.X) &&
                    EqualityComparer<DecimalTuple>.Default.Equals(Y, hover.Y);
         }
@@ -187,7 +191,7 @@ namespace AutoClicker.Instructions
         {
             var hashCode = 295077388;
             hashCode = hashCode * -1521134295 + base.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<MovementType?>.Default.GetHashCode(Movement);
+            hashCode = hashCode * -1521134295 + EqualityComparer<MovementType?>.Default.GetHashCode(MovementType);
             hashCode = hashCode * -1521134295 + EqualityComparer<DecimalTuple>.Default.GetHashCode(X);
             hashCode = hashCode * -1521134295 + EqualityComparer<DecimalTuple>.Default.GetHashCode(Y);
             return hashCode;

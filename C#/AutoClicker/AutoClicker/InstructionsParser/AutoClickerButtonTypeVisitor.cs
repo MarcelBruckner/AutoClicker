@@ -40,7 +40,7 @@ namespace AutoClicker.InstructionsParser
             {
                 return ButtonType.LEFT;
             }
-            return ButtonType.GLOBAL;
+            return ButtonType.LEFT;
         }
     }
 }

@@ -14,7 +14,7 @@ namespace AutoClicker.InstructionsParser
     /// 
     /// </summary>
     /// <seealso cref="AutoClicker.AutoClickerBaseVisitor{Enums.MovementType?}" />
-    public class AutoClickerMovementTypeVisitor : AutoClickerBaseVisitor<MovementType>
+    public class AutoClickerMovementTypeVisitor : AutoClickerBaseVisitor<MovementType?>
     {
         /// <summary>
         /// Visit a parse tree produced by <see cref="M:AutoClicker.AutoClickerParser.movement" />.
@@ -26,7 +26,7 @@ namespace AutoClicker.InstructionsParser
         /// <param name="context">The parse tree.</param>
         /// <returns></returns>
         /// <return>The visitor result.</return>
-        public override MovementType VisitMovement([NotNull] AutoClickerParser.MovementContext context)
+        public override MovementType? VisitMovement([NotNull] AutoClickerParser.MovementContext context)
         {
             if (context.SINUS() != null)
             {
@@ -40,7 +40,7 @@ namespace AutoClicker.InstructionsParser
             {
                 return MovementType.SPRING;
             }
-            return MovementType.GLOBAL;
+            return null;
         }
     }
 }

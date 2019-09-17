@@ -17,7 +17,6 @@ namespace AutoClicker.Instructions
     {
         private double speed = 1;
         private MovementType movementType = MovementType.SPRING;
-        private ButtonType buttonType = ButtonType.LEFT;
         private double randomSpeed = 0;
         private int delay = 50;
         private int randomDelay = 5;
@@ -51,22 +50,6 @@ namespace AutoClicker.Instructions
             set
             {
                 movementType = value;
-                NotifyPropertyChanged();
-            }
-        }
-        /// <summary>
-        /// Gets or sets the type of the global button.
-        /// </summary>
-        /// <value>
-        /// The type of the global button.
-        /// </value>
-        [JsonProperty]
-        public ButtonType ButtonType
-        {
-            get => buttonType;
-            set
-            {
-                buttonType = value;
                 NotifyPropertyChanged();
             }
         }

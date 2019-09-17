@@ -127,23 +127,9 @@
                 </MenuItem>
                 <Separator/>
                 <MenuItem Header="Movement Type">
-                    <ComboBox>
-                        
+                    <ComboBox ItemsSource="{Binding Source={StaticResource MovementTypes}}" Width="100"
+                              SelectedItem="{Binding Path=GlobalData.MovementType, Mode=TwoWay}">
                     </ComboBox>
-                </MenuItem>
-                    <MenuItem Header="Movement Type" ItemsSource="{Binding Source={StaticResource MovementTypes}}">
-                    <MenuItem.ItemContainerStyle>
-                        <Style TargetType="MenuItem">
-                            <EventSetter Event="Click" Handler="MovementType_Click" />
-                        </Style>
-                    </MenuItem.ItemContainerStyle>
-                </MenuItem>
-                <MenuItem Header="Button Type" ItemsSource="{Binding Source={StaticResource ButtonTypes}}">
-                    <MenuItem.ItemContainerStyle>
-                        <Style TargetType="MenuItem">
-                            <EventSetter Event="Click" Handler="ButtonType_Click" />
-                        </Style>
-                    </MenuItem.ItemContainerStyle>
                 </MenuItem>
                 <MenuItem Header="_Position">
                     <Grid Width="100">

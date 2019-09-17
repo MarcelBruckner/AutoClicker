@@ -18,7 +18,7 @@ namespace AutoClicker.Instructions
         /// <value>
         /// The button.
         /// </value>
-        public ButtonType Button { get; set; }
+        public ButtonType ButtonType { get; set; }
 
         #region Constructors
 
@@ -35,7 +35,7 @@ namespace AutoClicker.Instructions
         /// <param name="shift">if set to <c>true</c> [shift].</param>
         /// <param name="ctrl">if set to <c>true</c> [control].</param>
         /// <param name="alt">if set to <c>true</c> [alt].</param>
-        public Click(int x = 0, int y = 0, ButtonType button= ButtonType.GLOBAL, MovementType movement = MovementType.GLOBAL,
+        public Click(int x = 0, int y = 0, ButtonType button = ButtonType.LEFT, MovementType? movement = null,
             DecimalTuple delay = null, DecimalTuple repetitions = null, DecimalTuple speed = null,
             bool shift = false, bool ctrl = false, bool alt = false, GlobalData globalData = null
             ) : this(new DecimalTuple(x), new DecimalTuple(y), button, movement,
@@ -50,7 +50,7 @@ namespace AutoClicker.Instructions
         /// <param name="button">The button.</param>
         /// <param name="movement">The movement.</param>
         /// <param name="instruction">The instruction.</param>
-        public Click(Instruction instruction, DecimalTuple x=null, DecimalTuple y = null, ButtonType button=ButtonType.GLOBAL, MovementType movement= MovementType.GLOBAL, GlobalData globalData = null
+        public Click(Instruction instruction, DecimalTuple x=null, DecimalTuple y = null, ButtonType button = ButtonType.LEFT, MovementType? movement = null, GlobalData globalData = null
             ) : this(x, y, button, movement, instruction.Delay(), instruction.Repetitions, instruction.Speed(), instruction.Shift, instruction.Ctrl, instruction.Alt)
         { }
 
@@ -67,12 +67,12 @@ namespace AutoClicker.Instructions
         /// <param name="shift">if set to <c>true</c> [shift].</param>
         /// <param name="ctrl">if set to <c>true</c> [control].</param>
         /// <param name="alt">if set to <c>true</c> [alt].</param>
-        public Click(DecimalTuple x, DecimalTuple y, ButtonType button = ButtonType.GLOBAL, MovementType movement = MovementType.GLOBAL,
+        public Click(DecimalTuple x, DecimalTuple y, ButtonType button = ButtonType.LEFT, MovementType? movement = null,
             DecimalTuple delay = null, DecimalTuple repetitions = null, DecimalTuple speed = null,
             bool shift = false, bool ctrl = false, bool alt = false, GlobalData globalData = null
             ) : base(x, y, movement, delay, repetitions, speed, shift, ctrl, alt, globalData)
         {
-            Button = button;
+            ButtonType = button;
         }
 
         #endregion
@@ -82,7 +82,7 @@ namespace AutoClicker.Instructions
         /// </summary>
         internal override void MouseSpecificExecute()
         {
-            InputSimulator.MouseClick(Movement, Button, RandomizedPosition, Speed(true).Get(GlobalData.RandomSpeed), Hotkeys);
+            InputSimulator.MouseClick(MovementType ?? GlobalData.MovementType, ButtonType, RandomizedPosition, Speed(true).Get(GlobalData.RandomSpeed), Hotkeys);
         }
 
         /// <summary>
@@ -103,9 +103,9 @@ namespace AutoClicker.Instructions
         internal override void AppendSpecifics(StringBuilder builder)
         {
             base.AppendSpecifics(builder);
-            if (Button != ButtonType.GLOBAL)
+            if (ButtonType != ButtonType.LEFT)
             {
-                Append(builder, "button", Button);
+                Append(builder, "button", ButtonType);
             }
         }
 
@@ -116,7 +116,7 @@ namespace AutoClicker.Instructions
         /// <returns>
         ///   <c>true</c> if the other specified click has the same button and position; otherwise, <c>false</c>.
         /// </returns>
-        public bool IsSameClick(Click other) => Button == other.Button && IsSamePosition(other);
+        public bool IsSameClick(Click other) => ButtonType == other.ButtonType && IsSamePosition(other);
 
 
         /// <summary>
@@ -140,7 +140,7 @@ namespace AutoClicker.Instructions
         {
             var hashCode = 112211556;
             hashCode = hashCode * -1521134295 + base.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<ButtonType?>.Default.GetHashCode(Button);
+            hashCode = hashCode * -1521134295 + EqualityComparer<ButtonType?>.Default.GetHashCode(ButtonType);
             return hashCode;
         }
 
@@ -155,8 +155,8 @@ namespace AutoClicker.Instructions
         {
             return obj is Click click &&
                    base.Equals(obj) &&
-                   EqualityComparer<ButtonType?>.Default.Equals(Button, click.Button) &&
-                   Button == click.Button;
+                   EqualityComparer<ButtonType?>.Default.Equals(ButtonType, click.ButtonType) &&
+                   ButtonType == click.ButtonType;
         }
     }
 }

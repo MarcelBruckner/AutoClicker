@@ -149,27 +149,7 @@ namespace AutoClicker
         #endregion
 
         #region Edit Menu
-
-        /// <summary>
-        /// Handles the Click event of the MovementType control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
-        private void MovementType_Click(object sender, RoutedEventArgs e)
-        {
-            GlobalData.MovementType = ConvertSender<MovementType>(sender);
-        }
-
-        /// <summary>
-        /// Handles the Click event of the ButtonType control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
-        private void ButtonType_Click(object sender, RoutedEventArgs e)
-        {
-            GlobalData.ButtonType = ConvertSender<ButtonType>(sender);
-        }
-
+        
         /// <summary>
         /// Converts the sender.
         /// </summary>
@@ -588,7 +568,7 @@ namespace AutoClicker
         /// <value>
         /// The instructions.
         /// </value>
-        private List<Instructions.Instruction> Instructions => InstructionsParser.InstructionsParser.Parse(StringManager.ConvertRichTextBoxToString(InstructionsTextBox));
+        private List<Instructions.Instruction> Instructions => InstructionsParser.InstructionsParser.Parse(StringManager.ConvertRichTextBoxToString(InstructionsTextBox), GlobalData);
 
         /// <summary>
         /// Gets or sets the global data.

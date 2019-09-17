@@ -34,7 +34,7 @@ namespace AutoClicker.Instructions
         /// <param name="shift">if set to <c>true</c> [shift].</param>
         /// <param name="ctrl">if set to <c>true</c> [control].</param>
         /// <param name="alt">if set to <c>true</c> [alt].</param>
-        public Wheel(int scrollDistance=0, int x = 0, int y = 0, MovementType movement = MovementType.GLOBAL,
+        public Wheel(int scrollDistance=0, int x = 0, int y = 0, MovementType? movement = null,
             DecimalTuple delay = null, DecimalTuple repetitions = null, DecimalTuple speed = null,
             bool shift = false, bool ctrl = false, bool alt = false
             ) : this(new DecimalTuple(scrollDistance), new DecimalTuple(x), new DecimalTuple(y), movement, delay, repetitions, speed, shift, ctrl, alt)
@@ -55,7 +55,7 @@ namespace AutoClicker.Instructions
         /// <param name="shift">if set to <c>true</c> [shift].</param>
         /// <param name="ctrl">if set to <c>true</c> [control].</param>
         /// <param name="alt">if set to <c>true</c> [alt].</param>
-        public Wheel(DecimalTuple scrollDistance, DecimalTuple x=null, DecimalTuple y=null, MovementType movement = MovementType.GLOBAL,
+        public Wheel(DecimalTuple scrollDistance, DecimalTuple x=null, DecimalTuple y=null, MovementType? movement = null,
             DecimalTuple delay = null, DecimalTuple repetitions = null, DecimalTuple speed = null,
             bool shift = false, bool ctrl = false, bool alt = false
             ) : base(x, y, movement, delay, repetitions, speed, shift, ctrl, alt)
@@ -71,7 +71,7 @@ namespace AutoClicker.Instructions
         /// <param name="y">The y.</param>
         /// <param name="movement">The movement.</param>
         /// <param name="instruction">The instruction.</param>
-        public Wheel(DecimalTuple scrollDistance, DecimalTuple x, DecimalTuple y, MovementType movement = MovementType.GLOBAL,
+        public Wheel(DecimalTuple scrollDistance, DecimalTuple x, DecimalTuple y, MovementType? movement = null,
             Instruction instruction = null
             ) : this(scrollDistance, x, y, movement, instruction.Delay(), instruction.Repetitions, instruction.Speed(), instruction.Shift, instruction.Ctrl, instruction.Alt)
         { }
@@ -113,7 +113,7 @@ namespace AutoClicker.Instructions
         /// </summary>
         internal override void MouseSpecificExecute()
         {
-            InputSimulator.MouseWheel(Movement, RandomizedPosition, 
+            InputSimulator.MouseWheel(MovementType ?? GlobalData.MovementType, RandomizedPosition, 
                 ScrollDistance.Get(GlobalData.RandomWheel), Speed(true).Get(GlobalData.RandomSpeed), Hotkeys);
         }
 

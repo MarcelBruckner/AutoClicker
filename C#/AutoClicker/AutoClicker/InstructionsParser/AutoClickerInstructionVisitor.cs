@@ -50,7 +50,7 @@ namespace AutoClicker.InstructionsParser
         {
             DecimalTuple x = new DecimalTuple(0);
             DecimalTuple y = new DecimalTuple(0);
-            MovementType movement = MovementType.GLOBAL;
+            MovementType? movement = null;
             Instructions.Instruction commons = Commons(context.commons());
 
             if (context.xPos() != null && context.xPos().Count() > 0)
@@ -85,10 +85,10 @@ namespace AutoClicker.InstructionsParser
         {
             DecimalTuple x = new DecimalTuple(0);
             DecimalTuple y = new DecimalTuple(0);
-            MovementType movement = MovementType.GLOBAL;
+            MovementType? movement = null;
             Instructions.Instruction commons = Commons(context.commons());
 
-            ButtonType button = ButtonType.GLOBAL;
+            ButtonType button = ButtonType.LEFT;
             if (context.button() != null && context.button().Count() > 0)
             {
                 button = buttonTypeVisitor.Visit(context.button(0));
@@ -125,10 +125,10 @@ namespace AutoClicker.InstructionsParser
             DecimalTuple y = new DecimalTuple(0);
             DecimalTuple endX = new DecimalTuple(0);
             DecimalTuple endY = new DecimalTuple(0);
-            MovementType movement = MovementType.GLOBAL;
+            MovementType? movement = null;
             Instructions.Instruction commons = Commons(context.commons());
 
-            ButtonType button = ButtonType.GLOBAL;
+            ButtonType button = ButtonType.LEFT;
             if (context.button() != null && context.button().Count() > 0)
             {
                 button = buttonTypeVisitor.Visit(context.button(0));
@@ -171,7 +171,7 @@ namespace AutoClicker.InstructionsParser
         {
             DecimalTuple x = new DecimalTuple(0);
             DecimalTuple y = new DecimalTuple(0);
-            MovementType movement = MovementType.GLOBAL;
+            MovementType? movement = null;
             Instructions.Instruction commons = Commons(context.commons());
 
             DecimalTuple scroll = new DecimalTuple(0);

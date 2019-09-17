@@ -244,7 +244,7 @@ namespace AutoClicker
             Click end = new Click(x: p.X, y: p.Y, button: button, shift: isShiftDown, ctrl: isCtrlDown, alt: isAltDown);
 
             Click start = mouseDownPosition as Click;
-            if (start != null && start.Button == end.Button && end.Distance(start) > Hover.MAX_UNCERTAINTY)
+            if (start != null && start.ButtonType == end.ButtonType && end.Distance(start) > Hover.MAX_UNCERTAINTY)
             {
                 AddOrIncrement(new Drag(start.X, start.Y, end.X, end.Y, button: button, shift: isShiftDown, ctrl: isCtrlDown, alt: isAltDown));
             }
@@ -272,7 +272,7 @@ namespace AutoClicker
         /// <returns></returns>
         private ButtonType GetButton(MouseButtons button)
         {
-            ButtonType _button = ButtonType.GLOBAL;
+            ButtonType _button = ButtonType.LEFT;
             switch (button)
             {
                 case MouseButtons.Middle:
@@ -284,10 +284,6 @@ namespace AutoClicker
                 case MouseButtons.Left:
                     _button = ButtonType.LEFT;
                     break;
-            }
-            if (_button == window.GlobalData.ButtonType)
-            {
-                _button = ButtonType.GLOBAL;
             }
             return _button;
         }
