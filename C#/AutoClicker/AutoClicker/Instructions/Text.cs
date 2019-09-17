@@ -115,7 +115,7 @@ namespace AutoClicker.Instructions
 
                 foreach (char c in Input)
                 {
-                    Console.WriteLine(c);
+                    //Console.WriteLine(c);
                     bool upper = char.IsUpper(c);
                     //if (char.IsLetterOrDigit(c) || char.IsWhiteSpace(c))
                     {

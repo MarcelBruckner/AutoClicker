@@ -42,9 +42,9 @@ namespace AutoClicker.Instructions
         /// <param name="alt">if set to <c>true</c> [alt].</param>
         public Drag(int x=0, int y=0, int endX=0, int endY=0, ButtonType button = ButtonType.LEFT, MovementType? movement = null,
             DecimalTuple delay = null, DecimalTuple repetitions = null, DecimalTuple speed = null,
-            bool shift = false, bool ctrl = false, bool alt = false, GlobalData globalData = null
+            bool shift = false, bool ctrl = false, bool alt = false
             ) : this(new DecimalTuple(x), new DecimalTuple(y), new DecimalTuple(endX), new DecimalTuple(endY), button, movement,
-                delay, repetitions, speed, shift, ctrl, alt, globalData)
+                delay, repetitions, speed, shift, ctrl, alt)
         { }
 
         /// <summary>
@@ -58,8 +58,8 @@ namespace AutoClicker.Instructions
         /// <param name="movement">The movement.</param>
         /// <param name="instruction">The instruction.</param>
         public Drag(Instruction instruction, DecimalTuple x = null, DecimalTuple y = null, DecimalTuple endX = null, DecimalTuple endY = null,
-            ButtonType button = ButtonType.LEFT, MovementType? movement = null, GlobalData globalData = null
-            ) : this(x, y, endX, endY, button, movement, instruction.Delay(), instruction.Repetitions, instruction.Speed(), instruction.Shift, instruction.Ctrl, instruction.Alt, globalData)
+            ButtonType button = ButtonType.LEFT, MovementType? movement = null
+            ) : this(x, y, endX, endY, button, movement, instruction.Delay(), instruction.Repetitions, instruction.Speed(), instruction.Shift, instruction.Ctrl, instruction.Alt)
         {
         }
 
@@ -80,8 +80,8 @@ namespace AutoClicker.Instructions
         /// <param name="alt">if set to <c>true</c> [alt].</param>
         public Drag(DecimalTuple x, DecimalTuple y, DecimalTuple endX, DecimalTuple endY, ButtonType button = ButtonType.LEFT, MovementType? movement = null,
             DecimalTuple delay = null, DecimalTuple repetitions = null, DecimalTuple speed = null,
-            bool shift = false, bool ctrl = false, bool alt = false, GlobalData globalData = null
-            ) : base(x, y, button, movement, delay, repetitions, speed, shift, ctrl, alt, globalData)
+            bool shift = false, bool ctrl = false, bool alt = false
+            ) : base(x, y, button, movement, delay, repetitions, speed, shift, ctrl, alt)
         {
             EndX = endX;
             EndY = endY;

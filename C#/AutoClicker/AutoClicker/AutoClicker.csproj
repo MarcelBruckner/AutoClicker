@@ -113,6 +113,7 @@
     <Compile Include="Instructions\Drag.cs" />
     <Compile Include="Instructions\GlobalData.cs" />
     <Compile Include="Instructions\Hover.cs" />
+    <Compile Include="Instructions\Wait.cs" />
     <Compile Include="Instructions\Instruction.cs" />
     <Compile Include="Instructions\DecimalTuple.cs" />
     <Compile Include="Instructions\Keystroke.cs" />

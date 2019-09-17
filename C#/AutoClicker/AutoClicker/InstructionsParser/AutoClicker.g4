@@ -57,6 +57,8 @@ SCROLL				: S C R O L L;
 KEYSTROKE			: K E Y S T R O K E;
 KEY					: K E Y;
 
+WAIT				: W A I T;
+
 DELAY				: D E L A Y;
 REPETITIONS			: R E P E T I T I O N S;
 SPEED				: S P E E D;
@@ -84,7 +86,7 @@ decimalTuple		: EQ DECIMAL (SLASH DECIMAL)?;
 trueFalse			: EQ (TRUE | FALSE);
 
 instructions        : (instruction? NEWLINE)*;
-instruction         : click | hover | drag | keystroke | text | wheel;
+instruction         : click | hover | drag | keystroke | text | wheel | wait;
 
 commons				: (delay | repetitions | speed | shift | ctrl | alt);
 delay				: (DELAY decimalTuple);
@@ -110,3 +112,5 @@ movement			: (MOVEMENT EQ (SINUS | SPRING | JUMP));
 stringInput			: (INPUT EQ STRING);
 keystroke			: KEY IS (stringInput | commons)*;
 text				: TEXT IS (stringInput | commons)*;
+
+wait				: WAIT IS (commons)*;

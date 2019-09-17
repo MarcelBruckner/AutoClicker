@@ -54,7 +54,7 @@
             </MenuItem>
 
             <MenuItem Header="_Add Instruction">
-                <MenuItem Header="_Delay" Click="AddMenu_Delay"/>
+                <MenuItem Header="_Wait" Click="AddMenu_Wait"/>
                 <MenuItem Header="_Loop" Click="AddMenu_Loop"/>
                 <Separator/>
                 <MenuItem Header="_Hover" Click="AddMenu_Hover"/>

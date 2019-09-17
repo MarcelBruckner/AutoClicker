@@ -235,38 +235,38 @@ namespace AutoClicker
 
         #region Add Menu
 
-        private void AddMenu_Delay(object sender, RoutedEventArgs e)
+        private void AddMenu_Wait(object sender, RoutedEventArgs e)
         {
-            //AddInstruction(new Instructions.Hover());
+            AddInstruction(new Wait());
         }
         private void AddMenu_Loop(object sender, RoutedEventArgs e)
         {
-            //AddInstruction(new Instructions.Hover());
+            //AddInstruction(new Hover());
         }
         private void AddMenu_Hover(object sender, RoutedEventArgs e)
         {
-            AddInstruction(new Instructions.Hover());
+            AddInstruction(new Hover());
         }
 
         private void AddMenu_Click(object sender, RoutedEventArgs e)
         {
-            AddInstruction(new Instructions.Click());
+            AddInstruction(new Click());
         }
         private void AddMenu_Drag(object sender, RoutedEventArgs e)
         {
-            AddInstruction(new Instructions.Drag());
+            AddInstruction(new Drag());
         }
         private void AddMenu_Wheel(object sender, RoutedEventArgs e)
         {
-            AddInstruction(new Instructions.Wheel());
+            AddInstruction(new Wheel());
         }
         private void AddMenu_Keystroke(object sender, RoutedEventArgs e)
         {
-            AddInstruction(new Instructions.Keystroke());
+            AddInstruction(new Keystroke());
         }
         private void AddMenu_Text(object sender, RoutedEventArgs e)
         {
-            AddInstruction(new Instructions.Text());
+            AddInstruction(new Text());
         }
 
         #endregion
@@ -371,7 +371,7 @@ namespace AutoClicker
         /// </summary>
         /// <param name="instruction">The instruction.</param>
         /// <returns></returns>
-        public Run AddInstruction(Instructions.Instruction instruction, Run toReplaceRun = null)
+        public Run AddInstruction(Instruction instruction, Run toReplaceRun = null)
         {
             if (toReplaceRun is null)
             {
@@ -394,7 +394,7 @@ namespace AutoClicker
                 e.Key == System.Windows.Input.Key.Tab ||
                 e.Key == System.Windows.Input.Key.Space)
             {
-                foreach (Instructions.Instruction instruction in Instructions)
+                foreach (Instruction instruction in Instructions)
                 {
                     Console.WriteLine(instruction);
                 }
@@ -568,7 +568,7 @@ namespace AutoClicker
         /// <value>
         /// The instructions.
         /// </value>
-        private List<Instructions.Instruction> Instructions => InstructionsParser.InstructionsParser.Parse(StringManager.ConvertRichTextBoxToString(InstructionsTextBox), GlobalData);
+        private List<Instruction> Instructions => InstructionsParser.InstructionsParser.Parse(StringManager.ConvertRichTextBoxToString(InstructionsTextBox), GlobalData);
 
         /// <summary>
         /// Gets or sets the global data.

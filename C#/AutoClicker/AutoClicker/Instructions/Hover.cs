@@ -55,9 +55,9 @@ namespace AutoClicker.Instructions
         /// <param name="alt">if set to <c>true</c> [alt].</param>
         public Hover(int x, int y, MovementType? movement = null,
             DecimalTuple delay = null, DecimalTuple repetitions = null, DecimalTuple speed = null,
-            bool shift = false, bool ctrl = false, bool alt = false, GlobalData globalData = null
+            bool shift = false, bool ctrl = false, bool alt = false
             ) : this(new DecimalTuple(x), new DecimalTuple(y), movement,
-                delay, repetitions, speed, shift, ctrl, alt, globalData)
+                delay, repetitions, speed, shift, ctrl, alt)
         { }
 
         /// <summary>
@@ -74,8 +74,8 @@ namespace AutoClicker.Instructions
         /// <param name="alt">if set to <c>true</c> [alt].</param>
         public Hover(DecimalTuple x = null, DecimalTuple y = null, MovementType? movement = null,
             DecimalTuple delay = null, DecimalTuple repetitions = null, DecimalTuple speed = null,
-            bool shift = false, bool ctrl = false, bool alt = false, GlobalData globalData = null
-            ) : base(delay, repetitions, speed, shift, ctrl, alt, globalData)
+            bool shift = false, bool ctrl = false, bool alt = false
+            ) : base(delay, repetitions, speed, shift, ctrl, alt)
         {
             X = x;
             Y = y;
@@ -90,8 +90,8 @@ namespace AutoClicker.Instructions
         /// <param name="y">The y.</param>
         /// <param name="movement">The movement.</param>
         /// <param name="instruction">The instruction.</param>
-        public Hover(Instruction instruction, DecimalTuple x = null, DecimalTuple y = null, MovementType? movement = null, GlobalData globalData = null) 
-            : this(x, y, movement, instruction.Delay(), instruction.Repetitions, instruction.Speed(), instruction.Shift, instruction.Ctrl, instruction.Alt, globalData)
+        public Hover(Instruction instruction, DecimalTuple x = null, DecimalTuple y = null, MovementType? movement = null) 
+            : this(x, y, movement, instruction.Delay(), instruction.Repetitions, instruction.Speed(), instruction.Shift, instruction.Ctrl, instruction.Alt)
         { }
 
         #endregion
@@ -215,7 +215,7 @@ namespace AutoClicker.Instructions
                 int dy = (int)Math.Abs(RandomizedPosition.Y - Cursor.Vector.Y);
 
                 double next = random.NextDouble();
-                Console.WriteLine(next);
+                //Console.WriteLine(next);
                 return next > 0.025 && dx < (X.Random ?? GlobalData.RandomX) && dy < (Y.Random ?? GlobalData.RandomY);
             }
         }

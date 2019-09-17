@@ -242,6 +242,23 @@ namespace AutoClicker.InstructionsParser
         }
 
         /// <summary>
+        /// Visit a parse tree produced by <see cref="M:AutoClicker.AutoClickerParser.wait" />.
+        /// <para>
+        /// The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+        /// on <paramref name="context" />.
+        /// </para>
+        /// </summary>
+        /// <param name="context">The parse tree.</param>
+        /// <returns></returns>
+        /// <return>The visitor result.</return>
+        public override Instruction VisitWait([NotNull] AutoClickerParser.WaitContext context)
+        {
+            Instruction commons = Commons(context.commons());
+
+            return new Wait(commons);
+        }
+
+        /// <summary>
         /// Visits the common fields of the instructions.
         /// </summary>
         /// <param name="contexts">The contexts.</param>

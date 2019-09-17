@@ -115,7 +115,7 @@ namespace AutoClicker.Instructions
         /// <param name="ctrl">if set to <c>true</c> [control].</param>
         /// <param name="alt">if set to <c>true</c> [alt].</param>
         public Instruction(DecimalTuple delay = null, DecimalTuple repetitions = null, DecimalTuple speed = null,
-            bool shift = false, bool ctrl = false, bool alt = false, GlobalData globalData = null)
+            bool shift = false, bool ctrl = false, bool alt = false)
         {
             Delay(delay);
             Repetitions = repetitions;
@@ -125,8 +125,14 @@ namespace AutoClicker.Instructions
             Ctrl = ctrl;
             Alt = alt;
 
-            GlobalData = globalData ?? new GlobalData();
+            GlobalData = new GlobalData();
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Instruction"/> class.
+        /// </summary>
+        /// <param name="other">The other.</param>
+        public Instruction(Instruction other) : this(other.Delay(), other.Repetitions, other.Speed(), other.Shift, other.Ctrl, other.Alt) { }
 
         /// <summary>
         /// Runs this instruction.

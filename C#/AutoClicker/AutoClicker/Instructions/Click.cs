@@ -37,7 +37,7 @@ namespace AutoClicker.Instructions
         /// <param name="alt">if set to <c>true</c> [alt].</param>
         public Click(int x = 0, int y = 0, ButtonType button = ButtonType.LEFT, MovementType? movement = null,
             DecimalTuple delay = null, DecimalTuple repetitions = null, DecimalTuple speed = null,
-            bool shift = false, bool ctrl = false, bool alt = false, GlobalData globalData = null
+            bool shift = false, bool ctrl = false, bool alt = false
             ) : this(new DecimalTuple(x), new DecimalTuple(y), button, movement,
                 delay, repetitions, speed, shift, ctrl, alt)
         { }
@@ -50,7 +50,7 @@ namespace AutoClicker.Instructions
         /// <param name="button">The button.</param>
         /// <param name="movement">The movement.</param>
         /// <param name="instruction">The instruction.</param>
-        public Click(Instruction instruction, DecimalTuple x=null, DecimalTuple y = null, ButtonType button = ButtonType.LEFT, MovementType? movement = null, GlobalData globalData = null
+        public Click(Instruction instruction, DecimalTuple x=null, DecimalTuple y = null, ButtonType button = ButtonType.LEFT, MovementType? movement = null
             ) : this(x, y, button, movement, instruction.Delay(), instruction.Repetitions, instruction.Speed(), instruction.Shift, instruction.Ctrl, instruction.Alt)
         { }
 
@@ -69,8 +69,8 @@ namespace AutoClicker.Instructions
         /// <param name="alt">if set to <c>true</c> [alt].</param>
         public Click(DecimalTuple x, DecimalTuple y, ButtonType button = ButtonType.LEFT, MovementType? movement = null,
             DecimalTuple delay = null, DecimalTuple repetitions = null, DecimalTuple speed = null,
-            bool shift = false, bool ctrl = false, bool alt = false, GlobalData globalData = null
-            ) : base(x, y, movement, delay, repetitions, speed, shift, ctrl, alt, globalData)
+            bool shift = false, bool ctrl = false, bool alt = false
+            ) : base(x, y, movement, delay, repetitions, speed, shift, ctrl, alt)
         {
             ButtonType = button;
         }

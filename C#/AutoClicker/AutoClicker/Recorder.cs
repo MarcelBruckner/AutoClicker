@@ -145,7 +145,7 @@ namespace AutoClicker
             Instructions.Instruction newInstruction;
 
             Keys key = e.KeyCode;
-            Console.WriteLine(key);
+            //Console.WriteLine(key);
             if (key == MainWindow.RECORD_HOTKEY || key == MainWindow.PLAY_HOTKEY)
             {
                 return;
