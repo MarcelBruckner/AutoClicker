@@ -130,7 +130,7 @@ namespace AutoClicker.Instructions
             }
             else
             {
-                RandomizedPosition = new Vector(x.Get(0), y.Get(0));
+                RandomizedPosition = new Vector(x.Get(GlobalData.RandomX), y.Get(GlobalData.RandomY));
             }
         }
 

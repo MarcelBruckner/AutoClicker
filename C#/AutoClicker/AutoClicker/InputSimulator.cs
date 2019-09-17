@@ -342,7 +342,6 @@ namespace AutoClicker
                     break;
             }
 
-
             interpolation.Interpolate();
         }
 

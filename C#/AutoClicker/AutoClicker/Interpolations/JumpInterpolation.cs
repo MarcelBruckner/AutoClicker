@@ -20,8 +20,6 @@ namespace AutoClicker
             }
             Vector toMove = End;
             Cursor.Vector = toMove;
-            Thread.Sleep((int)(20 * Speed));
-            Cursor.Vector = toMove;
         }
     }
 }
