@@ -94,11 +94,11 @@
                             <ContextMenu>
                                 <Grid Width="120">
                                     <TextBlock Text="Minimize on start" Grid.Column="0" Grid.ColumnSpan="2"/>
-                                    <ToggleButton Margin="10,0,0,0" Padding="1" Width="15" HorizontalAlignment="Right" Grid.Column="1" IsChecked="{Binding Path=MinimizeOnPlay, Mode=TwoWay}"/>
+                                <CheckBox Margin="10,0,0,0" Padding="1" Width="15" HorizontalAlignment="Right" Grid.Column="1" IsChecked="{Binding Path=MinimizeOnPlay, Mode=TwoWay}"/>
                                 </Grid>
                                 <Grid Width="120">
                                     <TextBlock Text="Maximize on stop" Grid.Column="0" Grid.ColumnSpan="2"/>
-                                    <ToggleButton Margin="10,0,0,0" Padding="1" Width="15" HorizontalAlignment="Right" Grid.Column="1" IsChecked="{Binding Path=MaximizeOnStopPlay, Mode=TwoWay}"/>
+                                <CheckBox Margin="10,0,0,0" Padding="1" Width="15" HorizontalAlignment="Right" Grid.Column="1" IsChecked="{Binding Path=MaximizeOnStopPlay, Mode=TwoWay}"/>
                                 </Grid>
                             </ContextMenu>
                         </ToggleButton.ContextMenu>
@@ -115,11 +115,11 @@
                             <ContextMenu>
                                 <Grid Width="120">
                                     <TextBlock Text="Minimize on start" Grid.Column="0" Grid.ColumnSpan="2"/>
-                                    <ToggleButton Margin="10,0,0,0" Padding="1" Width="15" HorizontalAlignment="Right" Grid.Column="1" IsChecked="{Binding Path=MinimizeOnRecord, Mode=TwoWay}"/>
+                                    <CheckBox Margin="10,0,0,0" Padding="1" Width="15" HorizontalAlignment="Right" Grid.Column="1" IsChecked="{Binding Path=MinimizeOnRecord, Mode=TwoWay}"/>
                                 </Grid>
                                 <Grid Width="120">
                                     <TextBlock Text="Maximize on stop" Grid.Column="0" Grid.ColumnSpan="2"/>
-                                    <ToggleButton Margin="10,0,0,0" Padding="1" Width="15" HorizontalAlignment="Right" Grid.Column="1" IsChecked="{Binding Path=MaximizeOnStopRecord, Mode=TwoWay}"/>
+                                <CheckBox Margin="10,0,0,0" Padding="1" Width="15" HorizontalAlignment="Right" Grid.Column="1" IsChecked="{Binding Path=MaximizeOnStopRecord, Mode=TwoWay}"/>
                                 </Grid>
                             </ContextMenu>
                         </ToggleButton.ContextMenu>

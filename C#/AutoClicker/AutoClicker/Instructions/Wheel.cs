@@ -22,6 +22,14 @@ namespace AutoClicker.Instructions
         public DecimalTuple ScrollDistance { get; set; }
 
         /// <summary>
+        /// Gets the sign.
+        /// </summary>
+        /// <value>
+        /// The sign.
+        /// </value>
+        private double Sign { get => ScrollDistance.Get(0) / Math.Abs(ScrollDistance.Get(0)); }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Wheel"/> class.
         /// </summary>
         /// <param name="scrollDistance">The scroll distance.</param>
@@ -84,7 +92,7 @@ namespace AutoClicker.Instructions
         public override bool Resembles(object obj)
         {
             return obj is Wheel wheel &&
-                IsSamePosition(wheel);
+                IsSamePosition(wheel) && Sign == wheel.Sign;
         }
 
         /// <summary>

@@ -424,8 +424,8 @@ namespace AutoClicker
                 {
                     InstructionsTextBox.Document.Blocks.InsertAfter(caretRun.Paragraph, block);
                 }
-                InstructionsTextBox.CaretPosition = block.ContentEnd;
-                newRun.BringIntoView();
+                InstructionsTextBox.CaretPosition = newRun.ContentEnd;
+                block.BringIntoView();
                 return newRun;
             }
             else
