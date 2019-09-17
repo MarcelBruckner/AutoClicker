@@ -66,6 +66,7 @@ SHIFT				: S H I F T;
 CTRL				: C T R L;
 ALT					: A L T;
 
+
 EQ					: '=';
 SLASH				: '/';
 IS					: ':';
@@ -77,6 +78,8 @@ DECIMAL             : ('-' | '+')? DIGIT+ ([.,] DIGIT+)? ;
 WORD				: (LOWERCASE | UPPERCASE | '_')+;
 WHITESPACE          : [ \t\r\n] -> skip;
 NEWLINE             : ('\r'? '\n' | '\r')+ ;
+END_LINE_COMMENT	: '/''/' ~('\r' | '\n' )* -> skip;
+BLOCK_COMMENT		: '/''*' (('*' ~'/') | ~'*' .)* '*''/' -> skip;
 STRING				: '"' ~('\r' | '\n' | '"')* '"' ;
 
 /*

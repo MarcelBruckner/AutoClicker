@@ -30,7 +30,7 @@ namespace AutoClicker.InstructionsParser
         {
             AutoClickerInstructionVisitor instructionVisitor = new AutoClickerInstructionVisitor();
 
-            List<Instructions.Instruction> instructions = new List<Instructions.Instruction>();
+            List<Instruction> instructions = new List<Instruction>();
             foreach (var instruction in context.instruction())
             {
                 try
