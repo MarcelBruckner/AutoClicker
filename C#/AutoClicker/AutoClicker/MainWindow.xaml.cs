@@ -163,15 +163,52 @@ namespace AutoClicker
         }
 
         /// <summary>
-        /// Handles the Click event of the Clear control.
+        /// Handles the Click event of the ClearInstructions control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
-        private void Clear_Click(object sender, RoutedEventArgs e)
+        private void ClearInstructions_Click(object sender, RoutedEventArgs e)
         {
-            GlobalData = new GlobalData();
-            InstructionsTextBox.Document.Blocks.Clear();
+            if (ReallyClear("the instructions"))
+            {
+                InstructionsTextBox.Document.Blocks.Clear();
+            }
         }
+
+        /// <summary>
+        /// Handles the Click event of the ClearDefaultValues control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
+        private void ClearDefaultValues_Click(object sender, RoutedEventArgs e)
+        {
+            if (ReallyClear("the default values"))
+            {
+                GlobalData = new GlobalData();
+            }
+        }
+
+        /// <summary>
+        /// Handles the Click event of the ClearAll control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
+        private void ClearAll_Click(object sender, RoutedEventArgs e)
+        {
+            ClearDefaultValues_Click(null, null);
+            ClearInstructions_Click(null, null);
+        }
+
+        /// <summary>
+        /// Reallies the clear.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <returns></returns>
+        private bool ReallyClear(string message)
+        {
+            return MessageBox.Show("Really clear " + message + ".", "", MessageBoxButton.OKCancel) == MessageBoxResult.OK;
+        }
+
         #endregion
 
         #region Context Menus
@@ -467,7 +504,7 @@ namespace AutoClicker
                     StopAll();
                     MaximizeWindow(MaximizeOnStopPlay);
                 }
-                InstructionsTextBox.IsEnabled = !value;
+                InputFieldsEnabled = false;
                 NotifyPropertyChanged();
             }
         }
@@ -526,7 +563,7 @@ namespace AutoClicker
             set
             {
                 _withDelay = value;
-                recorder.IsRecordingWithDelay = value;
+                //recorder.IsRecordingWithDelay = value;
                 NotifyPropertyChanged();
             }
         }
@@ -556,11 +593,29 @@ namespace AutoClicker
                     recorder.RemoveHooks();
                     MaximizeWindow(MaximizeOnStopRecord);
                 }
-                InstructionsTextBox.IsEnabled = !value;
+                InputFieldsEnabled = false;
                 NotifyPropertyChanged();
             }
         }
         #endregion
+
+        /// <summary>
+        /// Gets a value indicating whether this instance is recording or playing.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is recording or playing; otherwise, <c>false</c>.
+        /// </value>
+        public bool InputFieldsEnabled
+        {
+            set
+            {
+                NotifyPropertyChanged();
+            }
+            get
+            {
+                return !IsRecording && !IsPlaying;
+            }
+        }
 
         /// <summary>
         /// Gets the instructions.
@@ -608,7 +663,7 @@ namespace AutoClicker
         // This method is called by the Set accessor of each property.
         // The CallerMemberName attribute that is applied to the optional propertyName
         // parameter causes the property name of the caller to be substituted as an argument.
-        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

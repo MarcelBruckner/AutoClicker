@@ -9,7 +9,7 @@
         xmlns:autoclicker="clr-namespace:AutoClicker"
         xmlns:enums="clr-namespace:Enums"
         mc:Ignorable="d"
-        Title="Auto Clicker" Height="500" Width="600" Background="White">
+        Title="Auto Clicker" Height="600" Width="700" Background="White">
 
     <Window.Resources>
         <Style TargetType="DataGridColumnHeader">
@@ -42,242 +42,276 @@
 
     <DockPanel LastChildFill="True">
 
-        <Grid DockPanel.Dock="Top">
-            <Rectangle Height="0.5" Fill="Black"/>
-        </Grid>
-        <Menu DockPanel.Dock="Top" Padding="0 2" >
-            <MenuItem Header="_File">
-                <MenuItem Header="_Open" Click="Open_Click"/>
-                <MenuItem Header="_Save" Click="Save_Click"/>
-                <Separator/>
-                <MenuItem Header="_Close" Click="Close_Click"/>
-            </MenuItem>
+            <Rectangle DockPanel.Dock="Top" Height="0.5" Fill="Black" Margin="0 0 0 0"/>
 
-            <MenuItem Header="_Add Instruction">
-                <MenuItem Header="_Wait" Click="AddMenu_Wait"/>
-                <MenuItem Header="_Loop" Click="AddMenu_Loop"/>
-                <Separator/>
-                <MenuItem Header="_Hover" Click="AddMenu_Hover"/>
-                <MenuItem Header="_Click" Click="AddMenu_Click"/>
-                <MenuItem Header="_Drag" Click="AddMenu_Drag"/>
-                <MenuItem Header="_Wheel" Click="AddMenu_Wheel"/>
-                <Separator/>
-                <MenuItem Header="_Keystroke" Click="AddMenu_Keystroke"/>
-                <MenuItem Header="_Text" Click="AddMenu_Text"/>
-                <Separator/>
-                <MenuItem Header="_Clear" Click="Clear_Click"/>
-                <!--<MenuItem Header="_" Click="AddMenu"/>-->
-            </MenuItem>
+            <Menu DockPanel.Dock="Top" Padding="0 2" >
+                <MenuItem Header="_File">
+                    <MenuItem Header="_Open" Click="Open_Click"/>
+                    <MenuItem Header="_Save" Click="Save_Click"/>
+                    <Separator/>
+                    <MenuItem Header="_Close" Click="Close_Click"/>
+                </MenuItem>
 
-            <!--<Separator/>-->
-            <MenuItem Header="_Default Values">
-                <MenuItem Header="_Delay">
-                    <Grid Width="100">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="Minimum" Grid.Column="0"/>
-                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="1" Text="{Binding Path=GlobalData.Delay, Mode=TwoWay}" />
-                    </Grid>
-                    <Grid Width="100">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="Random" Grid.Column="0"/>
-                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="10" Text="{Binding Path=GlobalData.RandomDelay, Mode=TwoWay}"/>
-                    </Grid>
+                <MenuItem Header="_Add Instruction">
+                    <MenuItem Header="_Wait" Click="AddMenu_Wait"/>
+                    <MenuItem Header="_Loop" Click="AddMenu_Loop"/>
+                    <Separator/>
+                    <MenuItem Header="_Hover" Click="AddMenu_Hover"/>
+                    <MenuItem Header="_Click" Click="AddMenu_Click"/>
+                    <MenuItem Header="_Drag" Click="AddMenu_Drag"/>
+                    <MenuItem Header="_Wheel" Click="AddMenu_Wheel"/>
+                    <Separator/>
+                    <MenuItem Header="_Keystroke" Click="AddMenu_Keystroke"/>
+                    <MenuItem Header="_Text" Click="AddMenu_Text"/>
                 </MenuItem>
-                <MenuItem Header="_Repetitions">
-                    <Grid Width="100">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="Minimum" Grid.Column="0"/>
-                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="1" DataContext="{Binding GlobalData, FallbackValue='error'}" Text="{Binding Path=Repetitions, Mode=TwoWay}"/>
-                    </Grid>
-                    <Grid Width="100">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="Random" Grid.Column="0"/>
-                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="10" Text="{Binding Path=GlobalData.RandomRepetitions, Mode=TwoWay}"/>
-                    </Grid>
+                <MenuItem Header="_Clear">
+                    <MenuItem Header="_Default Values" Click="ClearDefaultValues_Click"/>
+                    <MenuItem Header="_Instructions" Click="ClearInstructions_Click"/>
+                    <Separator/>
+                    <MenuItem Header="_All" Click="ClearAll_Click"/>
                 </MenuItem>
-                <MenuItem Header="_Speed">
-                    <Grid Width="100">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="Minimum" Grid.Column="0"/>
-                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="1" Text="{Binding Path=GlobalData.Speed, Mode=TwoWay, ElementName=mainWindow}"/>
-                    </Grid>
-                    <Grid Width="100">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="Random" Grid.Column="0"/>
-                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="10" Text="{Binding Path=GlobalData.RandomSpeed, Mode=TwoWay}"/>
-                    </Grid>
-                </MenuItem>
-                <Separator/>
-                <MenuItem Header="Movement Type">
-                    <ComboBox ItemsSource="{Binding Source={StaticResource MovementTypes}}" Width="100"
+            </Menu>
+
+            <Rectangle DockPanel.Dock="Top" Height="0.5" Fill="Black" Margin="0 0 0 5"/>
+
+            <Grid DockPanel.Dock="Top" Margin="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Horizontal" Grid.Column="0" VerticalAlignment="Center">
+                    <ToggleButton x:Name="PlayButton" BorderThickness="0" Background="Transparent" IsChecked="{Binding ElementName=mainWindow, Path=IsPlaying, Mode=TwoWay}" Padding="2" Margin="5 0" Width="35" Height="35">
+                        <Image Source="Images/play.png" RenderOptions.BitmapScalingMode="HighQuality">
+                            <Image.ToolTip>
+                                <ToolTip>
+                                    <TextBlock Text="Start playing the script."/>
+                                </ToolTip>
+                            </Image.ToolTip>
+                        </Image>
+                        <ToggleButton.ContextMenu>
+                            <ContextMenu>
+                                <Grid Width="120">
+                                    <TextBlock Text="Minimize on start" Grid.Column="0" Grid.ColumnSpan="2"/>
+                                    <ToggleButton Margin="10,0,0,0" Padding="1" Width="15" HorizontalAlignment="Right" Grid.Column="1" IsChecked="{Binding Path=MinimizeOnPlay, Mode=TwoWay}"/>
+                                </Grid>
+                                <Grid Width="120">
+                                    <TextBlock Text="Maximize on stop" Grid.Column="0" Grid.ColumnSpan="2"/>
+                                    <ToggleButton Margin="10,0,0,0" Padding="1" Width="15" HorizontalAlignment="Right" Grid.Column="1" IsChecked="{Binding Path=MaximizeOnStopPlay, Mode=TwoWay}"/>
+                                </Grid>
+                            </ContextMenu>
+                        </ToggleButton.ContextMenu>
+                    </ToggleButton>
+                    <ToggleButton x:Name="RecordButton" BorderThickness="0" Background="Transparent" IsChecked="{Binding ElementName=mainWindow, Path=IsRecording, Mode=TwoWay}" Padding="2" Margin="5 0" Width="35" Height="35">
+                        <Image Source="Images/record2.png" RenderOptions.BitmapScalingMode="HighQuality">
+                            <Image.ToolTip>
+                                <ToolTip>
+                                    <TextBlock Text="Start recording some instructions."/>
+                                </ToolTip>
+                            </Image.ToolTip>
+                        </Image>
+                        <ToggleButton.ContextMenu>
+                            <ContextMenu>
+                                <Grid Width="120">
+                                    <TextBlock Text="Minimize on start" Grid.Column="0" Grid.ColumnSpan="2"/>
+                                    <ToggleButton Margin="10,0,0,0" Padding="1" Width="15" HorizontalAlignment="Right" Grid.Column="1" IsChecked="{Binding Path=MinimizeOnRecord, Mode=TwoWay}"/>
+                                </Grid>
+                                <Grid Width="120">
+                                    <TextBlock Text="Maximize on stop" Grid.Column="0" Grid.ColumnSpan="2"/>
+                                    <ToggleButton Margin="10,0,0,0" Padding="1" Width="15" HorizontalAlignment="Right" Grid.Column="1" IsChecked="{Binding Path=MaximizeOnStopRecord, Mode=TwoWay}"/>
+                                </Grid>
+                            </ContextMenu>
+                        </ToggleButton.ContextMenu>
+                    </ToggleButton>
+                    <ToggleButton x:Name="WithDelayButton" BorderThickness="0" Background="Transparent" IsChecked="{Binding ElementName=mainWindow, Path=IsRecordingWithDelay, Mode=TwoWay}" Padding="2" Margin="5 0" Width="35" Height="35">
+                        <Image Source="Images/stopwatch2.png" RenderOptions.BitmapScalingMode="HighQuality">
+                            <Image.ToolTip>
+                                <ToolTip>
+                                    <TextBlock Text="Enable delay measurement between instructions."/>
+                                </ToolTip>
+                            </Image.ToolTip>
+                        </Image>
+                    </ToggleButton>
+                </StackPanel>
+
+                <TextBlock Foreground="Black" FontSize="16" Grid.Column="1" Text="Auto Clicker" FontWeight="Bold" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <TextBox x:Name="RepetitionsTextBox" IsEnabled="False" TextChanged="RepetitionsTextBox_TextChanged" Text="5" MaxLength="5" VerticalAlignment="Center" Width="40" TextAlignment="Right" Padding="2"/>
+
+                    <ToggleButton x:Name="InfiniteButton" BorderThickness="0" Background="Transparent" IsChecked="{Binding Path=IsInfiniteLooping, Mode=TwoWay}" Padding="2" Margin="5 0" Width="35" Height="35">
+                        <Image Source="Images/infinity.png" RenderOptions.BitmapScalingMode="HighQuality">
+                            <Image.ToolTip>
+                                <ToolTip>
+                                    <TextBlock Text="Enable infinite looping."/>
+                                </ToolTip>
+                            </Image.ToolTip>
+                        </Image>
+                    </ToggleButton>
+                </StackPanel>
+            </Grid>
+
+            <Rectangle DockPanel.Dock="Top" Height="0.5" Fill="Black" Margin="5 5 5 5"/>
+
+            <Expander Name="GlobalDataExpander"                   
+                  BorderBrush="White"
+                  Background="White"
+                  Header="Default Values" 
+                  ExpandDirection="Down"
+                  IsExpanded="False"
+                  DockPanel.Dock="Top"
+                  Margin="10 0 10 0"
+                  ToolTip="The default values that are used when no explicit values are specified on the instruction. ">
+                <Grid Margin="10 0 0 0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <Expander
+                    ToolTip="The values that are common for all instructions."
+                    Name="CommonsExpander" 
+                    Header="Common Values" 
+                    BorderBrush="White"
+                    Background="White"
+                    ExpandDirection="Down"
+                    IsExpanded="False"
+                    DockPanel.Dock="Top"
+                    Grid.Row="0">
+                        <Grid Margin="10 0 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                            </Grid.RowDefinitions>
+
+                            <Label ToolTip="The common delay after the execution of the instruction." Grid.Column="0" Grid.Row="0" Content="Delay" HorizontalAlignment="Stretch"/>
+                            <TextBox IsEnabled="{Binding InputFieldsEnabled}" ToolTip="Base Value" Grid.Column="1" Grid.Row="0" Margin="2" Padding="1" HorizontalAlignment="Stretch" Text="{Binding Path=GlobalData.Delay, Mode=TwoWay}"/>
+                            <TextBox IsEnabled="{Binding InputFieldsEnabled}" ToolTip="Random Range" Grid.Column="2" Grid.Row="0" Margin="2" Padding="1" HorizontalAlignment="Stretch" Text="{Binding Path=GlobalData.RandomDelay, Mode=TwoWay}" />
+
+                            <Label Grid.Column="0" Grid.Row="1" Content="Repetitions" HorizontalAlignment="Stretch"/>
+                            <TextBox IsEnabled="{Binding InputFieldsEnabled}" ToolTip="Base Value" Grid.Column="1" Grid.Row="1" Margin="2" Padding="1" HorizontalAlignment="Stretch" Text="{Binding Path=GlobalData.Repetitions, Mode=TwoWay}" />
+                            <TextBox IsEnabled="{Binding InputFieldsEnabled}" ToolTip="Random Range" Grid.Column="2" Grid.Row="1" Margin="2" Padding="1" HorizontalAlignment="Stretch" Text="{Binding Path=GlobalData.RandomRepetitions, Mode=TwoWay}" />
+
+                            <Label Grid.Column="0" Grid.Row="2" Content="Speed" HorizontalAlignment="Stretch"/>
+                            <TextBox IsEnabled="{Binding InputFieldsEnabled}" ToolTip="Base Value" Grid.Column="1" Grid.Row="2" Margin="2" Padding="1" HorizontalAlignment="Stretch" Text="{Binding Path=GlobalData.Speed, Mode=TwoWay}" />
+                            <TextBox IsEnabled="{Binding InputFieldsEnabled}" ToolTip="Random Range" Grid.Column="2" Grid.Row="2" Margin="2" Padding="1" HorizontalAlignment="Stretch" Text="{Binding Path=GlobalData.RandomSpeed, Mode=TwoWay}" />
+
+                            <Rectangle Grid.Row="4" Grid.ColumnSpan="4" Height="0.5" Fill="Black" Margin="5 5 0 5"/>
+                        </Grid>
+                    </Expander>
+
+
+                    <Expander
+                    ToolTip="The values that are common for all mouse based instructions."
+                    Name="MouseCommonsExpander" 
+                    BorderBrush="White"
+                    Background="White"
+                    Header="Mouse Common Values" 
+                    ExpandDirection="Down"
+                    IsExpanded="False"
+                    DockPanel.Dock="Top"
+                    Grid.Row="1">
+                        <Grid Margin="10 0 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                            </Grid.RowDefinitions>
+
+                            <Label Grid.Column="0" Grid.Row="0" Content="Movement Type" HorizontalAlignment="Stretch"/>
+                            <ComboBox IsEnabled="{Binding InputFieldsEnabled}" 
+                            ToolTip="The type of the mouse cursor movement."
+                            Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Margin="2" ItemsSource="{Binding Source={StaticResource MovementTypes}}" HorizontalAlignment="Stretch"
                               SelectedItem="{Binding Path=GlobalData.MovementType, Mode=TwoWay}">
-                    </ComboBox>
-                </MenuItem>
-                <MenuItem Header="_Position">
-                    <Grid Width="100">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="X Radius" Grid.Column="0"/>
-                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="1" Text="{Binding Path=GlobalData.RandomX, Mode=TwoWay}"/>
-                    </Grid>
-                    <Grid Width="100">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="Y Radius" Grid.Column="0"/>
-                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="10" Text="{Binding Path=GlobalData.RandomY, Mode=TwoWay}"/>
-                    </Grid>
-                </MenuItem>
-                <MenuItem Header="_Drag">
-                    <Grid Width="100">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="X Radius" Grid.Column="0"/>
-                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="1" Text="{Binding Path=GlobalData.RandomDragX, Mode=TwoWay}"/>
-                    </Grid>
-                    <Grid Width="100">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="Y Radius" Grid.Column="0"/>
-                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="10" Text="{Binding Path=GlobalData.RandomDragY, Mode=TwoWay}"/>
-                    </Grid>
-                </MenuItem>
-                <MenuItem Header="_Wheel">
-                    <Grid Width="100">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="Random" Grid.Column="0"/>
-                        <TextBox Margin="10 0 0 0" Padding="1" HorizontalAlignment="Stretch" Grid.Column="10" Text="{Binding Path=GlobalData.RandomWheel, Mode=TwoWay}"/>
-                    </Grid>
-                </MenuItem>
-                <Separator/>
-                <MenuItem Header="_Hotkeys">
-                    <Grid Width="100">
-                        <TextBlock Text="Shift" Grid.Column="0" Grid.ColumnSpan="2"/>
-                        <ToggleButton Margin="10,0,0,0" Padding="1" Width="15" HorizontalAlignment="Right" Grid.Column="1" IsChecked="{Binding Path=GlobalData.Shift, Mode=TwoWay}"/>
-                    </Grid>
-                    <Grid Width="100">
-                        <TextBlock Text="Ctrl" Grid.Column="0" Grid.ColumnSpan="2"/>
-                        <ToggleButton Margin="10,0,0,0" Padding="1" Width="15" HorizontalAlignment="Right" Grid.Column="1" IsChecked="{Binding Path=GlobalData.Ctrl, Mode=TwoWay}"/>
-                    </Grid>
-                    <Grid Width="100">
-                        <TextBlock Text="Alt" Grid.Column="0" Grid.ColumnSpan="2"/>
-                        <ToggleButton Margin="10,0,0,0" Padding="1" Width="15" HorizontalAlignment="Right" Grid.Column="1" IsChecked="{Binding Path=GlobalData.Alt, Mode=TwoWay}"/>
-                    </Grid>
-                </MenuItem>
-            </MenuItem>
+                            </ComboBox>
+                            <Label ToolTip="The random pixel range around the specified click position." Grid.Column="0" Grid.Row="1" Content="Click Position Randomness" HorizontalAlignment="Stretch"/>
+                            <TextBox IsEnabled="{Binding InputFieldsEnabled}" ToolTip="X Random Range" Grid.Column="1" Grid.Row="1" Margin="2" Padding="1" HorizontalAlignment="Stretch" Text="{Binding Path=GlobalData.RandomX, Mode=TwoWay}" />
+                            <TextBox IsEnabled="{Binding InputFieldsEnabled}" ToolTip="Y Random Range" Grid.Column="2" Grid.Row="1" Margin="2" Padding="1" HorizontalAlignment="Stretch" Text="{Binding Path=GlobalData.RandomY, Mode=TwoWay}" />
 
-        </Menu>
-        <Grid DockPanel.Dock="Top">
-            <Rectangle Height="0.5" Fill="Black"/>
-        </Grid>
+                            <Label ToolTip="The random pixel range around the specified drag end position." Grid.Column="0" Grid.Row="2" Content="Drag Position Randomness" HorizontalAlignment="Stretch"/>
+                            <TextBox IsEnabled="{Binding InputFieldsEnabled}" ToolTip="X Random Range" Grid.Column="1" Grid.Row="2" Margin="2" Padding="1" HorizontalAlignment="Stretch" Text="{Binding Path=GlobalData.RandomDragX, Mode=TwoWay}" />
+                            <TextBox IsEnabled="{Binding InputFieldsEnabled}" ToolTip="Y Random Range" Grid.Column="2" Grid.Row="2" Margin="2" Padding="1" HorizontalAlignment="Stretch" Text="{Binding Path=GlobalData.RandomDragY, Mode=TwoWay}" />
 
-        <Grid DockPanel.Dock="Top" Margin="5 10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="0.5*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
+                            <Label ToolTip="The random mouse wheel scroll distance." Grid.Column="0" Grid.Row="3" Content="Wheel Randomness" HorizontalAlignment="Stretch"/>
+                            <TextBox IsEnabled="{Binding InputFieldsEnabled}" ToolTip="Random Range" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Margin="2" Padding="1" HorizontalAlignment="Stretch" Text="{Binding Path=GlobalData.RandomWheel, Mode=TwoWay}" />
 
-            <StackPanel Orientation="Horizontal" Grid.Column="0" VerticalAlignment="Center">
-                <ToggleButton x:Name="PlayButton" BorderThickness="0" Background="Transparent" IsChecked="{Binding ElementName=mainWindow, Path=IsPlaying, Mode=TwoWay}" Padding="2" Margin="5 0" Width="35" Height="35">
-                    <Image Source="Images/play.png" RenderOptions.BitmapScalingMode="HighQuality">
-                        <Image.ToolTip>
-                            <ToolTip>
-                                <TextBlock Text="Start playing the script."/>
-                            </ToolTip>
-                        </Image.ToolTip>
-                    </Image>
-                    <ToggleButton.ContextMenu>
-                        <ContextMenu>
-                            <Grid Width="120">
-                                <TextBlock Text="Minimize on start" Grid.Column="0" Grid.ColumnSpan="2"/>
-                                <ToggleButton Margin="10,0,0,0" Padding="1" Width="15" HorizontalAlignment="Right" Grid.Column="1" IsChecked="{Binding Path=MinimizeOnPlay, Mode=TwoWay}"/>
+                            <Rectangle Grid.Row="5" Grid.ColumnSpan="4" Height="0.5" Fill="Black" Margin="5 5 0 5"/>
+                        </Grid>
+                    </Expander>
+
+                    <Expander
+                    ToolTip="The hotkeys that are pressed during the execution of all instructions."
+                    Name="HotkeysExpander" 
+                    BorderBrush="White"
+                    Background="White"
+                    Header="Hotkeys" 
+                    ExpandDirection="Down"
+                    IsExpanded="False"
+                    DockPanel.Dock="Top"
+                    Grid.Row="2">
+                        <Grid Margin="10 0 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Column="0"
+                              ToolTip="The shift hotkey.">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" Content="Shift" HorizontalAlignment="Stretch"/>
+                                <CheckBox IsEnabled="{Binding InputFieldsEnabled}" Margin="10,0,0,0" Padding="1" Width="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" IsChecked="{Binding Path=GlobalData.Shift, Mode=TwoWay}"/>
                             </Grid>
-                            <Grid Width="120">
-                                <TextBlock Text="Maximize on stop" Grid.Column="0" Grid.ColumnSpan="2"/>
-                                <ToggleButton Margin="10,0,0,0" Padding="1" Width="15" HorizontalAlignment="Right" Grid.Column="1" IsChecked="{Binding Path=MaximizeOnStopPlay, Mode=TwoWay}"/>
+                            <Grid Grid.Column="1"
+                              ToolTip="The control hotkey.">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" Content="Control" HorizontalAlignment="Stretch"/>
+                                <CheckBox IsEnabled="{Binding InputFieldsEnabled}" Margin="10,0,0,0" Padding="1" Width="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" IsChecked="{Binding Path=GlobalData.Ctrl, Mode=TwoWay}"/>
                             </Grid>
-                        </ContextMenu>
-                    </ToggleButton.ContextMenu>
-                </ToggleButton>
-                <ToggleButton x:Name="RecordButton" BorderThickness="0" Background="Transparent" IsChecked="{Binding ElementName=mainWindow, Path=IsRecording, Mode=TwoWay}" Padding="2" Margin="5 0" Width="35" Height="35">
-                    <Image Source="Images/record2.png" RenderOptions.BitmapScalingMode="HighQuality">
-                        <Image.ToolTip>
-                            <ToolTip>
-                                <TextBlock Text="Start recording some instructions."/>
-                            </ToolTip>
-                        </Image.ToolTip>
-                    </Image>
-                    <ToggleButton.ContextMenu>
-                        <ContextMenu>
-                            <Grid Width="120">
-                                <TextBlock Text="Minimize on start" Grid.Column="0" Grid.ColumnSpan="2"/>
-                                <ToggleButton Margin="10,0,0,0" Padding="1" Width="15" HorizontalAlignment="Right" Grid.Column="1" IsChecked="{Binding Path=MinimizeOnRecord, Mode=TwoWay}"/>
+                            <Grid Grid.Column="2"
+                              ToolTip="The alt hotkey.">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" Content="Alt" HorizontalAlignment="Stretch"/>
+                                <CheckBox IsEnabled="{Binding InputFieldsEnabled}" Margin="10,0,0,0" Padding="1" Width="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" IsChecked="{Binding Path=GlobalData.Alt, Mode=TwoWay}"/>
                             </Grid>
-                            <Grid Width="120">
-                                <TextBlock Text="Maximize on stop" Grid.Column="0" Grid.ColumnSpan="2"/>
-                                <ToggleButton Margin="10,0,0,0" Padding="1" Width="15" HorizontalAlignment="Right" Grid.Column="1" IsChecked="{Binding Path=MaximizeOnStopRecord, Mode=TwoWay}"/>
-                            </Grid>
-                        </ContextMenu>
-                    </ToggleButton.ContextMenu>
-                </ToggleButton>
-                <ToggleButton x:Name="WithDelayButton" BorderThickness="0" Background="Transparent" IsChecked="{Binding ElementName=mainWindow, Path=IsRecordingWithDelay, Mode=TwoWay}" Padding="2" Margin="5 0" Width="35" Height="35">
-                    <Image Source="Images/stopwatch2.png" RenderOptions.BitmapScalingMode="HighQuality">
-                        <Image.ToolTip>
-                            <ToolTip>
-                                <TextBlock Text="Enable delay measurement between instructions."/>
-                            </ToolTip>
-                        </Image.ToolTip>
-                    </Image>
-                </ToggleButton>
-            </StackPanel>
+                        </Grid>
+                    </Expander>
+                </Grid>
+            </Expander>
 
-            <TextBlock Foreground="Black" FontSize="16" Grid.Column="1" Text="Auto Clicker" FontWeight="Bold" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <Rectangle DockPanel.Dock="Top" Height="0.5" Fill="Black" Margin="5 5 5 5"/>
 
-            <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                <TextBox x:Name="RepetitionsTextBox" IsEnabled="False" TextChanged="RepetitionsTextBox_TextChanged" Text="5" MaxLength="5" VerticalAlignment="Center" Width="40" TextAlignment="Right" Padding="2"/>
-
-                <ToggleButton x:Name="InfiniteButton" BorderThickness="0" Background="Transparent" IsChecked="{Binding Path=IsInfiniteLooping, Mode=TwoWay}" Padding="2" Margin="5 0" Width="35" Height="35">
-                    <Image Source="Images/infinity.png" RenderOptions.BitmapScalingMode="HighQuality">
-                        <Image.ToolTip>
-                            <ToolTip>
-                                <TextBlock Text="Enable infinite looping."/>
-                            </ToolTip>
-                        </Image.ToolTip>
-                    </Image>
-                </ToggleButton>
-            </StackPanel>
-        </Grid>
-
-        <RichTextBox DockPanel.Dock="Top"
+            <RichTextBox DockPanel.Dock="Top"
                      Margin="10 0 10 10"
                      Padding="5"
                      x:Name="InstructionsTextBox"
@@ -285,14 +319,15 @@
                      AcceptsTab="True"
                      TextChanged="InstructionsTextBox_TextChanged"
                      PreviewKeyDown="InstructionsTextBox_PreviewKeyDown"
-                     VerticalScrollBarVisibility="Auto">
-            
-            <RichTextBox.Resources>
-                <Style TargetType="{x:Type Paragraph}">
-                    <Setter Property="Margin" Value="0"/>
-                </Style>
-            </RichTextBox.Resources>
-        </RichTextBox>
+                     VerticalScrollBarVisibility="Auto"
+                     IsEnabled="{Binding InputFieldsEnabled}">
 
-    </DockPanel>
+                <RichTextBox.Resources>
+                    <Style TargetType="{x:Type Paragraph}">
+                        <Setter Property="Margin" Value="0"/>
+                    </Style>
+                </RichTextBox.Resources>
+            </RichTextBox>
+
+        </DockPanel>
 </Window>
