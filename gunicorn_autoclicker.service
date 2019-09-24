@@ -1,0 +1,13 @@
+[Unit]
+Description=Autoclicker gunicorn daemon
+Requires=mnt-raid.mount
+After=mnt-raid.mount
+
+[Service]
+Type=simple
+User=pi
+ExecStart=/var/www/web/RS-Bots/gunicorn_start.sh
+
+[Install]
+WantedBy=multi-user.target
+
