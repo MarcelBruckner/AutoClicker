@@ -20,7 +20,7 @@ def get_dpi() -> float:
     return ratio
 
 
-def get_all_window_handles() -> Tuple[List, List]:
+def get_all_window_handles() -> List:
     """Gets all window handles.
 
     Returns:
@@ -29,10 +29,19 @@ def get_all_window_handles() -> Tuple[List, List]:
     toplist, winlist = [], []
 
     def enum_cb(hwnd, results):
-        winlist.append((hwnd, win32gui.GetWindowText(hwnd)))
+        if win32gui.IsWindowVisible( hwnd ):
+            winlist.append((hwnd, win32gui.GetWindowText(hwnd)))
     win32gui.EnumWindows(enum_cb, toplist)
-    return toplist, winlist
 
+    return winlist
+
+def get_all_window_titles(unique = True, _sorted = True):
+    winlist = [x[1] for x in get_all_window_handles()]
+    if unique:
+        winlist = list(filter(lambda x: x, list(set(winlist))))
+    if _sorted:
+        winlist = sorted(winlist, key=str.lower)
+    return winlist
 
 def get_hwnd(window_title: str) -> int:
     """Gets the window handle of the window with the given title.
@@ -46,7 +55,7 @@ def get_hwnd(window_title: str) -> int:
     Returns:
         int: The window handle.
     """
-    _, winlist = get_all_window_handles()
+    winlist = get_all_window_handles()
     hwnds = [(hwnd, title)
              for hwnd, title in winlist if window_title.lower() in title.lower()]
 
