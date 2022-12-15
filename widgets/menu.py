@@ -10,4 +10,5 @@ class Menu(tk.Menu):
     def __init__(self, master: widgets.App):
         super().__init__(master=master, tearoff=0)
         self.app = master
-        self.add_cascade(label='File', menu=widgets.Filemenu(self))
+        self.add_cascade(label='File', menu=widgets.FileMenu(self))
+        self.add_cascade(label='Preview', menu=widgets.PreviewMenu(self))

@@ -4,10 +4,7 @@ import tkinter as tk
 from dataclasses import dataclass
 from enum import Enum
 
-import cv2
 from capture_util import get_all_window_titles, get_hwnd, grab_window_content
-from image_util import ImageType, convert_pil_image
-from PIL import ImageTk as itk
 from util import Size
 
 import widgets
@@ -25,9 +22,9 @@ class App(tk.Tk):
     @dataclass
     class Components:
         menu: widgets.Menu
-        render_preview_check_button: tk.Checkbutton
         capture_window_option_menu: tk.Entry
         instructions_text_box: tk.Text
+        preview_window: widgets.PreviewWindow = None
 
     """The app window showing the thumbnail, the input field and the buttons.
 
@@ -42,7 +39,6 @@ class App(tk.Tk):
             text_box_size (Size): The size of the textbox in characters per line.
         """
         super().__init__(className='AutoClicker')
-        self.title = 'AutoClicker'
         self.protocol("WM_DELETE_WINDOW", self.close_app)
 
         self.state = App.State(
@@ -53,8 +49,6 @@ class App(tk.Tk):
 
         self.components = App.Components(
             menu=widgets.Menu(self),
-            render_preview_check_button=tk.Checkbutton(
-                self, text='Render preview', variable=self.state.render_preview),
             capture_window_option_menu=tk.OptionMenu(
                 self, self.state.capture_window_title, get_all_window_titles()),
             instructions_text_box=tk.Text(
@@ -63,13 +57,12 @@ class App(tk.Tk):
 
         self.config(menu=self.components.menu)
         self.state.render_preview.trace(
-            mode='rw', callback=self.on_render_preview_changed)
+            mode='w', callback=self.on_render_preview_changed)
         self.state.capture_window_title.trace(
             mode='w', callback=self.on_capture_window_title_changed)
         self.state.capture_window_title.trace(
             mode='r', callback=self.on_capture_window_title_read)
 
-        self.components.render_preview_check_button.pack()
         self.components.capture_window_option_menu.pack()
         self.components.instructions_text_box.pack(side=tk.TOP, padx=10)
 
@@ -81,7 +74,8 @@ class App(tk.Tk):
         self.components.instructions_text_box.delete("1.0", tk.END)
 
     def save_instructions(self, name):
-        instructions = self.components.instructions_text_box.get("1.0", tk.END).strip()
+        instructions = self.components.instructions_text_box.get(
+            "1.0", tk.END).strip()
         with open(name, "w") as file:
             file.writelines(instructions)
 
@@ -91,6 +85,9 @@ class App(tk.Tk):
         self.clear_instructions()
         self.components.instructions_text_box.insert("1.0", instructions)
 
+    def focus_instructions(self):
+        self.components.instructions_text_box.focus()
+
     def close_app(self):
         """Callback for the CLOSE button.
         """
@@ -99,9 +96,9 @@ class App(tk.Tk):
 
     def on_render_preview_changed(self, *args):
         if self.state.render_preview.get():
-            cv2.namedWindow("Preview", cv2.WINDOW_NORMAL)
+            self.components.preview_window = widgets.PreviewWindow(self)
         else:
-            cv2.destroyAllWindows()
+            self.components.preview_window.destroy()
 
     def on_capture_window_title_read(self, *args):
         self.components.capture_window_option_menu['menu'].delete(0, tk.END)
@@ -119,10 +116,7 @@ class App(tk.Tk):
 
     def update(self) -> None:
         self.image = grab_window_content(hwnd=self.state.hwnd)
-        if self.image is not None and self.state.render_preview.get():
-            cv2_image = convert_pil_image(
-                img=self.image, image_type=ImageType.OPENCV)
-            cv2.imshow("Preview", cv2_image)
-            cv2.waitKey(1)
+        if self.components.preview_window and self.image is not None and self.state.render_preview:
+            self.components.preview_window.update(self.image)
 
         super().update()

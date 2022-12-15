@@ -5,7 +5,7 @@ from tkinter.filedialog import askopenfilename, asksaveasfilename
 
 import widgets
 
-class Filemenu(tk.Menu):
+class FileMenu(tk.Menu):
 
     EXTENSION = ".autoclicker"
     FILETYPES = [("AutoClicker Files", EXTENSION)]
@@ -24,15 +24,15 @@ class Filemenu(tk.Menu):
         self.add_command(label="Exit", command=self.app.close_app)
 
     def on_load(self):
-        filename = askopenfilename(filetypes=Filemenu.FILETYPES)
+        filename = askopenfilename(filetypes=FileMenu.FILETYPES)
         if not filename:
             return
         self.app.load_instructions(filename)
 
     def on_save(self):
-        filename = asksaveasfilename(filetypes=Filemenu.FILETYPES)
+        filename = asksaveasfilename(filetypes=FileMenu.FILETYPES)
         if not filename:
             return
-        if not filename.endswith(Filemenu.EXTENSION):
-            filename += Filemenu.EXTENSION
+        if not filename.endswith(FileMenu.EXTENSION):
+            filename += FileMenu.EXTENSION
         self.app.save_instructions(filename)
