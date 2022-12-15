@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import tkinter as tk
 from dataclasses import dataclass
-from enum import Enum
 
 from capture_util import get_all_window_titles, get_hwnd, grab_window_content
 from util import Size
@@ -16,7 +15,7 @@ class App(tk.Tk):
     class State:
         render_preview: tk.BooleanVar
         capture_window_title: tk.StringVar
-        hwnd: str
+        hwnd: str = ''
         is_closed: bool = False
 
     @dataclass
@@ -44,7 +43,6 @@ class App(tk.Tk):
         self.state = App.State(
             render_preview=tk.BooleanVar(self, False),
             capture_window_title=tk.StringVar(self, capture_window_title),
-            hwnd=get_hwnd(capture_window_title),
         )
 
         self.components = App.Components(
@@ -64,7 +62,8 @@ class App(tk.Tk):
             mode='r', callback=self.on_capture_window_title_read)
 
         self.components.capture_window_option_menu.pack()
-        self.components.instructions_text_box.pack(side=tk.TOP, padx=10)
+        self.components.instructions_text_box.pack(
+            side=tk.TOP, padx=10, pady=10, fill='both', expand=True)
 
     @property
     def is_closed(self):
