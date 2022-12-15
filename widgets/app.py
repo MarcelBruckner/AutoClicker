@@ -1,16 +1,11 @@
 from __future__ import annotations
 
-import sys
 import tkinter as tk
-from collections import namedtuple
 from dataclasses import dataclass
 from enum import Enum
-from tkinter.filedialog import askopenfilename
-from typing import List, Tuple
 
 import cv2
-from capture_util import (get_all_window_handles, get_all_window_titles,
-                          get_hwnd, grab_window_content)
+from capture_util import get_all_window_titles, get_hwnd, grab_window_content
 from image_util import ImageType, convert_pil_image
 from PIL import ImageTk as itk
 from util import Size
@@ -81,6 +76,20 @@ class App(tk.Tk):
     @property
     def is_closed(self):
         return self.state.is_closed
+
+    def clear_instructions(self):
+        self.components.instructions_text_box.delete("1.0", tk.END)
+
+    def save_instructions(self, name):
+        instructions = self.components.instructions_text_box.get("1.0", tk.END).strip()
+        with open(name, "w") as file:
+            file.writelines(instructions)
+
+    def load_instructions(self, name):
+        with open(name, "r") as file:
+            instructions = file.read().strip()
+        self.clear_instructions()
+        self.components.instructions_text_box.insert("1.0", instructions)
 
     def close_app(self):
         """Callback for the CLOSE button.
