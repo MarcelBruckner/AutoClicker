@@ -4,13 +4,15 @@ import win32gui
 import ctypes
 from PIL import ImageGrab, Image
 
-def get_dpi() -> float:
+
+def get_dpi(hwnd: int = 0) -> float:
     """Calculates the display resolution.
 
     Returns:
         float: The resolution.
     """
-    hwnd = win32gui.GetDesktopWindow()
+    if not hwnd:
+        hwnd = win32gui.GetDesktopWindow()
     ratio = 1.0
     try:
         dpi = ctypes.windll.user32.GetDpiForWindow(hwnd)
@@ -29,19 +31,21 @@ def get_all_window_handles() -> List:
     toplist, winlist = [], []
 
     def enum_cb(hwnd, results):
-        if win32gui.IsWindowVisible( hwnd ):
+        if win32gui.IsWindowVisible(hwnd):
             winlist.append((hwnd, win32gui.GetWindowText(hwnd)))
     win32gui.EnumWindows(enum_cb, toplist)
 
     return winlist
 
-def get_all_window_titles(unique = True, _sorted = True):
+
+def get_all_window_titles(unique=True, _sorted=True):
     winlist = [x[1] for x in get_all_window_handles()]
     if unique:
         winlist = list(filter(lambda x: x, list(set(winlist))))
     if _sorted:
         winlist = sorted(winlist, key=str.lower)
     return winlist
+
 
 def get_hwnd(window_title: str) -> int:
     """Gets the window handle of the window with the given title.
@@ -69,7 +73,7 @@ def get_hwnd(window_title: str) -> int:
     raise ValueError(f'Cannot find a window with title {window_title}')
 
 
-def get_bbox(hwnd: int) -> Tuple[float, float,float,float]:
+def get_bbox(hwnd: int) -> Tuple[float, float, float, float]:
     """Calculates the bounding box of the window.
 
     Args:
@@ -79,7 +83,7 @@ def get_bbox(hwnd: int) -> Tuple[float, float,float,float]:
         Tuple[float, float,float,float]: x, y, width, height of the window.
     """
     bbox = win32gui.GetWindowRect(hwnd)
-    scale = get_dpi()
+    scale = get_dpi(hwnd)
     return (b * scale for b in bbox)
 
 
@@ -100,3 +104,8 @@ def grab_window_content(hwnd: int) -> Union[Image.Image, None]:
         return image
     except:
         return None
+
+
+if __name__ == "__main__":
+    hwnd = get_hwnd('capture_util')
+    get_dpi(hwnd)

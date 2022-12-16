@@ -1,12 +1,12 @@
 import tkinter as tk
+import app
 from util import Size
-import widgets
 from image_util import convert_pil_image, ImageType, resize
 
 
 class PreviewWindow(tk.Toplevel):
 
-    def __init__(self, master: widgets.App):
+    def __init__(self, master):
         super().__init__(master)
         self.width = 512
         self.height = 512
