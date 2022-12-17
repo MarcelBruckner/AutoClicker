@@ -4,7 +4,8 @@ from enum import Enum
 import numpy as np
 from PIL import ImageTk as itk
 
-from util import Size
+from flaskr.util import Size
+
 
 class ImageType(Enum):
     """Enum type for the supported image conversions
@@ -15,6 +16,7 @@ class ImageType(Enum):
     PIL = 0
     OPENCV = 1
     TK = 2
+
 
 def convert_pil_image(img: Image.Image, image_type: ImageType) -> Union[Image.Image, np.array, itk.PhotoImage]:
     """Converts the given PIL image to the desired format.
@@ -33,11 +35,12 @@ def convert_pil_image(img: Image.Image, image_type: ImageType) -> Union[Image.Im
         case ImageType.PIL:
             return img
         case ImageType.OPENCV:
-            return np.array(img)[:, :, ::-1].copy() 
+            return np.array(img)[:, :, ::-1].copy()
         case ImageType.TK:
             return itk.PhotoImage(img)
         case _:
             raise ValueError('Invalid image_type given')
+
 
 def resize(img: Image, size: Size = None):
     """Replaces the image IN-PLACE to fit within the size bounding box. 

@@ -8,8 +8,27 @@
             "name": "Python: main",
             "type": "python",
             "request": "launch",
-            "program": "main.py",
+            "program": "src/main.py",
             "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Python: Flask",
+            "type": "python",
+            "request": "launch",
+            "module": "flask",
+            "env": {
+                "FLASK_APP": "__init__.py",
+                "FLASK_DEBUG": "1"
+            },
+            "args": [
+                "--app", 
+                "flaskr",
+                "run",
+                "--no-debugger",
+                "--no-reload"
+            ],
+            "jinja": true,
             "justMyCode": true
         },
         {

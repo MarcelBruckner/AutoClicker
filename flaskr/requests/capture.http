@@ -1,0 +1,14 @@
+
+GET http://127.0.0.1:8000/start_capture/127 HTTP/1.1
+
+###
+
+GET http://127.0.0.1:8000/stop_capture HTTP/1.1
+
+###
+
+GET http://127.0.0.1:8000/start_recording HTTP/1.1
+
+###
+
+GET http://127.0.0.1:8000/stop_recording HTTP/1.1

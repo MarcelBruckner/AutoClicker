@@ -41,6 +41,25 @@ def get_listener() -> mouse.Listener:
                           on_scroll=on_scroll)
 
 
+listener: mouse.Listener = None
+
+
+def listen():
+    global listener
+
+    if not listener:
+        listener = get_listener()
+        listener.start()
+
+
+def stop_listen():
+    global listener
+
+    if listener:
+        listener.stop()
+        listener = None
+
+
 if __name__ == "__main__":
     listener = get_listener()
     listener.start()

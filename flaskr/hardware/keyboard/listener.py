@@ -21,6 +21,25 @@ def get_listener():
                              on_release=on_release)
 
 
+listener: keyboard.Listener = None
+
+
+def listen():
+    global listener
+
+    if not listener:
+        listener = get_listener()
+        listener.start()
+
+
+def stop_listen():
+    global listener
+
+    if listener:
+        listener.stop()
+        listener = None
+
+
 if __name__ == "__main__":
     listener = get_listener()
     listener.start()

@@ -1,25 +1,15 @@
+import logging
+from flaskr.util import Size
+from flaskr.image_util import ImageType, convert_pil_image, resize
+import threading
 from typing import List, Tuple, Union
-import PIL
 import win32gui
 import ctypes
 from PIL import ImageGrab, Image
-
-
-def get_dpi(hwnd: int = 0) -> float:
-    """Calculates the display resolution.
-
-    Returns:
-        float: The resolution.
-    """
-    if not hwnd:
-        hwnd = win32gui.GetDesktopWindow()
-    ratio = 1.0
-    try:
-        dpi = ctypes.windll.user32.GetDpiForWindow(hwnd)
-        ratio = dpi / 96.0
-    except:
-        pass
-    return ratio
+import cv2
+from screeninfo import get_monitors
+import ctypes
+ctypes.windll.user32.SetProcessDPIAware()
 
 
 def get_all_window_handles() -> List:
@@ -82,9 +72,13 @@ def get_bbox(hwnd: int) -> Tuple[float, float, float, float]:
     Returns:
         Tuple[float, float,float,float]: x, y, width, height of the window.
     """
-    bbox = win32gui.GetWindowRect(hwnd)
-    scale = get_dpi(hwnd)
-    return (b * scale for b in bbox)
+    rect = ctypes.wintypes.RECT()
+    ctypes.windll.user32.GetWindowRect(hwnd, ctypes.pointer(rect))
+    bbox = (rect.left, rect.top, rect.right, rect.bottom)
+
+    if sum(bbox) == 0:
+        raise ValueError(f'Cannot get bbox for hwnd: {hwnd}')
+    return bbox
 
 
 def grab_window_content(hwnd: int) -> Union[Image.Image, None]:
@@ -97,15 +91,71 @@ def grab_window_content(hwnd: int) -> Union[Image.Image, None]:
     Returns:
         Union[PIL.Image.Image, None]: The image if a capture was taken, None if there happenes an exception.
     """
+    bbox = get_bbox(hwnd=hwnd)
+    image = ImageGrab.grab(bbox)
+    return image
+
+
+capture_thread: threading.Thread = None
+capture_running = False
+image = None
+
+
+def get_image():
+    return image
+
+
+def capture_loop(hwnd: int):
+    global capture_running
+    global image
+
     try:
-        # win32gui.SetForegroundWindow(hwnd)
-        bbox = get_bbox(hwnd=hwnd)
-        image = ImageGrab.grab(bbox)
-        return image
-    except:
-        return None
+        cv2.namedWindow("Preview", cv2.WINDOW_AUTOSIZE)
+        win32gui.SetForegroundWindow(hwnd)
+        capture_running = True
+        while capture_running:
+            image = grab_window_content(hwnd=hwnd)
+            resize(image, Size(512, 512))
+            image = convert_pil_image(image, ImageType.OPENCV)
+            cv2.imshow("Preview", image)
+            cv2.waitKey(1)
+    except Exception as e:
+        logging.warning(e)
+        cv2.destroyAllWindows()
+        stop_capture()
+
+
+def start_capture(title: str):
+    global capture_running
+    global capture_thread
+
+    if capture_running:
+        return
+
+    hwnd = None
+    for _ in range(100):
+        try:
+            hwnd = get_hwnd(title)
+            break
+        except:
+            pass
+
+    capture_thread = threading.Thread(target=capture_loop, args=(hwnd,))
+    capture_thread.start()
+
+    return capture_running
+
+
+def stop_capture():
+    global capture_running
+    global capture_thread
+
+    capture_running = False
+
+    if capture_thread:
+        capture_thread = None
 
 
 if __name__ == "__main__":
-    hwnd = get_hwnd('capture_util')
-    get_dpi(hwnd)
+    for monitor in get_monitors():
+        print(monitor)
