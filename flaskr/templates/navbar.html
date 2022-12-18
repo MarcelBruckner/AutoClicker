@@ -1,0 +1,67 @@
+<nav class="navbar navbar-expand-lg bg-light flex-shrink-0">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">AutoClicker</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+        {% if g.user %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            File
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/instructions/new">New</a></li>
+            <li><a class="dropdown-item" href="/instructions/save">Save</a></li>
+            <li>
+              <form action="/instructions/open" enctype=multipart/form-data method="post">
+                <div class="dropdown-item form-group">
+                  <label for="open">Open</label>
+                  <input type="file" class="form-control-file" id="open" name="open" style="display:none"
+                    onchange="form.submit()" accept=".autoclicker">
+                </div>
+              </form>
+            </li>
+          </ul>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Preview
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Show</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Window
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </li>
+        {% endif %}
+      </ul>
+
+      <ul class="navbar-nav">
+        {% if g.user %}
+        <li class="nav-item"><a class="nav-link disabled">{{ g.user['username'] }}
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Log Out</a>
+          {% else %}
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.register') }}">Register</a>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.login') }}">Log In</a>
+          {% endif %}
+      </ul>
+    </div>
+
+  </div>
+</nav>

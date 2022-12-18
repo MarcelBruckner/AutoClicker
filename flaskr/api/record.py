@@ -6,7 +6,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 import flaskr.hardware.mouse as mouse
 import flaskr.hardware.keyboard as keyboard
 from flaskr.api.util import RequestStatus
-from flaskr.api.auth import login_required
+from flaskr.ui.auth import login_required
 
 
 bp = Blueprint('record', __name__, url_prefix='/record')

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}AutoClicker{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+<iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+
+<form action="/instructions/set" method="post" target="dummyframe">
+    <div class="form-group">
+        <textarea class="form-control" name="instructions" rows="20" placeholder="Instructions"
+            onchange="form.submit()">{{ instructions }}</textarea>
+    </div>
+</form>
+{% endblock %}

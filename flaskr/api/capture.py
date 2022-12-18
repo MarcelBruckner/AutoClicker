@@ -6,7 +6,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from flaskr import capture_util
 from flaskr.api.util import RequestStatus
 from flask import request
-from flaskr.api.auth import login_required
+from flaskr.ui.auth import login_required
 
 bp = Blueprint('capture', __name__, url_prefix='/capture')
 

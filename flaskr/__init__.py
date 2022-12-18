@@ -27,18 +27,16 @@ def create_app(test_config=None) -> Flask:
     from . import db
     db.init_app(app)
 
-    from flaskr.api import auth, autoclicker, capture, record
+    from flaskr.api import capture, record, navbar
+    from flaskr.ui import auth, autoclicker
 
     app.register_blueprint(auth)
     app.register_blueprint(capture)
     app.register_blueprint(record)
+    app.register_blueprint(navbar)
     app.register_blueprint(autoclicker)
-    app.add_url_rule('/', endpoint='index')
 
-    # a simple page that says hello
-    @app.route('/hello')
-    def hello():
-        return 'Hello, World!'
+    app.add_url_rule('/', endpoint='index')
 
     return app
 

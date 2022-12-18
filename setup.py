@@ -16,5 +16,7 @@ setup(
         'pynput',
         'pyautogui',
         'waitress',  # waitress-serve --call 'flaskr:create_app'
+        'pytest',
+        'coverage',
     ],
 )
