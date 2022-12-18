@@ -42,7 +42,7 @@ def convert_pil_image(img: Image.Image, image_type: ImageType) -> Union[Image.Im
             raise ValueError('Invalid image_type given')
 
 
-def resize(img: Image, size: Size = None):
+def resize(img: Image, size: Size = None, width: int = 512, height: int = 512):
     """Replaces the image IN-PLACE to fit within the size bounding box. 
     Keeps the aspect ratio.
 
@@ -50,4 +50,6 @@ def resize(img: Image, size: Size = None):
         img (Image): The image to resize
         size (Size, optional): The given maximal size of the image. Defaults to None.
     """
+    if not size:
+        size = Size(width, height)
     img.thumbnail((size.width, size.height), Image.Resampling.LANCZOS)

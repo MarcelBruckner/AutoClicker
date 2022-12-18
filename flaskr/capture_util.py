@@ -1,3 +1,5 @@
+from time import time
+from greenlet import getcurrent as get_ident
 import logging
 from flaskr.util import Size
 from flaskr.image_util import ImageType, convert_pil_image, resize
@@ -101,7 +103,7 @@ capture_running = False
 image = None
 
 
-def get_image():
+def get_image() -> Image.Image:
     return image
 
 
@@ -110,19 +112,56 @@ def capture_loop(hwnd: int):
     global image
 
     try:
-        cv2.namedWindow("Preview", cv2.WINDOW_AUTOSIZE)
         win32gui.SetForegroundWindow(hwnd)
         capture_running = True
         while capture_running:
             image = grab_window_content(hwnd=hwnd)
-            resize(image, Size(512, 512))
-            image = convert_pil_image(image, ImageType.OPENCV)
-            cv2.imshow("Preview", image)
-            cv2.waitKey(1)
     except Exception as e:
         logging.warning(e)
-        cv2.destroyAllWindows()
         stop_capture()
+
+
+class CameraEvent(object):
+    """An Event-like class that signals all active clients when a new frame is
+    available.
+    """
+
+    def __init__(self):
+        self.events = {}
+
+    def wait(self):
+        """Invoked from each client's thread to wait for the next frame."""
+        ident = get_ident()
+        if ident not in self.events:
+            # this is a new client
+            # add an entry for it in the self.events dict
+            # each entry has two elements, a threading.Event() and a timestamp
+            self.events[ident] = [threading.Event(), time.time()]
+        return self.events[ident][0].wait()
+
+    def set(self):
+        """Invoked by the camera thread when a new frame is available."""
+        now = time()
+        remove = None
+        for ident, event in self.events.items():
+            if not event[0].isSet():
+                # if this client's event is not set, then set it
+                # also update the last set timestamp to now
+                event[0].set()
+                event[1] = now
+            else:
+                # if the client's event is already set, it means the client
+                # did not process a previous frame
+                # if the event stays set for more than 5 seconds, then assume
+                # the client is gone and remove it
+                if now - event[1] > 5:
+                    remove = ident
+        if remove:
+            del self.events[remove]
+
+    def clear(self):
+        """Invoked from each client's thread after a frame was processed."""
+        self.events[get_ident()][0].clear()
 
 
 def start_capture(title: str):
@@ -139,6 +178,8 @@ def start_capture(title: str):
             break
         except:
             pass
+    else:
+        return False
 
     capture_thread = threading.Thread(target=capture_loop, args=(hwnd,))
     capture_thread.start()

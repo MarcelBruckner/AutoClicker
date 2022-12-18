@@ -1,13 +1,24 @@
+import io
+import logging
+from time import sleep
+import PIL
+import cv2
+import numpy as np
 from werkzeug.utils import secure_filename
+from flaskr import capture_util
 from flaskr.api.util import RequestStatus
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask import (
     Blueprint, Response, flash, g, redirect, render_template, request, url_for
 )
 from werkzeug.exceptions import abort
+from flaskr.image_util import ImageType, convert_pil_image, resize
 
 from flaskr.ui.auth import login_required
 from flaskr.db import get_db
+from flaskr.capture_util import get_all_window_titles, get_hwnd, grab_window_content, stop_capture
+from flaskr.util import Size
+
 
 bp = Blueprint('autoclicker', __name__)
 
@@ -26,7 +37,9 @@ def allowed_file(filename):
 @bp.route('/')
 @login_required
 def index():
-    return render_template('autoclicker.html', instructions=instructions)
+    return render_template('autoclicker.html',
+                           instructions=instructions,
+                           window_titles=get_all_window_titles())
 
 
 @bp.route('/instructions/set', methods=['POST'])
@@ -48,7 +61,7 @@ def save():
         instructions.strip(),
         mimetype="text/plain",
         headers={"Content-disposition":
-                 "attachment; filename=.autoclicker"})
+                 "attachment; filename=script.autoclicker"})
 
 
 @bp.route("/instructions/open", methods=['POST'])

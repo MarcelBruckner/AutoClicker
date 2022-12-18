@@ -2,6 +2,8 @@ import os
 
 from flask import Flask
 
+from flaskr.capture_util import get_all_window_titles, get_hwnd
+
 
 def create_app(test_config=None) -> Flask:
     # create and configure the app
@@ -42,4 +44,4 @@ def create_app(test_config=None) -> Flask:
 
 
 if __name__ == "__main__":
-    create_app().run()
+    create_app().run(threaded=True, debug=True)
