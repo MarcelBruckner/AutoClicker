@@ -6,6 +6,7 @@ from capture_util import get_all_window_titles
 
 import widgets
 
+
 class CaptureWindowMenu(tk.Menu):
 
     def __init__(self, master: widgets.Menu):
@@ -21,8 +22,8 @@ class CaptureWindowMenu(tk.Menu):
         self.titles = get_all_window_titles()
         self.delete(0, tk.END)
 
-        for title in self.titles:
-            self.add_radiobutton(label=title, variable=self.app.state.capture_window_title)
-
-        self.add_separator()
         self.add_command(label="Refresh", command=self.set_options)
+        self.add_separator()
+        for title in self.titles:
+            self.add_radiobutton(
+                label=title, variable=self.app.state.capture_window_title)

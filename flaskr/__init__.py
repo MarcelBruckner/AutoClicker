@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask
+from hardware import my_mouse, my_keyboard
 
 from flaskr.capture_util import get_all_window_titles, get_hwnd
 

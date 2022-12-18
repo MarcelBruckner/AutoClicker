@@ -1,4 +1,5 @@
 from __future__ import annotations
+import logging
 
 import tkinter as tk
 from tkinter import ttk
@@ -8,6 +9,7 @@ from capture_util import get_hwnd, grab_window_content
 from util import Size
 
 import widgets
+import hardware
 
 
 class App(tk.Tk):
@@ -16,6 +18,9 @@ class App(tk.Tk):
     class State:
         render_preview: tk.BooleanVar
         capture_window_title: tk.StringVar
+        playing: tk.BooleanVar
+        recording: tk.BooleanVar
+        instructions_text: tk.StringVar
         style: ttk.Style
         hwnd: str = ''
         is_closed: bool = False
@@ -24,6 +29,7 @@ class App(tk.Tk):
     class Components:
         menu: widgets.Menu
         instructions_text_box: widgets.InstructionsTextBox
+        controls: widgets.Controls
         preview_window: widgets.PreviewWindow = None
 
     """The app window showing the thumbnail, the input field and the buttons.
@@ -32,7 +38,7 @@ class App(tk.Tk):
         tk (tkinter.Tk): The tkinter base window class.
     """
 
-    def __init__(self, text_box_size: Size, capture_window_title: str = "RuneScape") -> None:
+    def __init__(self, text_box_size: Size = Size(width=50, height=20), capture_window_title: str = "RuneScape") -> None:
         """constructor
 
         Args:
@@ -42,14 +48,18 @@ class App(tk.Tk):
         self.protocol("WM_DELETE_WINDOW", self.destroy)
 
         self.state = App.State(
+            playing=tk.BooleanVar(self, False),
+            recording=tk.BooleanVar(self, False),
             style=ttk.Style(self),
             render_preview=tk.BooleanVar(self, False),
             capture_window_title=tk.StringVar(self, capture_window_title),
+            instructions_text=tk.StringVar(self),
         )
 
         self.setup_filemenu_facade()
         self.components = App.Components(
             menu=widgets.Menu(self),
+            controls=widgets.Controls(self),
             instructions_text_box=widgets.InstructionsTextBox(
                 self, text_box_size),
         )
@@ -59,7 +69,11 @@ class App(tk.Tk):
             mode='w', callback=self.on_render_preview_changed)
         self.state.capture_window_title.trace(
             mode='w', callback=self.on_capture_window_title_changed)
+        self.state.instructions_text.trace(
+            mode='w', callback=lambda *_: self.components.instructions_text_box.set_text(self.state.instructions_text.get())
+        )
 
+        self.components.controls.pack()
         self.components.instructions_text_box.pack(
             side=tk.TOP, padx=10, pady=10, fill='both', expand=True)
 
@@ -73,7 +87,7 @@ class App(tk.Tk):
         self.after(1, self.process_image)
 
     def setup_filemenu_facade(self):
-        self.on_new = lambda: self.components.instructions_text_box.clear()
+        self.on_new = lambda: self.state.instructions_text.set('')
         self.on_save = lambda name: self.components.instructions_text_box.save(
             name)
         self.on_load = lambda name: self.components.instructions_text_box.load(
@@ -95,8 +109,11 @@ class App(tk.Tk):
             pass
 
     def process_image(self) -> None:
-        self.image = grab_window_content(hwnd=self.state.hwnd)
-        if self.components.preview_window and self.image is not None and self.state.render_preview:
-            self.components.preview_window.update(self.image)
+        try:
+            self.image = grab_window_content(hwnd=self.state.hwnd)
+            if self.components.preview_window and self.image is not None and self.state.render_preview:
+                self.components.preview_window.update(self.image)
+        except Exception as e:
+            logging.info(e)
 
         self.after(1, self.process_image)

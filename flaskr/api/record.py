@@ -3,8 +3,8 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
-import flaskr.hardware.mouse as mouse
-import flaskr.hardware.keyboard as keyboard
+import flaskr.hardware.backup_mouse as backup_mouse
+import flaskr.hardware.my_keyboard as my_keyboard
 from flaskr.api.util import RequestStatus
 from flaskr.ui.auth import login_required
 
@@ -15,8 +15,8 @@ bp = Blueprint('record', __name__, url_prefix='/record')
 @bp.route("/start")
 @login_required
 def start():
-    mouse.listen()
-    keyboard.listen()
+    backup_mouse.stop_listen()
+    my_keyboard.start()
 
     return RequestStatus.SUCCESS.value
 
@@ -24,7 +24,7 @@ def start():
 @bp.route("/stop")
 @login_required
 def stop():
-    mouse.stop_listen()
-    keyboard.stop_listen()
+    backup_mouse.stop_listen()
+    my_keyboard.stop()
 
     return RequestStatus.SUCCESS.value

@@ -4,8 +4,8 @@ from flask import (
 from werkzeug.security import check_password_hash, generate_password_hash
 from flaskr.capture_util import get_hwnd, start_capture
 
-import flaskr.hardware.mouse as mouse
-import flaskr.hardware.keyboard as keyboard
+import flaskr.hardware.backup_mouse as backup_mouse
+import flaskr.hardware.my_keyboard as my_keyboard
 from flaskr.api.util import RequestStatus
 from flaskr.ui.auth import login_required
 

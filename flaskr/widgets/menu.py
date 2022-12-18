@@ -13,6 +13,7 @@ class Menu(tk.Menu):
         super().__init__(master=master, tearoff=0)
         self.app = master
         self.add_cascade(label='File', menu=widgets.FileMenu(self))
-        self.add_cascade(label='Preview', menu=widgets.PreviewMenu(self))
         self.add_cascade(label='Window', menu=widgets.CaptureWindowMenu(self))
-        self.add_cascade(label='Theme', menu=widgets.ThemeMenu(self))
+
+        self.add_checkbutton(label="Preview",
+                             variable=self.app.state.render_preview)
