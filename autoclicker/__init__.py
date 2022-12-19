@@ -3,7 +3,7 @@ import os
 from flask import Flask
 from hardware import my_mouse, my_keyboard
 
-from flaskr.capture_util import get_all_window_titles, get_hwnd
+from autoclicker.capture_util import get_all_window_titles, get_hwnd
 
 
 def create_app(test_config=None) -> Flask:
@@ -30,8 +30,8 @@ def create_app(test_config=None) -> Flask:
     from . import db
     db.init_app(app)
 
-    from flaskr.api import capture, record, navbar
-    from flaskr.ui import auth, autoclicker
+    from autoclicker.api import capture, record, navbar
+    from autoclicker.ui import auth, autoclicker
 
     app.register_blueprint(auth)
     app.register_blueprint(capture)

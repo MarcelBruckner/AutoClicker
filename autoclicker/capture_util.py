@@ -1,8 +1,9 @@
 from time import time
 from greenlet import getcurrent as get_ident
 import logging
-from flaskr.util import Size
-from flaskr.image_util import ImageType, convert_pil_image, resize
+
+from autoclicker.util import Size
+from autoclicker.image_util import ImageType, convert_pil_image, resize
 import threading
 from typing import List, Tuple, Union
 import win32gui

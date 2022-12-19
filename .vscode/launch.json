@@ -8,7 +8,7 @@
             "name": "Python: main",
             "type": "python",
             "request": "launch",
-            "program": "flaskr/main.py",
+            "program": "autoclicker/main.py",
             "console": "integratedTerminal",
             "justMyCode": true
         },
@@ -23,7 +23,7 @@
             },
             "args": [
                 "--app", 
-                "flaskr",
+                "autoclicker",
                 "run",
                 "--no-debugger",
                 "--no-reload"

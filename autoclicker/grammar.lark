@@ -1,0 +1,23 @@
+instructions: (click | keyboard)*
+
+value: NUMBER -> number 
+     | STRING -> string
+     | LETTER -> char
+     | SIGNED_NUMBER -> number
+list : "[" [value ("," value)*] "]"
+
+click: "Click: " x y button
+x: "x" "=" NUMBER
+y: "y" "=" NUMBER
+button: "button" "=" BUTTON
+BUTTON: "left" | "right" | "middle"
+
+keyboard: "Keyboard: " keys
+keys: "keys" "=" (list | LETTER)
+
+%import common.WS
+%import common.LETTER
+%import common.ESCAPED_STRING   -> STRING
+%import common.NUMBER    
+%import common.SIGNED_NUMBER
+%ignore WS

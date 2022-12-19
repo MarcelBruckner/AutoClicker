@@ -4,7 +4,7 @@ from enum import Enum
 import numpy as np
 from PIL import ImageTk as itk
 
-from flaskr.util import Size
+from autoclicker.util import Size
 
 
 class ImageType(Enum):

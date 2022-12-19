@@ -3,10 +3,10 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
-import flaskr.hardware.backup_mouse as backup_mouse
-import flaskr.hardware.my_keyboard as my_keyboard
-from flaskr.api.util import RequestStatus
-from flaskr.ui.auth import login_required
+import autoclicker.hardware.backup_mouse as backup_mouse
+import autoclicker.hardware.my_keyboard as my_keyboard
+from autoclicker.api.util import RequestStatus
+from autoclicker.ui.auth import login_required
 
 
 bp = Blueprint('record', __name__, url_prefix='/record')

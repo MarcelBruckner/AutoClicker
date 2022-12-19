@@ -1,7 +1,7 @@
 from setuptools import find_packages, setup
 
 setup(
-    name='flaskr',
+    name='autoclicker',
     version='1.0.0',
     packages=find_packages(),
     include_package_data=True,
@@ -15,9 +15,12 @@ setup(
         'screeninfo',
         'pynput',
         'pyautogui',
-        'waitress',  # waitress-serve --call 'flaskr:create_app'
+        'waitress',  # waitress-serve --call 'autoclicker:create_app'
         'pytest',
         'coverage',
-        'greenlet'
+        'greenlet',
+        'lark',
+        'pydot',
+        'graphviz'
     ],
 )
